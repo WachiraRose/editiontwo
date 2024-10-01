@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fill in the Blanks Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #quiz-container {
+            margin-bottom: 20px;
+        }
+
+        .question {
+            margin: 10px 0;
+            font-size: 18px;
+        }
+
+        .drop-zone {
+            border: 2px dashed #ccc;
+            padding: 5px 10px;
+            min-width: 100px;
+            display: inline-block;
+            background-color: #f9f9f9;
+        }
+
+        .draggable {
+            margin: 10px;
+            padding: 5px 10px;
+            background-color: #f2f2f2;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            display: inline-block;
+        }
+
+        .draggable:hover {
+            background-color: #ddd;
+        }
+
+        #answer-container {
+            margin-top: 20px;
+        }
+
+        /* Confetti Canvas */
+        #confetti {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Exercise on Greetings in Kiswahili and English</h1>
+    <div id="quiz-container">
+        <!-- Questions with drop zones -->
+        <div class="question">
+            1. In the morning, you would say, <span class="drop-zone" data-answer="Habari"></span>. ya asubuhi.
+        </div>
+        <div class="question">
+            2. When you asking someone their name, you say “Jina lako ni<span class="drop-zone" data-answer="nani"></span>.
+        </div>
+
+        <div class="question"></div>
+            3. When a child meets the mother, they say “<span class="drop-zone" data-answer="shikamoo"></span> mama”.
+        </div>
+        <div class="question"></div>
+            4. Before going to sleep at night, it's nice to say, "<span class="drop-zone" data-answer="usiku"></span>  mwema."
+        </div>
+        <div class="question"></div>
+            5. To say sorry to someone is “<span class="drop-zone" data-answer="pole"></span> mama”.
+        </div>
+
+       
+        <!-- Add more questions as needed -->
+    </div>
+
+    <div id="answer-container">
+        <p>Drag the answers here:</p>
+        <div class="draggable" draggable="true" data-answer="Habari">Habari</div>
+        <div class="draggable" draggable="true" data-answer="nani">nani</div>
+        <div class="draggable" draggable="true" data-answer="shikamoo">shikamoo</div>
+        <div class="draggable" draggable="true" data-answer="usiku">usiku</div>
+        <div class="draggable" draggable="true" data-answer="pole">pole</div>
+       
+        <!-- Add more answers as needed -->
+    </div>
+
+
+    <div id="quiz-container">
+        <!-- Questions with drop zones -->
+        
+
+        <h1>B. Answer whether it is True or False:</h1>
+
+        <!-- Questions with drop zones -->
+        <div class="question">
+            6.  "Habari ya asubuhi" means "Good night" in Kiswahili. <span class="drop-zone" data-answer="False"></span>
+        </div>
+        <div class="question">
+            7. You would say "Hodi, hodi?” to mean “May I come in?”<span class="drop-zone" data-answer="True"></span>.
+        </div>
+
+        <div class="question"></div>
+            8. "Lala unono" is a greeting you use in the morning.<span class="drop-zone" data-answer="False"></span>
+        </div>
+        <div class="question"></div>
+            9. "Habari ya jioni" translates to "Good evening" in English.<span class="drop-zone" data-answer="True"></span>  mwema."
+        </div>
+        <div class="question"></div>
+            10. “Hatujambo” means “We are fine”<span class="drop-zone" data-answer="True"></span>
+        </div>
+        <!-- Add more questions as needed -->
+    </div>
+
+    <div id="answer-container">
+        <p>Drag the answers here:</p>
+        <div class="draggable" draggable="true" data-answer="False">False</div>
+        <div class="draggable" draggable="true" data-answer="True">True</div>
+        <div class="draggable" draggable="true" data-answer="False">False</div>
+        <div class="draggable" draggable="true" data-answer="True">True</div>
+        <div class="draggable" draggable="true" data-answer="True">True</div>
+        <!-- Add more answers as needed -->
+    </div>
+
+
+
+
+    <!-- Confetti canvas -->
+    <canvas id="confetti"></canvas>
+
+    <script>
+        const draggables = document.querySelectorAll('.draggable');
+        const dropZones = document.querySelectorAll('.drop-zone');
+        const confettiCanvas = document.getElementById('confetti');
+        let confettiCtx = confettiCanvas.getContext('2d');
+        let confettiActive = false;
+
+        // Set up drag events
+        draggables.forEach(draggable => {
+            draggable.addEventListener('dragstart', dragStart);
+        });
+
+        dropZones.forEach(dropZone => {
+            dropZone.addEventListener('dragover', dragOver);
+            dropZone.addEventListener('drop', drop);
+        });
+
+        function dragStart(e) {
+            e.dataTransfer.setData('text', e.target.dataset.answer);
+        }
+
+        function dragOver(e) {
+            e.preventDefault();
+        }
+
+        function drop(e) {
+            e.preventDefault();
+            const answer = e.dataTransfer.getData('text');
+            const correctAnswer = e.target.getAttribute('data-answer');
+
+            if (answer === correctAnswer) {
+                e.target.textContent = answer;
+                triggerConfetti();
+            } else {
+                alert("Try Again!");
+            }
+        }
+
+        // Confetti logic
+        function triggerConfetti() {
+            if (confettiActive) return;
+            confettiActive = true;
+
+            let confettiDuration = 2000;
+            let confettiCount = 150;
+            let end = Date.now() + confettiDuration;
+
+            function confettiParticle() {
+                let colors = ['#f0e68c', '#add8e6', '#ff69b4', '#87ceeb', '#ffd700'];
+                return {
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    x: Math.random() * confettiCanvas.width,
+                    y: Math.random() * confettiCanvas.height,
+                    radius: Math.random() * 4,
+                    dx: (Math.random() - 0.5) * 6,
+                    dy: Math.random() * 4 + 2
+                };
+            }
+
+            let confetti = [];
+            for (let i = 0; i < confettiCount; i++) {
+                confetti.push(confettiParticle());
+            }
+
+            function renderConfetti() {
+                if (Date.now() > end) {
+                    confettiActive = false;
+                    confettiCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+                    return;
+                }
+
+                confettiCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+                confetti.forEach((particle, index) => {
+                    confettiCtx.beginPath();
+                    confettiCtx.arc(particle.x, particle.y, particle.radius, 0, 2 * Math.PI);
+                    confettiCtx.fillStyle = particle.color;
+                    confettiCtx.fill();
+
+                    particle.x += particle.dx;
+                    particle.y += particle.dy;
+
+                    if (particle.y > confettiCanvas.height) {
+                        confetti[index] = confettiParticle();
+                    }
+                });
+
+                requestAnimationFrame(renderConfetti);
+            }
+
+            renderConfetti();
+        }
+    </script>
+
+</body>
+</html>
