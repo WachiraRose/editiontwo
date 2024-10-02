@@ -23,6 +23,7 @@
             min-width: 100px;
             background-color: #f9f9f9;
             display: inline-block;
+            margin: 0 5px; /* Added margin for spacing */
         }
 
         .draggable {
@@ -54,15 +55,44 @@
             width: 100%;
             height: 100%;
             pointer-events: none;
+            display: none; /* Initially hidden */
         }
 
-        /* Different section colors */
+        /* Section colors */
         .section-a {
-            background-color: #d1fae5;
+            background-color: #d1fae5; /* Light green */
         }
 
         .section-b {
-            background-color: #e0f2fe;
+            background-color: #e0f2fe; /* Light blue */
+        }
+
+        /* Answer container color */
+        .answer-container {
+            background-color: #ffebee; /* Light red */
+        }
+
+        /* Container styles */
+        .quiz-container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            display: flex; /* Make the container flex */
+            align-items: flex-start; /* Align items at the start */
+        }
+
+        .questions {
+            flex: 1; /* Allow questions to take available space */
+            margin-right: 20px; /* Space between questions and answers */
+        }
+
+        .answers {
+            flex: 0 0 150px; /* Smaller fixed width for answers */
+            display: flex;
+            flex-direction: column; /* Stack answers vertically */
+            justify-content: flex-start; /* Align items at the start */
         }
 
         @media (max-width: 640px) {
@@ -81,62 +111,56 @@
 <body class="bg-gray-100">
     <h1 class="text-2xl font-bold my-4">Exercise on Greetings in Kiswahili and English</h1>
 
-    <!-- Section A (Fill in the Blanks) -->
-    <div id="quiz-container" class="section-a w-11/12 md:w-8/12 bg-white p-6 rounded shadow-lg relative">
-        <!-- Questions with drop zones -->
-        <div class="question my-2">
-            1. In the morning, you would say <span class="drop-zone" data-answer="Habari"></span> ya asubuhi.
-        </div>
-        <div class="question my-2">
-            2. When asking someone their name, you say “Jina lako ni <span class="drop-zone" data-answer="nani"></span>.”
-        </div>
-        <div class="question my-2">
-            3. When a child meets their mother, they say “<span class="drop-zone" data-answer="shikamoo"></span> mama.”
-        </div>
-        <div class="question my-2">
-            4. Before going to sleep at night, it's nice to say, "<span class="drop-zone" data-answer="usiku"></span> mwema."
-        </div>
-        <div class="question my-2">
-            5. To say sorry to someone, you say “<span class="drop-zone" data-answer="pole"></span> mama.”
-        </div>
-
-        <div id="popup-message" class="popup-message"></div>
-    </div>
-
-    <!-- Section B (True/False) -->
-    <div class="section-b w-11/12 md:w-8/12 mt-4 bg-white p-6 rounded shadow-lg relative">
-        <h2 class="text-xl font-bold my-4">B. Answer whether it is True or False:</h2>
-
-        <div class="question my-2">
-            6. "Habari ya asubuhi" means "Good night" in Kiswahili. <span class="drop-zone" data-answer="False"></span>
-        </div>
-        <div class="question my-2">
-            7. You would say "Hodi, hodi?” to mean “May I come in?” <span class="drop-zone" data-answer="True"></span>
-        </div>
-        <div class="question my-2">
-            8. "Lala unono" is a greeting you use in the morning. <span class="drop-zone" data-answer="False"></span>
-        </div>
-        <div class="question my-2">
-            9. "Habari ya jioni" translates to "Good evening" in English. <span class="drop-zone" data-answer="True"></span>
-        </div>
-        <div class="question my-2">
-            10. “Hatujambo” means “We are fine.” <span class="drop-zone" data-answer="True"></span>
+    <div class="quiz-container relative flex">
+        <!-- Section A (Fill in the Blanks) -->
+        <div id="quiz-container-a" class="section-a questions">
+            <!-- Questions with drop zones -->
+            <div class="question my-2">
+                1. In the morning, you would say <span class="drop-zone" data-answer="Habari"></span> ya asubuhi.
+            </div>
+            <div class="question my-2">
+                2. When asking someone their name, you say “Jina lako ni <span class="drop-zone" data-answer="nani"></span>.”
+            </div>
+            <div class="question my-2">
+                3. When a child meets their mother, they say “<span class="drop-zone" data-answer="shikamoo"></span> mama.”
+            </div>
+            <div class="question my-2">
+                4. Before going to sleep at night, it's nice to say, "<span class="drop-zone" data-answer="usiku"></span> mwema."
+            </div>
+            <div class="question my-2">
+                5. To say sorry to someone, you say “<span class="drop-zone" data-answer="pole"></span> mama.”
+            </div>
+            <div id="popup-message-a" class="popup-message"></div>
         </div>
 
-        <div id="popup-message-b" class="popup-message"></div>
-    </div>
+        <!-- Section B (True/False) -->
+        <div id="quiz-container-b" class="section-b questions">
+            <h2 class="text-xl font-bold my-4">B. Answer whether it is True or False:</h2>
 
-    <!-- Answer container for draggable items -->
-    <div id="answer-container" class="w-11/12 md:w-8/12 mt-4 bg-white p-4 rounded shadow-lg">
-        <p class="text-lg font-semibold">Drag the answers here:</p>
-        <div class="flex flex-wrap justify-center">
-            <div class="draggable" draggable="true" data-answer="Habari">Habari</div>
-            <div class="draggable" draggable="true" data-answer="nani">nani</div>
-            <div class="draggable" draggable="true" data-answer="shikamoo">shikamoo</div>
-            <div class="draggable" draggable="true" data-answer="usiku">usiku</div>
-            <div class="draggable" draggable="true" data-answer="pole">pole</div>
-            <div class="draggable" draggable="true" data-answer="True">True</div>
-            <div class="draggable" draggable="true" data-answer="False">False</div>
+            <div class="question my-2">
+                6. "Habari ya asubuhi" means "Good night" in Kiswahili. <span class="drop-zone" data-answer="False"></span>
+            </div>
+            <div class="question my-2">
+                7. You would say "Hodi, hodi?” to mean “May I come in?” <span class="drop-zone" data-answer="True"></span>
+            </div>
+            <div class="question my-2">
+                8. "Lala unono" is a greeting you use in the morning. <span class="drop-zone" data-answer="False"></span>
+            </div>
+            <div class="question my-2">
+                9. "Habari ya jioni" translates to "Good evening" in English. <span class="drop-zone" data-answer="True"></span>
+            </div>
+            <div class="question my-2">
+                10. “Hatujambo” means “We are fine.” <span class="drop-zone" data-answer="True"></span>
+            </div>
+            <div id="popup-message-b" class="popup-message"></div>
+        </div>
+
+        <!-- Answer container for draggable items -->
+        <div id="answer-container" class="answer-container w-11/12 md:w-4/12 mt-4 p-4 rounded shadow-lg flex flex-col justify-start">
+            <p class="text-lg font-semibold mb-2">Drag the answers here:</p>
+            <div class="flex flex-wrap justify-start" id="answer-items">
+                <!-- Answers will be populated here by JavaScript -->
+            </div>
         </div>
     </div>
 
@@ -144,19 +168,49 @@
     <canvas id="confetti"></canvas>
 
     <script>
-        const draggables = document.querySelectorAll('.draggable');
+        const draggables = [
+            { text: "Habari", answer: "Habari" },
+            { text: "nani", answer: "nani" },
+            { text: "shikamoo", answer: "shikamoo" },
+            { text: "usiku", answer: "usiku" },
+            { text: "pole", answer: "pole" },
+            { text: "True", answer: "True" },
+            { text: "False", answer: "False" }
+        ];
+
+        const answerContainer = document.getElementById('answer-items');
         const dropZones = document.querySelectorAll('.drop-zone');
-        const popupMessageA = document.getElementById('popup-message');
+        const popupMessageA = document.getElementById('popup-message-a');
         const popupMessageB = document.getElementById('popup-message-b');
         const confettiCanvas = document.getElementById('confetti');
         let confettiCtx = confettiCanvas.getContext('2d');
         let confettiActive = false;
 
-        // Set up drag events
-        draggables.forEach(draggable => {
-            draggable.addEventListener('dragstart', dragStart);
-        });
+        // Shuffle answers function
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
 
+        // Add draggable items to the answer container
+        function addDraggables() {
+            shuffle(draggables);
+            draggables.forEach(item => {
+                const draggableElement = document.createElement('div');
+                draggableElement.className = 'draggable';
+                draggableElement.draggable = true;
+                draggableElement.dataset.answer = item.answer;
+                draggableElement.textContent = item.text;
+
+                // Set drag event
+                draggableElement.addEventListener('dragstart', dragStart);
+                answerContainer.appendChild(draggableElement);
+            });
+        }
+
+        // Set up drag events
         dropZones.forEach(dropZone => {
             dropZone.addEventListener('dragover', dragOver);
             dropZone.addEventListener('drop', drop);
@@ -180,48 +234,44 @@
 
             if (answer === correctAnswer) {
                 e.target.textContent = answer;
-                showPopup(popupMessage, 'Correct!', 'bg-green-500');
-                triggerConfetti();
+                showPopup(popupMessage, 'Correct!');
+                e.target.style.backgroundColor = '#d1fae5'; // Change background color for correct answer
             } else {
-                showPopup(popupMessage, 'Try Again!', 'bg-red-500');
+                showPopup(popupMessage, 'Try Again!');
             }
         }
 
-        // Popup message function
-        function showPopup(popupElement, message, bgColor) {
-            popupElement.textContent = message;
-            popupElement.style.backgroundColor = bgColor;
-            popupElement.style.display = 'block';
+        function showPopup(popupMessage, message) {
+            popupMessage.textContent = message;
+            popupMessage.style.display = 'block';
             setTimeout(() => {
-                popupElement.style.display = 'none';
-            }, 2000);
+                popupMessage.style.display = 'none';
+                triggerConfetti(); // Trigger confetti here as well
+            }, 2000); // Show for 2 seconds
         }
 
-        // Confetti logic
+        // Confetti function
         function triggerConfetti() {
             if (confettiActive) return;
             confettiActive = true;
 
-            let confettiDuration = 2000;
-            let confettiCount = 150;
-            let end = Date.now() + confettiDuration;
+            const confettiCount = 100;
+            const confettiDuration = 2000; // Confetti will last for 2 seconds
+            const end = Date.now() + confettiDuration;
 
-            function confettiParticle() {
-                let colors = ['#f0e68c', '#add8e6', '#ff69b4', '#87ceeb', '#ffd700'];
-                return {
-                    color: colors[Math.floor(Math.random() * colors.length)],
-                    x: Math.random() * confettiCanvas.width,
-                    y: Math.random() * confettiCanvas.height,
-                    radius: Math.random() * 4,
-                    dx: (Math.random() - 0.5) * 6,
-                    dy: Math.random() * 4 + 2
-                };
-            }
+            confettiCanvas.width = window.innerWidth;
+            confettiCanvas.height = window.innerHeight;
 
-            let confetti = [];
-            for (let i = 0; i < confettiCount; i++) {
-                confetti.push(confettiParticle());
-            }
+            const confettiParticle = () => ({
+                color: ['#ff0', '#0f0', '#f00', '#00f', '#ff00f', '#00ffff'][Math.floor(Math.random() * 6)],
+                x: Math.random() * confettiCanvas.width,
+                y: Math.random() * confettiCanvas.height,
+                radius: Math.random() * 5 + 2,
+                dx: Math.random() * 5 - 2.5,
+                dy: Math.random() * 5 - 2.5
+            });
+
+            let confetti = Array.from({ length: confettiCount }, confettiParticle);
 
             function drawConfetti() {
                 confettiCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
@@ -245,11 +295,15 @@
                     requestAnimationFrame(drawConfetti);
                 } else {
                     confettiActive = false;
+                    confettiCanvas.style.display = 'none'; // Hide confetti after animation ends
                 }
             }
 
             requestAnimationFrame(drawConfetti);
         }
+
+        // Initialize draggable items
+        addDraggables();
     </script>
 </body>
 </html>
