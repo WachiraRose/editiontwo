@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fill in the Blanks Quiz</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+
+        .drop-zone {
+            border: 2px dashed #ccc;
+            padding: 5px 10px;
+            min-width: 100px;
+            background-color: #f9f9f9;
+            display: inline-block;
+            margin: 0 5px; /* Added margin for spacing */
+        }
+
+        .draggable {
+            margin: 10px;
+            padding: 5px 10px;
+            background-color: #f2f2f2;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            display: inline-block;
+        }
+
+        .draggable:hover {
+            background-color: #ddd;
+        }
+
+        .popup-message {
+            position: absolute;
+            background-color: #f87171;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            display: none;
+            z-index: 10; /* Ensure it appears above other elements */
+        }
+
+        #confetti {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            display: none; /* Initially hidden */
+        }
+
+        /* Section colors */
+        .section-a {
+            background-color: #d1fae5; /* Light green */
+            padding: 20px;
+            margin: 10px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-b {
+            background-color: #e0fef1; /* Light blue */
+            padding: 20px;
+            margin: 10px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Answer container color */
+        .answer-container {
+            background-color: #ffebee; /* Light red */
+            padding: 10px;
+            margin-bottom: 10px; /* Space between answer containers */
+        }
+
+        /* Container styles */
+        .quiz-container {
+            display: flex; /* Make the container flex */
+            justify-content: space-between; /* Space out sections */
+            align-items: flex-start; /* Align items at the start */
+            width: 100%; /* Take full width */
+        }
+
+        .questions {
+            flex: 1; /* Allow questions to take available space */
+            margin-right: 20px; /* Space between questions and answers */
+        }
+
+        .answers {
+            display: flex;
+            flex-direction: column; /* Stack answers vertically */
+            align-items: flex-start; /* Align items to the left */
+        }
+
+        @media (max-width: 640px) {
+            .question {
+                font-size: 14px;
+            }
+
+            .draggable, .drop-zone {
+                font-size: 14px;
+                padding: 5px;
+                margin: 5px;
+            }
+        }
+
+        .refresh-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #4CAF50; /* Green background */
+            color: white; /* White text */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: none; /* Initially hidden */
+        }
+
+        .refresh-btn:hover {
+            background-color: #45a049; /* Darker green on hover */
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <h1 class="text-2xl font-bold my-4">FILL IN THE BLANKS</h1>
+
+    <div class="quiz-container">
+        <!-- Section A (Fill in the Blanks) -->
+        <div class="section-a">
+            <h2 class="text-2xl font-bold my-4">A. Greeting in Swahili</h2>
+            <div class="questions">
+                <div class="question my-2">
+                    1. In the morning, you would say <span class="drop-zone" data-answer="Habari"></span> ya asubuhi.
+                </div>
+                <div class="question my-2">
+                    2. When asking someone their name, you say “Jina lako ni <span class="drop-zone" data-answer="nani"></span>.”
+                </div>
+                <div class="question my-2">
+                    3. When a child meets their mother, they say “<span class="drop-zone" data-answer="shikamoo"></span> mama.”
+                </div>
+                <div class="question my-2">
+                    4. Before going to sleep at night, it's nice to say, "<span class="drop-zone" data-answer="usiku"></span> mwema."
+                </div>
+                <div class="question my-2">
+                    5. To say sorry to someone, you say “<span class="drop-zone" data-answer="pole"></span> mama.”
+                </div>
+            </div>
+            <!-- Answer Container for Section A -->
+            <div id="answer-container-a" class="answer-container"></div>
+        </div>
+
+        <!-- Section B (True/False) -->
+        <div class="section-b">
+            <h2 class="text-xl font-bold my-4">B. Answer whether it is True or False:</h2>
+            <div class="questions">
+                <div class="question my-2">
+                    6. "Habari ya asubuhi" means "Good night" in Kiswahili. <span class="drop-zone" data-answer="False"></span>
+                </div>
+                <div class="question my-2">
+                    7. You would say "Hodi, hodi?” to mean “May I come in?” <span class="drop-zone" data-answer="True"></span>
+                </div>
+                <div class="question my-2">
+                    8. "Lala unono" is a greeting you use in the morning. <span class="drop-zone" data-answer="False"></span>
+                </div>
+                <div class="question my-2">
+                    9. "Habari ya jioni" translates to "Good evening" in English. <span class="drop-zone" data-answer="True"></span>
+                </div>
+                <div class="question my-2">
+                    10. “Hatujambo” means “We are fine.” <span class="drop-zone" data-answer="True"></span>
+                </div>
+            </div>
+            <!-- Answer Container for Section B -->
+            <div id="answer-container-b" class="answer-container"></div>
+        </div>
+    </div>
+
+    <!-- Confetti canvas -->
+    <canvas id="confetti"></canvas>
+
+    <!-- Refresh Button -->
+    <button id="refresh-button" class="refresh-btn" onclick="refreshQuiz()">Refresh Quiz</button>
+
+    <script>
+        const draggables = [
+            { text: "Habari", answer: "Habari" },
+            { text: "nani", answer: "nani" },
+            { text: "shikamoo", answer: "shikamoo" },
+            { text: "usiku", answer: "usiku" },
+            { text: "pole", answer: "pole" },
+            { text: "True", answer: "True" },
+            { text: "False", answer: "False" }
+        ];
+
+        let answeredCountA = 0; // Track answered questions for section A
+        let answeredCountB = 0; // Track answered questions for section B
+
+        // Function to populate draggable items
+        function populateAnswers() {
+            const answerContainerA = document.getElementById('answer-container-a');
+            const answerContainerB = document.getElementById('answer-container-b');
+
+            draggables.forEach(item => {
+                const div = document.createElement('div');
+                div.textContent = item.text;
+                div.classList.add('draggable');
+                div.draggable = true;
+                div.addEventListener('dragstart', dragStart);
+                // Add the item to the appropriate container
+                if (item.answer === "Habari" || item.answer === "nani" || item.answer === "shikamoo" || item.answer === "usiku" || item.answer === "pole") {
+                    answerContainerA.appendChild(div);
+                } else {
+                    answerContainerB.appendChild(div);
+                }
+            });
+        }
+
+        // Function for drag start
+        function dragStart(e) {
+            e.dataTransfer.setData('text/plain', e.target.textContent);
+        }
+
+        // Function to allow drop
+        function allowDrop(e) {
+            e.preventDefault();
+        }
+
+        // Function for dropping an item
+        function drop(e) {
+            e.preventDefault();
+            const data = e.dataTransfer.getData('text/plain');
+            const dropZone = e.target;
+
+            // Check if the answer is correct
+            if (dropZone.dataset.answer === data) {
+                removeDraggable(data);
+                showPopupMessage(dropZone, 'Correct!');
+                showConfetti();
+                if (dropZone.closest('.section-a')) {
+                    answeredCountA++; // Increment answered count for section A
+                } else {
+                    answeredCountB++; // Increment answered count for section B
+                }
+                checkCompletion(); // Check if all questions are answered
+            } else {
+                showPopupMessage(dropZone, 'Try Again!');
+            }
+        }
+
+        // Function to remove draggable item
+        function removeDraggable(answer) {
+            const draggables = document.querySelectorAll('.draggable');
+            draggables.forEach(draggable => {
+                if (draggable.textContent === answer) {
+                    draggable.remove(); // Remove from drag container
+                }
+            });
+        }
+
+        // Function to show a popup message
+        function showPopupMessage(dropZone, message) {
+            const popupMessage = document.createElement('div');
+            popupMessage.className = 'popup-message';
+            popupMessage.textContent = message;
+            document.body.appendChild(popupMessage);
+            const rect = dropZone.getBoundingClientRect();
+            popupMessage.style.top = `${rect.top + window.scrollY - 30}px`;
+            popupMessage.style.left = `${rect.left + window.scrollX}px`;
+            popupMessage.style.display = 'block';
+            setTimeout(() => {
+                popupMessage.remove();
+            }, 2000);
+        }
+
+        // Function to show confetti
+        function showConfetti() {
+            const confettiCanvas = document.getElementById('confetti');
+            const ctx = confettiCanvas.getContext('2d');
+            confettiCanvas.width = window.innerWidth;
+            confettiCanvas.height = window.innerHeight;
+            confettiCanvas.style.display = 'block';
+
+            const particles = [];
+            for (let i = 0; i < 100; i++) {
+                particles.push({
+                    x: Math.random() * confettiCanvas.width,
+                    y: Math.random() * confettiCanvas.height,
+                    radius: Math.random() * 5 + 1,
+                    color: `hsl(${Math.random() * 360}, 100%, 50%)`,
+                    speed: Math.random() * 2 + 1,
+                    direction: Math.random() * 2 * Math.PI
+                });
+            }
+
+            function animateConfetti() {
+                ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+                particles.forEach(p => {
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = p.color;
+                    ctx.fill();
+                    p.x += Math.cos(p.direction) * p.speed;
+                    p.y += Math.sin(p.direction) * p.speed;
+
+                    if (p.x > confettiCanvas.width || p.x < 0 || p.y > confettiCanvas.height) {
+                        p.x = Math.random() * confettiCanvas.width;
+                        p.y = 0;
+                    }
+                });
+
+                requestAnimationFrame(animateConfetti);
+            }
+
+            animateConfetti();
+            setTimeout(() => {
+                confettiCanvas.style.display = 'none'; // Hide canvas after a while
+            }, 3000); // Show for 3 seconds
+        }
+
+        // Function to check if all questions are answered
+        function checkCompletion() {
+            if (answeredCountA === 5 && answeredCountB === 5) {
+                document.getElementById('refresh-button').style.display = 'block'; // Show refresh button
+            }
+        }
+
+        // Refresh quiz function
+        function refreshQuiz() {
+            const answerContainers = document.querySelectorAll('.answer-container');
+            answeredCountA = 0; // Reset answered count for section A
+            answeredCountB = 0; // Reset answered count for section B
+
+            answerContainers.forEach(container => {
+                container.innerHTML = ''; // Clear previous answers
+            });
+
+            populateAnswers(); // Repopulate answers
+            document.getElementById('refresh-button').style.display = 'none'; // Hide refresh button
+        }
+
+        // Event listeners for drop zones
+        const dropZones = document.querySelectorAll('.drop-zone');
+        dropZones.forEach(dropZone => {
+            dropZone.addEventListener('dragover', allowDrop);
+            dropZone.addEventListener('drop', drop);
+        });
+
+        // Initial population of answers
+        populateAnswers();
+    </script>
+</body>
+</html>

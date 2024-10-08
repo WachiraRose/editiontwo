@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Word Search Puzzle</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+        }
+        .word-search-container {
+            display: grid;
+            grid-template-columns: repeat(10, 40px);
+            grid-gap: 1px;
+            border: 2px solid #333;
+            padding: 10px;
+            background-color: #fff;
+        }
+        .word-search-cell {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+            border: 1px solid #ddd;
+            user-select: none;
+            cursor: pointer;
+        }
+        .word-search-cell.selected {
+            background-color: #cce7ff;
+        }
+        .word-search-cell.found {
+            background-color: #a8d5e2;
+        }
+        .word-list {
+            margin-top: 20px;
+            text-align: center;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        ul li {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="word-search-container" id="wordSearchContainer">
+        <!-- JavaScript will populate the grid -->
+    </div>
+
+    <div class="word-list">
+        <h3>Words to Find:</h3>
+        <ul id="wordList">
+            <!-- Word list goes here -->
+        </ul>
+    </div>
+
+    <script>
+        const gridSize = 10;
+        const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        const words = ['APPLE', 'ORANGE', 'STRAWBERRY', 'LEMON'];
+        let grid = Array(gridSize).fill(null).map(() => Array(gridSize).fill(''));
+
+        // Function to generate a random letter
+        function getRandomLetter() {
+            return alphabet[Math.floor(Math.random() * alphabet.length)];
+        }
+
+        // Function to place a word horizontally or vertically in the grid
+        function placeWord(word) {
+            let placed = false;
+            while (!placed) {
+                const direction = Math.random() > 0.5 ? 'horizontal' : 'vertical';
+                let row = Math.floor(Math.random() * gridSize);
+                let col = Math.floor(Math.random() * gridSize);
+
+                if (direction === 'horizontal' && col + word.length <= gridSize) {
+                    let fits = true;
+                    for (let i = 0; i < word.length; i++) {
+                        if (grid[row][col + i] !== '' && grid[row][col + i] !== word[i]) {
+                            fits = false;
+                            break;
+                        }
+                    }
+                    if (fits) {
+                        for (let i = 0; i < word.length; i++) {
+                            grid[row][col + i] = word[i];
+                        }
+                        placed = true;
+                    }
+                } else if (direction === 'vertical' && row + word.length <= gridSize) {
+                    let fits = true;
+                    for (let i = 0; i < word.length; i++) {
+                        if (grid[row + i][col] !== '' && grid[row + i][col] !== word[i]) {
+                            fits = false;
+                            break;
+                        }
+                    }
+                    if (fits) {
+                        for (let i = 0; i < word.length; i++) {
+                            grid[row + i][col] = word[i];
+                        }
+                        placed = true;
+                    }
+                }
+            }
+        }
+
+        // Populate grid with words
+        words.forEach(word => placeWord(word));
+
+        // Fill empty spaces with random letters
+        for (let row = 0; row < gridSize; row++) {
+            for (let col = 0; col < gridSize; col++) {
+                if (grid[row][col] === '') {
+                    grid[row][col] = getRandomLetter();
+                }
+            }
+        }
+
+        // Display the grid
+        const wordSearchContainer = document.getElementById('wordSearchContainer');
+        grid.forEach((row, rowIndex) => {
+            row.forEach((letter, colIndex) => {
+                const cell = document.createElement('div');
+                cell.textContent = letter;
+                cell.className = 'word-search-cell';
+                cell.dataset.row = rowIndex;
+                cell.dataset.col = colIndex;
+                wordSearchContainer.appendChild(cell);
+            });
+        });
+
+        // Populate word list
+        const wordList = document.getElementById('wordList');
+        words.forEach(word => {
+            const li = document.createElement('li');
+            li.textContent = word;
+            wordList.appendChild(li);
+        });
+
+        // Handle cell selection logic
+        let selectedCells = [];
+        let isSelecting = false;
+
+        function selectCell(cell) {
+            if (!cell.classList.contains('selected')) {
+                cell.classList.add('selected');
+                selectedCells.push(cell);
+            }
+        }
+
+        function checkSelectedWord() {
+            const selectedWord = selectedCells.map(cell => cell.textContent).join('');
+            if (words.includes(selectedWord)) {
+                selectedCells.forEach(cell => cell.classList.add('found'));
+                const li = [...wordList.getElementsByTagName('li')].find(li => li.textContent === selectedWord);
+                if (li) li.style.textDecoration = 'line-through';
+            }
+            selectedCells.forEach(cell => cell.classList.remove('selected'));
+            selectedCells = [];
+        }
+
+        document.querySelectorAll('.word-search-cell').forEach(cell => {
+            cell.addEventListener('mousedown', () => {
+                isSelecting = true;
+                selectCell(cell);
+            });
+            cell.addEventListener('mouseenter', () => {
+                if (isSelecting) {
+                    selectCell(cell);
+                }
+            });
+        });
+
+        document.addEventListener('mouseup', () => {
+            isSelecting = false;
+            checkSelectedWord();
+        });
+    </script>
+
+</body>
+</html>
