@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Word Search Puzzle</title>
+    <title>Responsive Word Search Puzzle</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -15,72 +15,145 @@
             margin: 0;
             background-color: #f4f4f4;
         }
+
+        h1 {
+            font-size: 20px; /* Adjusted font size */
+            margin-bottom: 5px; /* Adjusted margin */
+            color: #333;
+            text-align: center;
+        }
+
+        .puzzle-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 1px; /* Increased gap between puzzle and word list */
+            max-width: 90vw;
+            padding: 10px;
+            flex-direction: column; /* Changed to column to stack items */
+            align-items: center; /* Center aligned */
+        }
+
         .word-search-container {
             display: grid;
-            grid-template-columns: repeat(10, 40px);
+            grid-template-columns: repeat(10, 1fr);
             grid-gap: 1px;
-            border: 2px solid #333;
-            padding: 10px;
+            border: 1px solid #333;
+            padding: 2px;
             background-color: #fff;
+            width: 400px; /* Adjusted width */
+            height: 300px; /* Adjusted height */
+            min-width: 350px; /* Ensured minimum width */
+            min-height: 350px; /* Ensured minimum height */
+            max-width: 90vw; /* Adjusted maximum width for responsiveness */
+            max-height: 90vw; /* Adjusted maximum height for responsiveness */
         }
+
         .word-search-cell {
-            width: 40px;
-            height: 40px;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 18px;
+            font-size: 1.5vw; /* Adjusted font size */
             border: 1px solid #ddd;
             user-select: none;
             cursor: pointer;
+            height: 30px; /* Adjusted height */
+            width: 30px; /* Adjusted width */
         }
+
         .word-search-cell.selected {
             background-color: #cce7ff;
         }
+
         .word-search-cell.found {
             background-color: #a8d5e2;
         }
+
         .word-list {
-            margin-top: 20px;
-            text-align: center;
+            text-align: center; /* Center align the word list */
+            margin-top: 35px; /* Added margin on top */
         }
+
         ul {
             list-style-type: none;
             padding: 0;
+            display: flex; /* Changed to flex for horizontal layout */
+            justify-content: center; /* Centered words */
+            flex-wrap: wrap; /* Allow words to wrap */
         }
+
         ul li {
-            margin-bottom: 10px;
+            margin-right: 15px; /* Added spacing between words */
+            font-size: 16px; /* Font size for words */
+        }
+
+        #restartBtn {
+            display: none;
+            margin-top: 15px;
+            padding: 8px 16px;
+            font-size: 14px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+
+        #congratulationsMessage {
+            display: none;
+            font-size: 18px; /* Adjusted font size */
+            color: #28a745;
+            margin-top: 15px;
+        }
+
+        #confettiCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            pointer-events: none;
         }
     </style>
 </head>
 <body>
 
-    <div class="word-search-container" id="wordSearchContainer">
-        <!-- JavaScript will populate the grid -->
+    <canvas id="confettiCanvas"></canvas>
+
+    <h1>Word Search Puzzle</h1>
+
+    <div class="puzzle-wrapper">
+        <div class="word-search-container" id="wordSearchContainer">
+            <!-- JavaScript will populate the grid -->
+        </div>
+
+        <div class="word-list">
+            <h3>Find the Words:</h3>
+            <ul id="wordList">
+                <!-- Word list goes here -->
+            </ul>
+        </div>
     </div>
 
-    <div class="word-list">
-        <h3>Words to Find:</h3>
-        <ul id="wordList">
-            <!-- Word list goes here -->
-        </ul>
-    </div>
+    <div id="congratulationsMessage">Congratulations! You found all the words!</div>
 
+    <button id="restartBtn" onclick="restartPuzzle()">Restart Puzzle</button>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js" async></script>
     <script>
         const gridSize = 10;
         const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        const words = ['APPLE', 'ORANGE', 'STRAWBERRY', 'LEMON'];
+        const words = ['KARAFUU', 'HARADALI', 'SHAMIRI', 'PAKANGA', 'KITUNGUU', 'MDALASINI', 'DHANIA', 'PILIPILI', 'NYANYA', 'CHUMVI']; // 10 words
+        const colors = ['#FF5733', '#33FF57', '#5733FF', '#FF33A1', '#FF33F6', '#FFD733', '#33FFDC', '#FF6B33', '#33D3FF', '#FFC733'];
         let grid = Array(gridSize).fill(null).map(() => Array(gridSize).fill(''));
+        let wordsFound = 0;
 
-        // Function to generate a random letter
         function getRandomLetter() {
             return alphabet[Math.floor(Math.random() * alphabet.length)];
         }
 
-        // Function to place a word horizontally or vertically in the grid
         function placeWord(word) {
             let placed = false;
-            while (!placed) {
+            let attempts = 0;
+            while (!placed && attempts < 100) {
                 const direction = Math.random() > 0.5 ? 'horizontal' : 'vertical';
                 let row = Math.floor(Math.random() * gridSize);
                 let col = Math.floor(Math.random() * gridSize);
@@ -114,13 +187,15 @@
                         placed = true;
                     }
                 }
+                attempts++; // Increment attempts counter
+            }
+            if (attempts >= 100) {
+                console.error(`Could not place word: ${word}`);
             }
         }
 
-        // Populate grid with words
         words.forEach(word => placeWord(word));
 
-        // Fill empty spaces with random letters
         for (let row = 0; row < gridSize; row++) {
             for (let col = 0; col < gridSize; col++) {
                 if (grid[row][col] === '') {
@@ -129,7 +204,6 @@
             }
         }
 
-        // Display the grid
         const wordSearchContainer = document.getElementById('wordSearchContainer');
         grid.forEach((row, rowIndex) => {
             row.forEach((letter, colIndex) => {
@@ -142,15 +216,14 @@
             });
         });
 
-        // Populate word list
         const wordList = document.getElementById('wordList');
-        words.forEach(word => {
+        words.forEach((word, index) => {
             const li = document.createElement('li');
             li.textContent = word;
+            li.dataset.color = colors[index];
             wordList.appendChild(li);
         });
 
-        // Handle cell selection logic
         let selectedCells = [];
         let isSelecting = false;
 
@@ -164,31 +237,82 @@
         function checkSelectedWord() {
             const selectedWord = selectedCells.map(cell => cell.textContent).join('');
             if (words.includes(selectedWord)) {
-                selectedCells.forEach(cell => cell.classList.add('found'));
+                const wordIndex = words.indexOf(selectedWord);
+                const wordColor = colors[wordIndex];
+                selectedCells.forEach(cell => {
+                    cell.classList.add('found');
+                    cell.style.backgroundColor = wordColor;
+                });
                 const li = [...wordList.getElementsByTagName('li')].find(li => li.textContent === selectedWord);
-                if (li) li.style.textDecoration = 'line-through';
+                if (li) {
+                    li.style.textDecoration = 'line-through';
+                }
+                wordsFound++;
+                if (wordsFound === words.length) {
+                    showCongratulations();
+                }
             }
             selectedCells.forEach(cell => cell.classList.remove('selected'));
             selectedCells = [];
         }
 
-        document.querySelectorAll('.word-search-cell').forEach(cell => {
-            cell.addEventListener('mousedown', () => {
-                isSelecting = true;
-                selectCell(cell);
+        function showCongratulations() {
+            document.getElementById('congratulationsMessage').style.display = 'block';
+            document.getElementById('restartBtn').style.display = 'block';
+            createConfetti();
+        }
+
+        function createConfetti() {
+            const canvas = document.getElementById('confettiCanvas');
+            const context = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const randomColor = () => colors[Math.floor(Math.random() * colors.length)];
+
+            const randomConfetti = () => ({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                radius: Math.random() * 5 + 2,
+                color: randomColor(),
+                alpha: Math.random() * 0.5 + 0.5
             });
-            cell.addEventListener('mouseenter', () => {
-                if (isSelecting) {
-                    selectCell(cell);
+
+            const confetti = Array.from({ length: 100 }).map(randomConfetti);
+
+            function animateConfetti() {
+                context.clearRect(0, 0, canvas.width, canvas.height);
+                confetti.forEach(p => {
+                    context.beginPath();
+                    context.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                    context.fillStyle = p.color;
+                    context.globalAlpha = p.alpha;
+                    context.fill();
+                });
+                requestAnimationFrame(animateConfetti);
+            }
+
+            animateConfetti();
+        }
+
+        wordSearchContainer.addEventListener('click', (e) => {
+            if (e.target.classList.contains('word-search-cell')) {
+                if (!isSelecting) {
+                    isSelecting = true;
                 }
-            });
+                selectCell(e.target);
+                checkSelectedWord();
+            }
         });
 
-        document.addEventListener('mouseup', () => {
+        wordSearchContainer.addEventListener('mouseup', () => {
             isSelecting = false;
-            checkSelectedWord();
         });
-    </script>
 
+        function restartPuzzle() {
+            // Reload the page to restart
+            location.reload();
+        }
+    </script>
 </body>
 </html>
