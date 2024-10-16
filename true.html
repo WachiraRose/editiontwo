@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fill in the Blanks Quiz</title>
+    <title>JAZA mAPENGO</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
-            background: #e70606;
             font-family: 'Arial', sans-serif;
             display: flex;
             flex-direction: column;
@@ -19,18 +18,18 @@
         }
 
         .drop-zone {
-            border: 2px dashed #666666;
+            border: 2px dashed #575656;
             padding: 5px 10px;
             min-width: 100px;
-            background-color: #d8d5d5;
+            background-color: #f9f9f9;
             display: inline-block;
-            margin: 0 5px;
+            margin: 0 5px; /* Added margin for spacing */
         }
 
         .draggable {
             margin: 10px;
             padding: 5px 10px;
-            background-color: #80d5e4;
+            background-color: #88cbf1;
             border: 1px solid #ccc;
             cursor: pointer;
             display: inline-block;
@@ -47,7 +46,7 @@
             padding: 5px 10px;
             border-radius: 5px;
             display: none;
-            z-index: 10;
+            z-index: 10; /* Ensure it appears above other elements */
         }
 
         #confetti {
@@ -57,45 +56,47 @@
             width: 100%;
             height: 100%;
             pointer-events: none;
-            display: none;
+            display: none; /* Initially hidden */
         }
 
         /* Section colors */
-        .section-a {
-            background-color: #0aebf3;
+       
+
+        .section-b {
+            background-color: #0fe762; /* Light blue */
         }
 
         /* Answer container color */
         .answer-container {
-            background-color: #068488;
+            background-color: #91e68e; /* Light red */
         }
 
         /* Container styles */
         .quiz-container {
-            background-color: hsl(12, 3%, 68%);
-            padding: 20px;
+            background-color: hsl(240, 2%, 88%);
+            padding: 40px;
             border-radius: 8px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             margin-bottom: 20px;
-            display: flex;
-            flex-wrap: wrap; /* Ensure flexibility for small screens */
-            justify-content: space-between;
+            display: flex; /* Make the container flex */
+            align-items: flex-start; /* Align items at the start */
         }
 
         .questions {
-            flex: 1; /* Take available space */
-            margin-right: 20px;
+            flex: 1; /* Allow questions to take available space */
+            margin-right: 20px; /* Space between questions and answers */
+            
         }
 
         .answers {
-            flex: 0 0 150px;
+            flex: 0 0 150px; /* Smaller fixed width for answers */
             display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
+            flex-direction: column; /* Stack answers vertically */
+            justify-content: flex-start; /* Align items at the start */
         }
 
-        /* Media query for small screens */
-        @media (max-width: 640px) {
+       /* Media query for small screens */
+       @media (max-width: 640px) {
             .quiz-container {
                 flex-direction: column;
                 align-items: center;
@@ -125,72 +126,79 @@
         .refresh-btn {
             margin-top: 20px;
             padding: 10px 20px;
-            background-color: #4CAF50;
-            color: white;
+            background-color: #4CAF50; /* Green background */
+            color: white; /* White text */
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            display: none;
+            display: none; /* Initially hidden */
         }
 
         .refresh-btn:hover {
-            background-color: #e4230a;
+            background-color: #f0211a; /* Darker green on hover */
         }
 
         /* Right-aligned Next button */
-        .next-container {
+        .previous-container {
             width: 100%;
             display: flex;
             justify-content: flex-end; /* Aligns button to the right */
         }
 
-        .next-btn {
+        .previous-btn {
             margin-top: 20px;
             padding: 10px 20px;
-            background-color: #0a20e4;
+            background-color: #2b0bdf;
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
         }
 
-        .next-btn:hover {
-            background-color: #6088df;
+        .previous-btn:hover {
+            background-color: #4597e4;
         }
     </style>
 </head>
 <body class="bg-gray-100">
     <h1 class="text-2xl font-bold my-4">JAZA MAPENGO</h1>
 
-    <div class="quiz-container relative">
+    <div class="quiz-container relative flex">
         <!-- Section A (Fill in the Blanks) -->
-        <div id="quiz-container-a" class="section-a questions">
-            <h2 class="text-2xl font-bold my-4"> A. Salamu/Greetings</h2>
+        
+
+        <!-- Section B (True/False) -->
+        <div id="quiz-container-" class="section-b questions">
+            <h2 class="text-xl font-bold my-4"> B. Jibu Ukweli au Uwongo:</h2>
+
             <div class="question my-2">
-                1. In the morning, you would say <span class="drop-zone" data-answer="Habari"></span> ya asubuhi.
+                1. "Habari ya asubuhi" means "Good night" in Kiswahili. <span class="drop-zone" data-answer="False"></span>
             </div>
             <div class="question my-2">
-                2. When asking someone their name, you say “Jina lako ni <span class="drop-zone" data-answer="nani"></span>.”
+                2. You would say "Hodi, hodi?” to mean “May I come in?” <span class="drop-zone" data-answer="True"></span>
             </div>
             <div class="question my-2">
-                3. When a child meets their mother, they say “<span class="drop-zone" data-answer="shikamoo"></span> mama.”
+                3. "Lala unono" is a greeting you use in the morning. <span class="drop-zone" data-answer="False"></span>
             </div>
             <div class="question my-2">
-                4. Before going to sleep at night, it's nice to say, "<span class="drop-zone" data-answer="usiku"></span> mwema."
+                4. "Habari ya jioni" translates to "Good evening" in English. <span class="drop-zone" data-answer="True"></span>
             </div>
             <div class="question my-2">
-                5. To say sorry to someone, you say “<span class="drop-zone" data-answer="pole"></span> mama.”
+                5. “Hatujambo” means “We are fine.” <span class="drop-zone" data-answer="True"></span>
             </div>
+            <div id="popup-message-b" class="popup-message"></div>
         </div>
 
         <!-- Answer container for draggable items -->
         <div id="answer-container" class="answer-container w-11/12 md:w-4/12 mt-4 p-4 rounded shadow-lg flex flex-col justify-start">
-            <p class="text-lg font-semibold mb-2">Drag and Drop the answers:</p>
+            <p class="text-lg font-semibold mb-2">Drag and Drop:</p>
             <div class="flex flex-wrap justify-start" id="answer-items">
                 <!-- Answers will be populated here by JavaScript -->
             </div>
         </div>
     </div>
+
+    
 
     <!-- Confetti canvas -->
     <canvas id="confetti"></canvas>
@@ -199,22 +207,24 @@
     <button id="refresh-button" class="refresh-btn" onclick="refreshQuiz()">Refresh Quiz</button>
 
      <!-- Next Button in a right-aligned container -->
-     <div class="next-container">
-        <button id="next-button" class="next-btn" onclick="goToNextPage()">Next</button>
+     <div class="previous-container">
+        <button id="previous-button" class="previous-btn" onclick="goToNextPage()">Back</button>
     </div>
 
     <script>
         const draggables = [
-            { text: "Habari", answer: "Habari" },
-            { text: "nani", answer: "nani" },
-            { text: "shikamoo", answer: "shikamoo" },
-            { text: "usiku", answer: "usiku" },
-            { text: "pole", answer: "pole" }
+            
+            { text: "True", answer: "True" },
+            { text: "False", answer: "False" },
+            { text: "False", answer: "False" },
+            { text: "True", answer: "True" },
+            { text: "True", answer: "True" }
         ];
 
         const answerContainer = document.getElementById('answer-items');
         const dropZones = document.querySelectorAll('.drop-zone');
         const popupMessageA = document.getElementById('popup-message-a');
+        const popupMessageB = document.getElementById('popup-message-b');
         const confettiCanvas = document.getElementById('confetti');
         const refreshButton = document.getElementById('refresh-button');
         let confettiCtx = confettiCanvas.getContext('2d');
@@ -260,33 +270,53 @@
                 // Check if answer is correct
                 if (answer === correctAnswer) {
                     dropZone.textContent = answer;
-                    dropZone.style.color = "green";
+                    dropZone.style.color = "green"; // Change text color to green on correct answer
+                    showPopup(dropZone.closest('.section-a') ? popupMessageA : popupMessageB, 'Correct!', dropZone);
                     playConfetti();
-                    dropZone.classList.add('filled');
+                    dropZone.classList.add('filled'); // Mark the drop zone as filled
 
                     // Remove the draggable item from the answer container
                     const draggable = document.querySelector(`.draggable[data-answer='${answer}']`);
                     if (draggable) {
-                        draggable.remove();
+                        draggable.remove(); // Remove the item from the DOM
                     }
 
                     // Check if all answers are filled
                     if (Array.from(dropZones).every(zone => zone.classList.contains('filled'))) {
-                        refreshButton.style.display = 'block';
+                        refreshButton.style.display = 'block'; // Show refresh button
                     }
                 } else {
                     // Return to answer container if wrong
                     const draggable = document.querySelector(`.draggable[data-answer='${answer}']`);
                     if (draggable) {
-                        draggable.style.color = "red";
-                        answerContainer.appendChild(draggable);
+                        draggable.style.color = "red"; // Change color to red on wrong answer
+                        showPopup(dropZone.closest('.section-a') ? popupMessageA : popupMessageB, 'Try again!', dropZone);
+                        // Return the draggable to the container
+                        answerContainer.appendChild(draggable); 
                     }
                 }
+
+                updateDraggableState(answer); // Update the draggable state
             });
         });
 
-         // Confetti function
-         function playConfetti() {
+        function showPopup(popup, message, target) {
+            popup.textContent = message;
+            popup.style.display = 'block';
+            popup.style.top = target.getBoundingClientRect().top + window.scrollY + 'px';
+            popup.style.left = target.getBoundingClientRect().left + 'px';
+
+            setTimeout(() => {
+                popup.style.display = 'none';
+            }, 1000);
+        }
+
+        function updateDraggableState(answer) {
+            // No additional actions needed for now
+        }
+
+        // Confetti function
+        function playConfetti() {
             if (!confettiActive) {
                 confettiActive = true;
                 confettiCanvas.width = window.innerWidth;
@@ -339,25 +369,33 @@
 
         // Function to go to the next page
         function goToNextPage() {
-            window.location.href = 'true.html'; // Replace with actual URL of the next page
+            window.location.href = 'index.html'; // Replace with actual URL of the next page
         }
 
-        
+        // Refresh quiz function
         function refreshQuiz() {
             // Reset drop zones
             dropZones.forEach(zone => {
-                zone.textContent = '';
-                zone.style.color = '';
-                zone.classList.remove('filled');
+                zone.textContent = ''; // Clear text
+                zone.style.color = ''; // Reset color
+                zone.classList.remove('filled'); // Remove filled class
             });
-            answerContainer.innerHTML = '';
-            refreshButton.style.display = 'none';
-            addDraggables();
+
+            // Reset answer container
+            const draggableItems = document.querySelectorAll('.draggable');
+            draggableItems.forEach(item => {
+                item.style.color = ''; // Reset color
+            });
+
+            // Re-add draggables to the answer container
+            answerContainer.innerHTML = ''; // Clear existing draggables
+            addDraggables(); // Re-add draggable items
+
+            refreshButton.style.display = 'none'; // Hide refresh button
         }
 
-        window.onload = () => {
-            addDraggables();
-        };
+        // Initialize the quiz
+        addDraggables();
     </script>
 </body>
 </html>

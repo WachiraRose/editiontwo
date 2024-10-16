@@ -3,358 +3,326 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fill in the Blanks Quiz</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Responsive Word Search Puzzle</title>
     <style>
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: Arial, sans-serif;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
+            flex-direction: column;
+            height: 100vh;
             margin: 0;
-            padding: 0;
+            background-color: #f4f4f4;
         }
 
-        .drop-zone {
-            border: 2px dashed #ccc;
-            padding: 5px 10px;
-            min-width: 100px;
-            background-color: #f9f9f9;
-            display: inline-block;
-            margin: 0 5px; /* Added margin for spacing */
+        h1 {
+            font-size: 20px;
+            margin-bottom: 5px;
+            color: #333;
+            text-align: center;
         }
 
-        .draggable {
-            margin: 10px;
-            padding: 5px 10px;
-            background-color: #f2f2f2;
-            border: 1px solid #ccc;
+        .puzzle-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 1px;
+            max-width: 90vw;
+            padding: 10px;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .word-search-container {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            grid-gap: 1px;
+            border: 1px solid #333;
+            padding: 2px;
+            background-color: #fff;
+            width: 500px;
+            height: 500px;
+        }
+
+        .word-search-cell {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5vw;
+            border: 1px solid #ddd;
+            user-select: none;
             cursor: pointer;
-            display: inline-block;
+            height: 3vw;
+            width: 3vw;
         }
 
-        .draggable:hover {
-            background-color: #ddd;
+        .word-search-cell.selected {
+            background-color: #cce7ff;
         }
 
-        .popup-message {
-            position: absolute;
-            background-color: #f87171;
-            color: white;
-            padding: 5px 10px;
-            border-radius: 5px;
+        .word-search-cell.found {
+            background-color: #a8d5e2;
+        }
+
+        .word-list {
+            text-align: center;
+            margin-top: 35px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        ul li {
+            margin-right: 15px;
+            font-size: 16px;
+        }
+
+        #restartBtn {
             display: none;
-            z-index: 10; /* Ensure it appears above other elements */
+            margin-top: 15px;
+            padding: 8px 16px;
+            font-size: 14px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
         }
 
-        #confetti {
+        #congratulationsMessage {
+            display: none;
+            font-size: 18px;
+            color: #28a745;
+            margin-top: 15px;
+        }
+
+        #confettiCanvas {
             position: absolute;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
             pointer-events: none;
-            display: none; /* Initially hidden */
-        }
-
-        /* Section colors */
-        .section-a {
-            background-color: #d1fae5; /* Light green */
-            padding: 20px;
-            margin: 10px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        .section-b {
-            background-color: #e0fef1; /* Light blue */
-            padding: 20px;
-            margin: 10px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Answer container color */
-        .answer-container {
-            background-color: #ffebee; /* Light red */
-            padding: 10px;
-            margin-bottom: 10px; /* Space between answer containers */
-        }
-
-        /* Container styles */
-        .quiz-container {
-            display: flex; /* Make the container flex */
-            justify-content: space-between; /* Space out sections */
-            align-items: flex-start; /* Align items at the start */
-            width: 100%; /* Take full width */
-        }
-
-        .questions {
-            flex: 1; /* Allow questions to take available space */
-            margin-right: 20px; /* Space between questions and answers */
-        }
-
-        .answers {
-            display: flex;
-            flex-direction: column; /* Stack answers vertically */
-            align-items: flex-start; /* Align items to the left */
-        }
-
-        @media (max-width: 640px) {
-            .question {
-                font-size: 14px;
-            }
-
-            .draggable, .drop-zone {
-                font-size: 14px;
-                padding: 5px;
-                margin: 5px;
-            }
-        }
-
-        .refresh-btn {
-            margin-top: 20px;
-            padding: 10px 20px;
-            background-color: #4CAF50; /* Green background */
-            color: white; /* White text */
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            display: none; /* Initially hidden */
-        }
-
-        .refresh-btn:hover {
-            background-color: #45a049; /* Darker green on hover */
         }
     </style>
 </head>
-<body class="bg-gray-100">
-    <h1 class="text-2xl font-bold my-4">FILL IN THE BLANKS</h1>
+<body>
 
-    <div class="quiz-container">
-        <!-- Section A (Fill in the Blanks) -->
-        <div class="section-a">
-            <h2 class="text-2xl font-bold my-4">A. Greeting in Swahili</h2>
-            <div class="questions">
-                <div class="question my-2">
-                    1. In the morning, you would say <span class="drop-zone" data-answer="Habari"></span> ya asubuhi.
-                </div>
-                <div class="question my-2">
-                    2. When asking someone their name, you say “Jina lako ni <span class="drop-zone" data-answer="nani"></span>.”
-                </div>
-                <div class="question my-2">
-                    3. When a child meets their mother, they say “<span class="drop-zone" data-answer="shikamoo"></span> mama.”
-                </div>
-                <div class="question my-2">
-                    4. Before going to sleep at night, it's nice to say, "<span class="drop-zone" data-answer="usiku"></span> mwema."
-                </div>
-                <div class="question my-2">
-                    5. To say sorry to someone, you say “<span class="drop-zone" data-answer="pole"></span> mama.”
-                </div>
-            </div>
-            <!-- Answer Container for Section A -->
-            <div id="answer-container-a" class="answer-container"></div>
+    <canvas id="confettiCanvas"></canvas>
+
+    <h1>Word Search Puzzle</h1>
+
+    <div class="puzzle-wrapper">
+        <div class="word-search-container" id="wordSearchContainer">
+            <!-- JavaScript will populate the grid -->
         </div>
 
-        <!-- Section B (True/False) -->
-        <div class="section-b">
-            <h2 class="text-xl font-bold my-4">B. Answer whether it is True or False:</h2>
-            <div class="questions">
-                <div class="question my-2">
-                    6. "Habari ya asubuhi" means "Good night" in Kiswahili. <span class="drop-zone" data-answer="False"></span>
-                </div>
-                <div class="question my-2">
-                    7. You would say "Hodi, hodi?” to mean “May I come in?” <span class="drop-zone" data-answer="True"></span>
-                </div>
-                <div class="question my-2">
-                    8. "Lala unono" is a greeting you use in the morning. <span class="drop-zone" data-answer="False"></span>
-                </div>
-                <div class="question my-2">
-                    9. "Habari ya jioni" translates to "Good evening" in English. <span class="drop-zone" data-answer="True"></span>
-                </div>
-                <div class="question my-2">
-                    10. “Hatujambo” means “We are fine.” <span class="drop-zone" data-answer="True"></span>
-                </div>
-            </div>
-            <!-- Answer Container for Section B -->
-            <div id="answer-container-b" class="answer-container"></div>
+        <div class="word-list">
+            <h3>Find the Words:</h3>
+            <ul id="wordList">
+                <!-- Word list goes here -->
+            </ul>
         </div>
     </div>
 
-    <!-- Confetti canvas -->
-    <canvas id="confetti"></canvas>
+    <div id="congratulationsMessage">Congratulations! You found all the words!</div>
 
-    <!-- Refresh Button -->
-    <button id="refresh-button" class="refresh-btn" onclick="refreshQuiz()">Refresh Quiz</button>
+    <button id="restartBtn" onclick="restartPuzzle()">Restart Puzzle</button>
 
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js" async></script>
     <script>
-        const draggables = [
-            { text: "Habari", answer: "Habari" },
-            { text: "nani", answer: "nani" },
-            { text: "shikamoo", answer: "shikamoo" },
-            { text: "usiku", answer: "usiku" },
-            { text: "pole", answer: "pole" },
-            { text: "True", answer: "True" },
-            { text: "False", answer: "False" }
-        ];
+        const gridSize = 10;
+        const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        const words = ['KARAFUU', 'HARADALI', 'SHAMIRI', 'PAKANGA', 'KITUNGUU', 'MDALASINI', 'DHANIA', 'PILIPILI', 'NYANYA', 'CHUMVI'];
+        const colors = ['#FF5733', '#33FF57', '#5733FF', '#FF33A1', '#FF33F6', '#FFD733', '#33FFDC', '#FF6B33', '#33D3FF', '#FFC733'];
+        let grid = Array(gridSize).fill(null).map(() => Array(gridSize).fill(''));
+        let wordsFound = 0;
 
-        let answeredCountA = 0; // Track answered questions for section A
-        let answeredCountB = 0; // Track answered questions for section B
+        function getRandomLetter() {
+            return alphabet[Math.floor(Math.random() * alphabet.length)];
+        }
 
-        // Function to populate draggable items
-        function populateAnswers() {
-            const answerContainerA = document.getElementById('answer-container-a');
-            const answerContainerB = document.getElementById('answer-container-b');
+        function placeWord(word) {
+            let placed = false;
+            let attempts = 0;
+            while (!placed && attempts < 100) {
+                const direction = Math.floor(Math.random() * 8); // 8 directions
+                let row, col;
 
-            draggables.forEach(item => {
-                const div = document.createElement('div');
-                div.textContent = item.text;
-                div.classList.add('draggable');
-                div.draggable = true;
-                div.addEventListener('dragstart', dragStart);
-                // Add the item to the appropriate container
-                if (item.answer === "Habari" || item.answer === "nani" || item.answer === "shikamoo" || item.answer === "usiku" || item.answer === "pole") {
-                    answerContainerA.appendChild(div);
-                } else {
-                    answerContainerB.appendChild(div);
+                if (direction === 0) { // Horizontal Left to Right
+                    row = Math.floor(Math.random() * gridSize);
+                    col = Math.floor(Math.random() * (gridSize - word.length));
+                } else if (direction === 1) { // Horizontal Right to Left
+                    row = Math.floor(Math.random() * gridSize);
+                    col = Math.floor(Math.random() * (gridSize - word.length)) + word.length - 1;
+                } else if (direction === 2) { // Vertical Down
+                    row = Math.floor(Math.random() * (gridSize - word.length));
+                    col = Math.floor(Math.random() * gridSize);
+                } else if (direction === 3) { // Vertical Up
+                    row = Math.floor(Math.random() * gridSize) + word.length - 1;
+                    col = Math.floor(Math.random() * gridSize);
+                } else if (direction === 4) { // Diagonal Down Right
+                    row = Math.floor(Math.random() * (gridSize - word.length));
+                    col = Math.floor(Math.random() * (gridSize - word.length));
+                } else if (direction === 5) { // Diagonal Up Left
+                    row = Math.floor(Math.random() * gridSize) + word.length - 1;
+                    col = Math.floor(Math.random() * gridSize) + word.length - 1;
+                } else if (direction === 6) { // Diagonal Down Left
+                    row = Math.floor(Math.random() * (gridSize - word.length));
+                    col = Math.floor(Math.random() * (gridSize - word.length)) + word.length - 1;
+                } else { // Diagonal Up Right
+                    row = Math.floor(Math.random() * gridSize) + word.length - 1;
+                    col = Math.floor(Math.random() * (gridSize - word.length));
                 }
-            });
-        }
 
-        // Function for drag start
-        function dragStart(e) {
-            e.dataTransfer.setData('text/plain', e.target.textContent);
-        }
-
-        // Function to allow drop
-        function allowDrop(e) {
-            e.preventDefault();
-        }
-
-        // Function for dropping an item
-        function drop(e) {
-            e.preventDefault();
-            const data = e.dataTransfer.getData('text/plain');
-            const dropZone = e.target;
-
-            // Check if the answer is correct
-            if (dropZone.dataset.answer === data) {
-                removeDraggable(data);
-                showPopupMessage(dropZone, 'Correct!');
-                showConfetti();
-                if (dropZone.closest('.section-a')) {
-                    answeredCountA++; // Increment answered count for section A
-                } else {
-                    answeredCountB++; // Increment answered count for section B
+                let fits = true;
+                for (let i = 0; i < word.length; i++) {
+                    const r = direction < 4 ? (direction < 2 ? row : row + i) : (direction < 6 ? row + i : row - i);
+                    const c = direction % 2 === 0 ? (direction < 4 ? col + i : col) : (direction < 6 ? col - i : col);
+                    
+                    if (grid[r] === undefined || grid[r][c] === undefined || (grid[r][c] !== '' && grid[r][c] !== word[i])) {
+                        fits = false;
+                        break;
+                    }
                 }
-                checkCompletion(); // Check if all questions are answered
-            } else {
-                showPopupMessage(dropZone, 'Try Again!');
+
+                if (fits) {
+                    for (let i = 0; i < word.length; i++) {
+                        const r = direction < 4 ? (direction < 2 ? row : row + i) : (direction < 6 ? row + i : row - i);
+                        const c = direction % 2 === 0 ? (direction < 4 ? col + i : col) : (direction < 6 ? col - i : col);
+                        grid[r][c] = word[i];
+                    }
+                    placed = true;
+                }
+                attempts++;
+            }
+            if (attempts >= 100) {
+                console.error(`Could not place word: ${word}`);
             }
         }
 
-        // Function to remove draggable item
-        function removeDraggable(answer) {
-            const draggables = document.querySelectorAll('.draggable');
-            draggables.forEach(draggable => {
-                if (draggable.textContent === answer) {
-                    draggable.remove(); // Remove from drag container
+        words.forEach(word => placeWord(word));
+
+        for (let row = 0; row < gridSize; row++) {
+            for (let col = 0; col < gridSize; col++) {
+                if (grid[row][col] === '') {
+                    grid[row][col] = getRandomLetter();
                 }
+            }
+        }
+
+        const wordSearchContainer = document.getElementById('wordSearchContainer');
+        grid.forEach((row, rowIndex) => {
+            row.forEach((letter, colIndex) => {
+                const cell = document.createElement('div');
+                cell.textContent = letter;
+                cell.className = 'word-search-cell';
+                cell.dataset.row = rowIndex;
+                cell.dataset.col = colIndex;
+                wordSearchContainer.appendChild(cell);
             });
+        });
+
+        const wordList = document.getElementById('wordList');
+        words.forEach((word, index) => {
+            const li = document.createElement('li');
+            li.textContent = word;
+            li.dataset.color = colors[index];
+            wordList.appendChild(li);
+        });
+
+        let selectedCells = [];
+        let isSelecting = false;
+
+        function selectCell(cell) {
+            if (!cell.classList.contains('selected')) {
+                cell.classList.add('selected');
+                selectedCells.push(cell);
+            }
         }
 
-        // Function to show a popup message
-        function showPopupMessage(dropZone, message) {
-            const popupMessage = document.createElement('div');
-            popupMessage.className = 'popup-message';
-            popupMessage.textContent = message;
-            document.body.appendChild(popupMessage);
-            const rect = dropZone.getBoundingClientRect();
-            popupMessage.style.top = `${rect.top + window.scrollY - 30}px`;
-            popupMessage.style.left = `${rect.left + window.scrollX}px`;
-            popupMessage.style.display = 'block';
-            setTimeout(() => {
-                popupMessage.remove();
-            }, 2000);
+        function checkSelectedWord() {
+            const selectedLetters = selectedCells.map(cell => cell.textContent).join('');
+            const wordIndex = words.indexOf(selectedLetters);
+            if (wordIndex !== -1) {
+                selectedCells.forEach(cell => cell.classList.add('found'));
+                wordsFound++;
+                wordList.children[wordIndex].style.textDecoration = 'line-through';
+                if (wordsFound === words.length) {
+                    document.getElementById('congratulationsMessage').style.display = 'block';
+                    document.getElementById('restartBtn').style.display = 'block';
+                    createConfetti();
+                }
+            }
+            selectedCells = [];
+            [...wordSearchContainer.children].forEach(cell => cell.classList.remove('selected'));
         }
 
-        // Function to show confetti
-        function showConfetti() {
-            const confettiCanvas = document.getElementById('confetti');
+        function createConfetti() {
+            const confettiCanvas = document.getElementById('confettiCanvas');
             const ctx = confettiCanvas.getContext('2d');
             confettiCanvas.width = window.innerWidth;
             confettiCanvas.height = window.innerHeight;
-            confettiCanvas.style.display = 'block';
+            const animationEnd = Date.now() + 3000;
+            const confettiColors = ['#FF5733', '#33FF57', '#5733FF', '#FF33A1', '#FF33F6', '#FFD733', '#33FFDC', '#FF6B33', '#33D3FF', '#FFC733'];
 
-            const particles = [];
-            for (let i = 0; i < 100; i++) {
-                particles.push({
-                    x: Math.random() * confettiCanvas.width,
-                    y: Math.random() * confettiCanvas.height,
-                    radius: Math.random() * 5 + 1,
-                    color: `hsl(${Math.random() * 360}, 100%, 50%)`,
-                    speed: Math.random() * 2 + 1,
-                    direction: Math.random() * 2 * Math.PI
-                });
-            }
+            (function frame() {
+                const timeLeft = animationEnd - Date.now();
+                if (timeLeft <= 0) {
+                    return;
+                }
 
-            function animateConfetti() {
-                ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
-                particles.forEach(p => {
-                    ctx.beginPath();
-                    ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-                    ctx.fillStyle = p.color;
-                    ctx.fill();
-                    p.x += Math.cos(p.direction) * p.speed;
-                    p.y += Math.sin(p.direction) * p.speed;
-
-                    if (p.x > confettiCanvas.width || p.x < 0 || p.y > confettiCanvas.height) {
-                        p.x = Math.random() * confettiCanvas.width;
-                        p.y = 0;
-                    }
-                });
-
-                requestAnimationFrame(animateConfetti);
-            }
-
-            animateConfetti();
-            setTimeout(() => {
-                confettiCanvas.style.display = 'none'; // Hide canvas after a while
-            }, 3000); // Show for 3 seconds
+                const particleCount = 200 * (Math.random() + 0.2);
+                confetti({ particleCount, colors: confettiColors });
+                requestAnimationFrame(frame);
+            })();
         }
 
-        // Function to check if all questions are answered
-        function checkCompletion() {
-            if (answeredCountA === 5 && answeredCountB === 5) {
-                document.getElementById('refresh-button').style.display = 'block'; // Show refresh button
+        document.getElementById('wordSearchContainer').addEventListener('mousedown', (event) => {
+            if (event.target.classList.contains('word-search-cell')) {
+                isSelecting = true;
+                selectCell(event.target);
             }
-        }
-
-        // Refresh quiz function
-        function refreshQuiz() {
-            const answerContainers = document.querySelectorAll('.answer-container');
-            answeredCountA = 0; // Reset answered count for section A
-            answeredCountB = 0; // Reset answered count for section B
-
-            answerContainers.forEach(container => {
-                container.innerHTML = ''; // Clear previous answers
-            });
-
-            populateAnswers(); // Repopulate answers
-            document.getElementById('refresh-button').style.display = 'none'; // Hide refresh button
-        }
-
-        // Event listeners for drop zones
-        const dropZones = document.querySelectorAll('.drop-zone');
-        dropZones.forEach(dropZone => {
-            dropZone.addEventListener('dragover', allowDrop);
-            dropZone.addEventListener('drop', drop);
         });
 
-        // Initial population of answers
-        populateAnswers();
+        document.getElementById('wordSearchContainer').addEventListener('mouseover', (event) => {
+            if (isSelecting && event.target.classList.contains('word-search-cell')) {
+                selectCell(event.target);
+            }
+        });
+
+        document.addEventListener('mouseup', () => {
+            if (isSelecting) {
+                checkSelectedWord();
+                isSelecting = false;
+            }
+        });
+
+        function restartPuzzle() {
+            grid = Array(gridSize).fill(null).map(() => Array(gridSize).fill(''));
+            wordsFound = 0;
+            document.getElementById('congratulationsMessage').style.display = 'none';
+            document.getElementById('restartBtn').style.display = 'none';
+            wordList.querySelectorAll('li').forEach(li => li.style.textDecoration = 'none');
+            [...wordSearchContainer.children].forEach(cell => cell.classList.remove('found', 'selected'));
+            words.forEach(word => placeWord(word));
+            for (let row = 0; row < gridSize; row++) {
+                for (let col = 0; col < gridSize; col++) {
+                    if (grid[row][col] === '') {
+                        grid[row][col] = getRandomLetter();
+                    }
+                }
+            }
+            grid.forEach((row, rowIndex) => {
+                row.forEach((letter, colIndex) => {
+                    wordSearchContainer.children[rowIndex * gridSize + colIndex].textContent = letter;
+                });
+            });
+        }
     </script>
 </body>
 </html>
