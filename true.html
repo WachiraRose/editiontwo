@@ -7,6 +7,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
+            background: rgb(85, 1, 85); /* Replace with your image URL */
+            background-size: cover;
             font-family: 'Arial', sans-serif;
             display: flex;
             flex-direction: column;
@@ -29,7 +31,7 @@
         .draggable {
             margin: 10px;
             padding: 5px 10px;
-            background-color: #88cbf1;
+            background-color: #c7e2f1;
             border: 1px solid #ccc;
             cursor: pointer;
             display: inline-block;
@@ -63,17 +65,17 @@
        
 
         .section-b {
-            background-color: #0fe762; /* Light blue */
+            background-color: #f0e6ede3; /* Light blue */
         }
 
         /* Answer container color */
         .answer-container {
-            background-color: #91e68e; /* Light red */
+            background-color: #f3bde3e3; /* Light red */
         }
 
         /* Container styles */
         .quiz-container {
-            background-color: hsl(240, 2%, 88%);
+            background-color: rgb(113, 113, 129);
             padding: 40px;
             border-radius: 8px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -148,7 +150,7 @@
         .previous-btn {
             margin-top: 20px;
             padding: 10px 20px;
-            background-color: #2b0bdf;
+            background-color: #509cff;
             color: white;
             border: none;
             border-radius: 5px;
@@ -160,8 +162,16 @@
         }
     </style>
 </head>
-<body class="bg-gray-100">
-    <h1 class="text-2xl font-bold my-4">JAZA MAPENGO</h1>
+<body >
+    <h1 class="text-4xl font-bold my-4 text-white">LESSON 1: SALAMU(GREETINGS)</h1>
+
+    <!-- Section to describe the quiz -->
+    <section class="quiz-intro bg-gradient-to-r from-pink-800 to-purple-600 text-cream-300 p-6 rounded-lg shadow-lg w-11/12 md:w-3/4 lg:w-1/2 mb-6 transform transition-all hover:scale-105 duration-300">
+        <h2 class="text-2xl font-extrabold mb-4 text-gray-800">Jaza Mapengo (Fill in the Blanks)</h2>
+        <p class="text-base md:text-lg font-medium text-white">
+            Test your Swahili greetings with this fill-in-the-blanks quiz! Drag and drop the correct phrases into the sentences. It's a fun way to practice and improve your Swahili vocabulary. Good luck and have fun!
+        </p>
+    </section>
 
     <div class="quiz-container relative flex">
         <!-- Section A (Fill in the Blanks) -->
