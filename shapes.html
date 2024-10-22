@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Shapes Quiz</title>
+    <!-- Materialize CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
+    <style>
+        .strike-through {
+            text-decoration: line-through;
+            color: grey;
+        }
+
+        /* Make the images responsive and uniform size */
+        #shapeImage {
+            max-width: 100%;
+            height: auto;
+            max-height: 300px; /* Set a fixed height to maintain uniformity */
+        }
+
+        /* Darker background */
+        body {
+            background-color: #37474f;
+        }
+
+        /* Adjust message color */
+        .message.correct {
+            color: green;
+        }
+
+        .message.incorrect {
+            color: red;
+        }
+
+        /* Darker background for possible answers list */
+        ul#answers-list {
+            background-color: #455a64;
+            padding: 10px;
+            border-radius: 10px;
+        }
+
+        ul#answers-list li {
+            color: white;
+        }
+    </style>
+</head>
+<body class="grey lighten-1">
+
+    <div class="container">
+        <h1 class="center-align white-text">3D Shapes Quiz</h1>
+
+        <!-- Shape Image and Input -->
+        <div class="row">
+            <div class="col s12 m6 offset-m3 center-align">
+                <img id="shapeImage" class="responsive-img" alt="Shape Image">
+                <label for="shapeAnswer" class="left-align white-text">Name this shape:</label>
+                <input type="text" id="shapeAnswer" class="validate">
+                <span id="message" class="message"></span>
+            </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="row">
+            <div class="col s12 center-align">
+                <button id="submit" class="btn green darken-1">Submit</button>
+                <button id="refresh" class="btn blue darken-1" style="display: none;">Refresh Quiz</button>
+            </div>
+        </div>
+
+        <!-- Possible Answers -->
+        <h2 class="center-align white-text">Possible Answers:</h2>
+        <ul id="answers-list" class="center-align">
+            <li id="answer1" class="collection-item">Cube</li>
+            <li id="answer2" class="collection-item">Cuboid</li>
+            <li id="answer3" class="collection-item">Square</li>
+            <li id="answer4" class="collection-item">Cone</li>
+        </ul>
+    </div>
+
+    <!-- Materialize JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+    <script>
+        const shapes = [
+            { image: "pyramid.jpg", answer: "pyramid", answerId: "answer1" },
+            { image: "rectangular.jpg", answer: "rectangle", answerId: "answer2" },
+            { image: "cylinder.jpg", answer: "cylinder", answerId: "answer3" },
+            { image: "cone.jpg", answer: "cone", answerId: "answer4" }
+        ];
+
+        let currentShapeIndex = 0;
+        let attempts = 0;
+
+        window.onload = function() {
+            loadShape(currentShapeIndex);
+        };
+
+        function loadShape(index) {
+            document.getElementById("shapeImage").src = shapes[index].image;
+            document.getElementById("shapeAnswer").value = "";
+            document.getElementById("message").textContent = "";
+            document.getElementById("message").classList.remove("correct", "incorrect");
+            document.getElementById("shapeAnswer").focus();
+            attempts = 0;
+        }
+
+        document.getElementById("submit").addEventListener("click", checkAnswer);
+
+        document.getElementById("shapeAnswer").addEventListener("keydown", function(event) {
+            if (event.key === "Enter") {
+                checkAnswer();
+            }
+        });
+
+        function checkAnswer() {
+            let userAnswer = document.getElementById("shapeAnswer").value.toLowerCase();
+            let correctAnswer = shapes[currentShapeIndex].answer;
+
+            if (userAnswer === correctAnswer) {
+                document.getElementById("message").textContent = "Sahihi! ✓";
+                document.getElementById("message").classList.add("correct");
+                document.getElementById(shapes[currentShapeIndex].answerId).classList.add("strike-through");
+                setTimeout(function() {
+                    nextShape();
+                }, 1000);
+            } else {
+                attempts++;
+                document.getElementById("message").classList.add("incorrect");
+                if (attempts === 1) {
+                    document.getElementById("message").textContent = "Jaribu tena!";
+                } else if (attempts === 2) {
+                    document.getElementById("message").textContent = "Correct answer: " + correctAnswer;
+                    setTimeout(function() {
+                        nextShape();
+                    }, 1500);
+                }
+            }
+        }
+
+        function nextShape() {
+            currentShapeIndex++;
+
+            if (currentShapeIndex < shapes.length) {
+                loadShape(currentShapeIndex);
+            } else {
+                document.getElementById("message").textContent = "Quiz complete!";
+                document.getElementById("submit").style.display = "none";
+                document.getElementById("refresh").style.display = "block";
+            }
+        }
+
+        document.getElementById("refresh").addEventListener("click", function() {
+            currentShapeIndex = 0;
+            loadShape(currentShapeIndex);
+            document.getElementById("submit").style.display = "block";
+            document.getElementById("refresh").style.display = "none";
+            let answerListItems = document.querySelectorAll("#answers-list li");
+            answerListItems.forEach(item => item.classList.remove("strike-through"));
+        });
+    </script>
+</body>
+</html>

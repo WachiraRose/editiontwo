@@ -3,326 +3,333 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Responsive Word Search Puzzle</title>
+    <title>Fill in the Blanks Quiz</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            background: url('grey.jpg') no-repeat center center fixed; /* Replace with your image URL */
+            background-size: cover;
+            font-family: 'Arial', sans-serif;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            flex-direction: column;
-            height: 100vh;
+            min-height: 100vh;
             margin: 0;
-            background-color: #f4f4f4;
-        }
-
-        h1 {
-            font-size: 20px;
-            margin-bottom: 5px;
-            color: #333;
-            text-align: center;
-        }
-
-        .puzzle-wrapper {
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            gap: 1px;
-            max-width: 90vw;
-            padding: 10px;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .word-search-container {
-            display: grid;
-            grid-template-columns: repeat(10, 1fr);
-            grid-gap: 1px;
-            border: 1px solid #333;
-            padding: 2px;
-            background-color: #fff;
-            width: 500px;
-            height: 500px;
-        }
-
-        .word-search-cell {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 1.5vw;
-            border: 1px solid #ddd;
-            user-select: none;
-            cursor: pointer;
-            height: 3vw;
-            width: 3vw;
-        }
-
-        .word-search-cell.selected {
-            background-color: #cce7ff;
-        }
-
-        .word-search-cell.found {
-            background-color: #a8d5e2;
-        }
-
-        .word-list {
-            text-align: center;
-            margin-top: 35px;
-        }
-
-        ul {
-            list-style-type: none;
             padding: 0;
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
+        }
+        .drop-zone {
+            border: 2px dashed #666666;
+            padding: 5px 10px;
+            min-width: 100px;
+            background-color: #d8d5d5;
+            display: inline-block;
+            margin: 0 5px;
         }
 
-        ul li {
-            margin-right: 15px;
-            font-size: 16px;
-        }
-
-        #restartBtn {
-            display: none;
-            margin-top: 15px;
-            padding: 8px 16px;
-            font-size: 14px;
+        .draggable {
+            margin: 10px;
+            padding: 5px 10px;
+            background-color: #80d5e4;
+            border: 1px solid #ccc;
             cursor: pointer;
-            background-color: #4CAF50;
+            display: inline-block;
+        }
+
+        .draggable:hover {
+            background-color: #ddd;
+        }
+
+        .popup-message {
+            position: absolute;
+            background-color: #f87171;
             color: white;
-            border: none;
+            padding: 5px 10px;
             border-radius: 5px;
-        }
-
-        #congratulationsMessage {
             display: none;
-            font-size: 18px;
-            color: #28a745;
-            margin-top: 15px;
+            z-index: 10;
         }
 
-        #confettiCanvas {
+        #confetti {
             position: absolute;
             top: 0;
             left: 0;
+            width: 100%;
+            height: 100%;
             pointer-events: none;
+            display: none;
+        }
+
+        /* Section colors */
+        .quiz-intro {
+            background-color: #f0f0f0; /* Light Grey */
+            color: #333333; /* Dark Charcoal */
+        }
+        .section-a {
+            background-color: plum;
+
+        }
+
+        /* Answer container color */
+        .answer-container {
+            background-color: #068488;
+        }
+
+        /* Container styles */
+        .quiz-container {
+            background-color:#ffebee;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
+            display: flex;
+            flex-wrap: wrap; /* Ensure flexibility for small screens */
+            justify-content: space-between;
+        }
+
+        .questions {
+            flex: 1; /* Take available space */
+            margin-right: 20px;
+        }
+
+        .answers {
+            flex: 0 0 150px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        /* Media query for small screens */
+        @media (max-width: 640px) {
+            .quiz-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .questions {
+                margin-right: 0;
+                margin-bottom: 20px;
+            }
+
+            .answers {
+                flex: 1;
+                width: 100%;
+                max-width: 320px;
+                display: flex;
+                justify-content: space-around;
+                flex-wrap: wrap;
+            }
+
+            .drop-zone, .draggable {
+                font-size: 14px;
+                padding: 5px;
+                margin: 5px;
+            }
+        }
+
+        .refresh-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #293029;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: none;
+        }
+
+        .refresh-btn:hover {
+            background-color: #e4230a;
+        }
+
+        /* Right-aligned Next button */
+        .next-container {
+            width: 100%;
+            display: flex;
+            justify-content: flex-end; /* Aligns button to the right */
+        }
+
+        .next-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #ff6f61;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .next-btn:hover {
+            background-color: #6088df;
         }
     </style>
 </head>
-<body>
+<body class="bg-gray-100">
+    <h1 class="text-5xl font-bold my-4 text-white">JAZA MAPENGO</h1>
 
-    <canvas id="confettiCanvas"></canvas>
+    <!-- Section to describe the quiz -->
+    <section class="quiz-intro bg-gradient-to-r from-teal-500 to-lime-500 text-white p-6 rounded-lg shadow-lg w-11/12 md:w-3/4 lg:w-1/2 mb-6 transform transition-all hover:scale-105 duration-300">
+        <h2 class="text-2xl font-extrabold mb-4">Lesson 1: Swahili Greetings Quiz</h2>
+        <p class="text-base md:text-lg font-medium">
+            Test your Swahili greetings with this fill-in-the-blanks quiz! Drag and drop the correct phrases into the sentences. It's a fun way to practice and improve your Swahili vocabulary. Good luck and have fun!
+        </p>
+    </section>
+    
 
-    <h1>Word Search Puzzle</h1>
-
-    <div class="puzzle-wrapper">
-        <div class="word-search-container" id="wordSearchContainer">
-            <!-- JavaScript will populate the grid -->
+    <div class="quiz-container relative">
+        <!-- Section A (Fill in the Blanks) -->
+        <div id="quiz-container-a" class="section-a questions">
+            <h2 class="text-2xl font-bold my-4"> A. Salamu/Greetings</h2>
+            <div class="question my-2">
+                1. In the morning, you would say <span class="drop-zone" data-answer="Habari"></span> ya asubuhi.
+            </div>
+            <div class="question my-2">
+                2. When asking someone their name, you say “Jina lako ni <span class="drop-zone" data-answer="nani"></span>.”
+            </div>
+            <div class="question my-2">
+                3. When a child meets their mother, they say “<span class="drop-zone" data-answer="shikamoo"></span> mama.”
+            </div>
+            <div class="question my-2">
+                4. Before going to sleep at night, it's nice to say, "<span class="drop-zone" data-answer="usiku"></span> mwema."
+            </div>
+            <div class="question my-2">
+                5. To say sorry to someone, you say “<span class="drop-zone" data-answer="pole"></span> mama.”
+            </div>
         </div>
 
-        <div class="word-list">
-            <h3>Find the Words:</h3>
-            <ul id="wordList">
-                <!-- Word list goes here -->
-            </ul>
+        <!-- Answer container for draggable items -->
+        <div id="answer-container" class="answer-container w-11/12 md:w-4/12 mt-4 p-4 rounded shadow-lg flex flex-col justify-start">
+            <p class="text-lg font-semibold mb-2">Drag and Drop the answers:</p>
+            <div class="flex flex-wrap justify-start" id="answer-items">
+                <!-- Answers will be populated here by JavaScript -->
+            </div>
         </div>
     </div>
 
-    <div id="congratulationsMessage">Congratulations! You found all the words!</div>
+    <!-- Confetti canvas -->
+    <canvas id="confetti"></canvas>
 
-    <button id="restartBtn" onclick="restartPuzzle()">Restart Puzzle</button>
+    <!-- Refresh Button -->
+    <button id="refresh-button" class="refresh-btn" onclick="refreshQuiz()">Refresh Quiz</button>
 
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js" async></script>
+     <!-- Next Button in a right-aligned container -->
+     <div class="next-container">
+        <button id="next-button" class="next-btn" onclick="goToNextPage()">Next</button>
+    </div>
+
     <script>
-        const gridSize = 10;
-        const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        const words = ['KARAFUU', 'HARADALI', 'SHAMIRI', 'PAKANGA', 'KITUNGUU', 'MDALASINI', 'DHANIA', 'PILIPILI', 'NYANYA', 'CHUMVI'];
-        const colors = ['#FF5733', '#33FF57', '#5733FF', '#FF33A1', '#FF33F6', '#FFD733', '#33FFDC', '#FF6B33', '#33D3FF', '#FFC733'];
-        let grid = Array(gridSize).fill(null).map(() => Array(gridSize).fill(''));
-        let wordsFound = 0;
+        const draggables = [
+            { text: "Habari", answer: "Habari" },
+            { text: "nani", answer: "nani" },
+            { text: "shikamoo", answer: "shikamoo" },
+            { text: "usiku", answer: "usiku" },
+            { text: "pole", answer: "pole" }
+        ];
 
-        function getRandomLetter() {
-            return alphabet[Math.floor(Math.random() * alphabet.length)];
-        }
+        const answerContainer = document.getElementById('answer-items');
+        const dropZones = document.querySelectorAll('.drop-zone');
+        const popupMessageA = document.getElementById('popup-message-a');
+        const confettiCanvas = document.getElementById('confetti');
+        const refreshButton = document.getElementById('refresh-button');
+        let confettiCtx = confettiCanvas.getContext('2d');
+        let confettiActive = false;
 
-        function placeWord(word) {
-            let placed = false;
-            let attempts = 0;
-            while (!placed && attempts < 100) {
-                const direction = Math.floor(Math.random() * 8); // 8 directions
-                let row, col;
-
-                if (direction === 0) { // Horizontal Left to Right
-                    row = Math.floor(Math.random() * gridSize);
-                    col = Math.floor(Math.random() * (gridSize - word.length));
-                } else if (direction === 1) { // Horizontal Right to Left
-                    row = Math.floor(Math.random() * gridSize);
-                    col = Math.floor(Math.random() * (gridSize - word.length)) + word.length - 1;
-                } else if (direction === 2) { // Vertical Down
-                    row = Math.floor(Math.random() * (gridSize - word.length));
-                    col = Math.floor(Math.random() * gridSize);
-                } else if (direction === 3) { // Vertical Up
-                    row = Math.floor(Math.random() * gridSize) + word.length - 1;
-                    col = Math.floor(Math.random() * gridSize);
-                } else if (direction === 4) { // Diagonal Down Right
-                    row = Math.floor(Math.random() * (gridSize - word.length));
-                    col = Math.floor(Math.random() * (gridSize - word.length));
-                } else if (direction === 5) { // Diagonal Up Left
-                    row = Math.floor(Math.random() * gridSize) + word.length - 1;
-                    col = Math.floor(Math.random() * gridSize) + word.length - 1;
-                } else if (direction === 6) { // Diagonal Down Left
-                    row = Math.floor(Math.random() * (gridSize - word.length));
-                    col = Math.floor(Math.random() * (gridSize - word.length)) + word.length - 1;
-                } else { // Diagonal Up Right
-                    row = Math.floor(Math.random() * gridSize) + word.length - 1;
-                    col = Math.floor(Math.random() * (gridSize - word.length));
-                }
-
-                let fits = true;
-                for (let i = 0; i < word.length; i++) {
-                    const r = direction < 4 ? (direction < 2 ? row : row + i) : (direction < 6 ? row + i : row - i);
-                    const c = direction % 2 === 0 ? (direction < 4 ? col + i : col) : (direction < 6 ? col - i : col);
-                    
-                    if (grid[r] === undefined || grid[r][c] === undefined || (grid[r][c] !== '' && grid[r][c] !== word[i])) {
-                        fits = false;
-                        break;
-                    }
-                }
-
-                if (fits) {
-                    for (let i = 0; i < word.length; i++) {
-                        const r = direction < 4 ? (direction < 2 ? row : row + i) : (direction < 6 ? row + i : row - i);
-                        const c = direction % 2 === 0 ? (direction < 4 ? col + i : col) : (direction < 6 ? col - i : col);
-                        grid[r][c] = word[i];
-                    }
-                    placed = true;
-                }
-                attempts++;
-            }
-            if (attempts >= 100) {
-                console.error(`Could not place word: ${word}`);
+        // Shuffle answers function
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
             }
         }
 
-        words.forEach(word => placeWord(word));
+        // Add draggable items to the answer container
+        function addDraggables() {
+            shuffle(draggables);
+            draggables.forEach(item => {
+                const draggableElement = document.createElement('div');
+                draggableElement.className = 'draggable';
+                draggableElement.draggable = true;
+                draggableElement.dataset.answer = item.answer;
+                draggableElement.textContent = item.text;
 
-        for (let row = 0; row < gridSize; row++) {
-            for (let col = 0; col < gridSize; col++) {
-                if (grid[row][col] === '') {
-                    grid[row][col] = getRandomLetter();
-                }
-            }
-        }
-
-        const wordSearchContainer = document.getElementById('wordSearchContainer');
-        grid.forEach((row, rowIndex) => {
-            row.forEach((letter, colIndex) => {
-                const cell = document.createElement('div');
-                cell.textContent = letter;
-                cell.className = 'word-search-cell';
-                cell.dataset.row = rowIndex;
-                cell.dataset.col = colIndex;
-                wordSearchContainer.appendChild(cell);
-            });
-        });
-
-        const wordList = document.getElementById('wordList');
-        words.forEach((word, index) => {
-            const li = document.createElement('li');
-            li.textContent = word;
-            li.dataset.color = colors[index];
-            wordList.appendChild(li);
-        });
-
-        let selectedCells = [];
-        let isSelecting = false;
-
-        function selectCell(cell) {
-            if (!cell.classList.contains('selected')) {
-                cell.classList.add('selected');
-                selectedCells.push(cell);
-            }
-        }
-
-        function checkSelectedWord() {
-            const selectedLetters = selectedCells.map(cell => cell.textContent).join('');
-            const wordIndex = words.indexOf(selectedLetters);
-            if (wordIndex !== -1) {
-                selectedCells.forEach(cell => cell.classList.add('found'));
-                wordsFound++;
-                wordList.children[wordIndex].style.textDecoration = 'line-through';
-                if (wordsFound === words.length) {
-                    document.getElementById('congratulationsMessage').style.display = 'block';
-                    document.getElementById('restartBtn').style.display = 'block';
-                    createConfetti();
-                }
-            }
-            selectedCells = [];
-            [...wordSearchContainer.children].forEach(cell => cell.classList.remove('selected'));
-        }
-
-        function createConfetti() {
-            const confettiCanvas = document.getElementById('confettiCanvas');
-            const ctx = confettiCanvas.getContext('2d');
-            confettiCanvas.width = window.innerWidth;
-            confettiCanvas.height = window.innerHeight;
-            const animationEnd = Date.now() + 3000;
-            const confettiColors = ['#FF5733', '#33FF57', '#5733FF', '#FF33A1', '#FF33F6', '#FFD733', '#33FFDC', '#FF6B33', '#33D3FF', '#FFC733'];
-
-            (function frame() {
-                const timeLeft = animationEnd - Date.now();
-                if (timeLeft <= 0) {
-                    return;
-                }
-
-                const particleCount = 200 * (Math.random() + 0.2);
-                confetti({ particleCount, colors: confettiColors });
-                requestAnimationFrame(frame);
-            })();
-        }
-
-        document.getElementById('wordSearchContainer').addEventListener('mousedown', (event) => {
-            if (event.target.classList.contains('word-search-cell')) {
-                isSelecting = true;
-                selectCell(event.target);
-            }
-        });
-
-        document.getElementById('wordSearchContainer').addEventListener('mouseover', (event) => {
-            if (isSelecting && event.target.classList.contains('word-search-cell')) {
-                selectCell(event.target);
-            }
-        });
-
-        document.addEventListener('mouseup', () => {
-            if (isSelecting) {
-                checkSelectedWord();
-                isSelecting = false;
-            }
-        });
-
-        function restartPuzzle() {
-            grid = Array(gridSize).fill(null).map(() => Array(gridSize).fill(''));
-            wordsFound = 0;
-            document.getElementById('congratulationsMessage').style.display = 'none';
-            document.getElementById('restartBtn').style.display = 'none';
-            wordList.querySelectorAll('li').forEach(li => li.style.textDecoration = 'none');
-            [...wordSearchContainer.children].forEach(cell => cell.classList.remove('found', 'selected'));
-            words.forEach(word => placeWord(word));
-            for (let row = 0; row < gridSize; row++) {
-                for (let col = 0; col < gridSize; col++) {
-                    if (grid[row][col] === '') {
-                        grid[row][col] = getRandomLetter();
-                    }
-                }
-            }
-            grid.forEach((row, rowIndex) => {
-                row.forEach((letter, colIndex) => {
-                    wordSearchContainer.children[rowIndex * gridSize + colIndex].textContent = letter;
+                // Set drag event
+                draggableElement.addEventListener('dragstart', (e) => {
+                    e.dataTransfer.setData('text/plain', item.answer);
                 });
+
+                answerContainer.appendChild(draggableElement);
             });
         }
+
+        // Allow dropping on drop zones
+        dropZones.forEach(dropZone => {
+            dropZone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+            });
+
+            dropZone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                const droppedAnswer = e.dataTransfer.getData('text/plain');
+                if (droppedAnswer === dropZone.dataset.answer) {
+                    dropZone.textContent = droppedAnswer;
+                    const draggableElement = document.querySelector(`[data-answer="${droppedAnswer}"]`);
+                    if (draggableElement) {
+                        draggableElement.style.display = 'none';
+                    }
+                    checkAnswersA();
+                }
+            });
+        });
+
+        function checkAnswersA() {
+            let allCorrect = true;
+            dropZones.forEach(dropZone => {
+                if (dropZone.textContent !== dropZone.dataset.answer) {
+                    allCorrect = false;
+                }
+            });
+
+            if (allCorrect) {
+                refreshButton.style.display = 'block';
+                triggerConfetti();
+            }
+        }
+
+        // Refresh the quiz by clearing all answers
+        function refreshQuiz() {
+            dropZones.forEach(dropZone => {
+                dropZone.textContent = '';
+            });
+
+            answerContainer.innerHTML = '';
+            addDraggables();
+            refreshButton.style.display = 'none';
+            stopConfetti();
+        }
+
+        // Trigger confetti
+        function triggerConfetti() {
+            confettiActive = true;
+            confettiCanvas.style.display = 'block';
+            requestAnimationFrame(confettiAnimation);
+        }
+
+        // Stop confetti
+        function stopConfetti() {
+            confettiActive = false;
+            confettiCanvas.style.display = 'none';
+        }
+
+        // Simple confetti animation
+        function confettiAnimation() {
+            if (!confettiActive) return;
+            confettiCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+            // Confetti logic goes here...
+            requestAnimationFrame(confettiAnimation);
+        }
+
+        // Initialize the quiz
+        addDraggables();
     </script>
 </body>
 </html>
