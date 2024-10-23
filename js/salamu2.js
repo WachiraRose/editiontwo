@@ -155,7 +155,7 @@ function playConfetti() {
 
 // Function to go to the next page
 function goToNextPage() {
-    window.location.href = 'index.html'; // Replace with actual URL of the next page
+    window.location.href = 'salamu.html'; // Replace with actual URL of the next page
 }
 
 // Refresh quiz function

@@ -133,7 +133,7 @@ dropZones.forEach(dropZone => {
 
 // Function to go to the next page
 function goToNextPage() {
-    window.location.href = 'true.html'; // Replace with actual URL of the next page
+    window.location.href = 'salamu2.html'; // Replace with actual URL of the next page
 }
 
 

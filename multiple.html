@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+  <meta charset="UTF-8">
+  <title>Taja Picha</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const category = urlParams.get("category");
+
+    // Load images and choices based on category
+    const images = {
+      matunda: [
+        "matunda/apple.jpg",
+        "matunda/mango.jpg",
+        "matunda/pineapple.jpg",
+        "matunda/orange.png",
+        "matunda/banana.jpg",
+        "matunda/grapes.jpg",
+        "matunda/kiwi.jpg",
+        "matunda/lemon.jpg",
+        "matunda/passion.jpg",
+        "matunda/watermelon.jpg"
+      ],
+      wanyama: [
+        "wanyama/lion.jpg",
+        "wanyama/elephant.jpg",
+        "wanyama/cat.jpg",
+        "wanyama/buffalo.jpg",
+        "wanyama/cheetah.jpg",
+        "wanyama/cow.jpg",
+        "wanyama/dog.jpg",
+        "wanyama/goat.jpg",
+        "wanyama/hippo.jpg",
+        "wanyama/rabbit.jpg"
+      ],
+      rangi: [
+        "rangi/red.jpg",
+        "rangi/blue.jpg",
+        "rangi/yellow.jpg",
+        "rangi/green.jpg",
+        "rangi/purple.jpg",
+        "rangi/orange.jpg",
+        "rangi/brown.jpg",
+        "rangi/black.jpg",
+        "rangi/white.jpg",
+        "rangi/grey.jpg"
+      ],
+    };
+
+    const choices = {
+      matunda: [
+        ["Tofaa", "Ndizi", "Chungwa"],
+        ["Maharagwe", "Maembe", "Kiwi"],
+        ["Nanasi", "Lemon", "Ndimu"],
+        ["Tikiti Maji", "Tofaa", "Chungwa"],
+        ["Maembe", "Ndizi", "Kiwi"],
+        ["Ndimu", "Grapes", "Zabibu"],
+        ["Maharagwe", "Kiwi", "Mahindi"],
+        ["Ndimu", "Zabibu", "Maji"],
+        ["Nanasi", "Pasheni", "Tofaa"],
+        ["Bohora", "Kakara", "Tikiti Maji"],
+      ],
+      wanyama: [
+        ["Paka", "Simba", "Kiboko"],
+        ["Sungura", "Nungu", "Ndovu"],
+        ["Paka", "Punda", "Tembo"],
+        ["Kifaru", "Panya", "Kuku"],
+        ["Mbu", "Nyati", "Chui"],
+        ["Paka", "Simba", "Ng'ombe"],
+        ["Punda", "Kifaru", "Mbwa"],
+        ["Ndovu", "Mbuzi", "Panya"],
+        ["Tofaa", "Kiboko", "Nzi"],
+        ["Nyeupe", "Fisi", "Sungura"]
+        // Add choices for each question in wanyama
+      ],
+      rangi: [
+        ["Zambarau", "Green", "Blue"],
+        ["Manjano", "Buluu", "Paka"],
+        ["Kahawa", "Manjano", "Nyeusi"],
+        ["Kijani Kibichi", "Kijivu", "Nyeupe"],
+        ["Red", "Green", "Zambarau"],
+        ["Red", "Machungwa", "Blue"],
+        ["Red", "Kahawa", "Blue"],
+        ["Nyeusi", "Green", "Blue"],
+        ["Red", "Nyeupe", "Blue"],
+        ["Kijivu", "Nyeupe", "Blue"],
+        // Add choices for each question in rangi
+      ],
+    };
+
+    const correctAnswers = {
+      matunda: ["Tofaa", "Maembe", "Nanasi","Chungwa", "Ndizi", "Zabibu", "Kiwi", "Ndimu", "Pasheni", "Tikiti Maji"],
+      wanyama: ["Simba", "Ndovu", "Paka", "Kifaru", "Chui", "Ng'ombe", "Mbwa", "Mbuzi", "Sungura", "Kiboko"],
+      rangi: ["Nyekundu", "Buluu", "Manjano", "Kijani Kibichi", "Zambarau", "Machungwa", "Kahawa", "Nyeusi", "Nyeupe", "Kijivu"],
+    };
+
+    let score = 0;
+    let currentQuestionIndex = 0;
+
+    function displayNextQuestion() {
+      if (currentQuestionIndex < images[category].length) {
+        const imgElement = document.createElement("img");
+        imgElement.src = images[category][currentQuestionIndex];
+        imgElement.alt = "Picha ya " + category;
+        document.body.appendChild(imgElement);
+
+        // Create radio buttons for choices
+        const choiceList = document.createElement("ul");
+        for (const choice of choices[category][currentQuestionIndex]) {
+          const listItem = document.createElement("li");
+          const radioButton = document.createElement("input");
+          radioButton.type = "radio";
+          radioButton.name = "answer";
+          radioButton.value = choice; // Use the choice as the value
+          listItem.appendChild(radioButton);
+          listItem.appendChild(document.createTextNode(choice));
+          choiceList.appendChild(listItem);
+        }
+        document.body.appendChild(choiceList);
+
+        // Add "Check Answer" button
+        const checkAnswerButton = document.createElement("button");
+        checkAnswerButton.textContent = "Check Answer";
+        checkAnswerButton.addEventListener("click", checkAnswer);
+        document.body.appendChild(checkAnswerButton);
+      } else {
+        // Display final score
+        const scoreElement = document.createElement("p");
+        scoreElement.textContent = `Category: ${category}\nYour Score: ${score}`;
+        document.body.appendChild(scoreElement);
+
+        // Add Home button
+        const homeButton = document.createElement("button");
+        homeButton.textContent = "Home";
+        homeButton.addEventListener("click", () => {
+          window.location.href = "index.html"; // Replace with your actual index page URL
+        });
+        document.body.appendChild(homeButton);
+      }
+    }
+
+    displayNextQuestion();
+
+    function checkAnswer() {
+      const selectedAnswer = document.querySelector('input[name="answer"]:checked');
+      const resultElement = document.createElement("p");
+
+      // Remove the "Please select an answer." message if it exists
+      const pleaseSelectElement = document.querySelector(".please-select");
+      if (pleaseSelectElement) {
+        pleaseSelectElement.remove();
+      }
+
+      if (selectedAnswer) {
+        const userAnswer = selectedAnswer.value;
+        const correctAnswer = correctAnswers[category][currentQuestionIndex];
+
+        // Display whether the answer is correct or wrong at the bottom
+        if (userAnswer === correctAnswer) {
+          resultElement.textContent = "Correct!";
+          score++;
+        } else {
+          resultElement.textContent = `Incorrect. Correct Answer: ${correctAnswer}`;
+        }
+
+        // Disable the radio buttons after checking the answer
+        const radioButtons = document.querySelectorAll('input[name="answer"]');
+        radioButtons.forEach(button => {
+          button.disabled = true;
+        });
+
+        // Remove the "Check Answer" button after checking
+        const checkAnswerButton = document.querySelector('button');
+        checkAnswerButton.disabled = true;
+
+        // Add "Next" button after checking
+        const nextButton = document.createElement("button");
+        nextButton.textContent = "Next";
+        nextButton.addEventListener("click", () => {
+          // Clear previous question
+          document.body.innerHTML = "";
+          // Move to the next question
+          currentQuestionIndex++;
+          displayNextQuestion();
+        });
+        document.body.appendChild(nextButton);
+      } else {
+        // Handle case where no answer is selected
+        resultElement.textContent = "Please select an answer.";
+        resultElement.classList.add("please-select");
+      }
+
+      // Append result element to the bottom
+      document.body.appendChild(resultElement);
+    }
+  </script>
+</body>
+</html>

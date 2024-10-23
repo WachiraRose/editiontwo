@@ -1,0 +1,84 @@
+body {
+    font-family: 'Arial', sans-serif;
+    text-align: center;
+    background-image: url('img/background.jpg'); /* Replace 'background.jpg' with your actual background image file path */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: #000; /* Adjust text color to be visible against the background */
+    margin: 0;
+    padding: 0;
+  }
+  
+  h1 {
+    color: #080808;
+  }
+  
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  li {
+    display: inline-block;
+    margin: 10px;
+  }
+  
+  a {
+    text-decoration: none;
+    padding: 10px 20px;
+    background-color: #2ecc71;
+    color: #000;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+  }
+  
+  a:hover {
+    background-color: #27ae60;
+  }
+  
+  /* Styles for multiple-choice question page */
+  
+  img {
+    max-width: 400px;
+    max-height: 300px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  }
+  
+  ul {
+    padding: 0;
+  }
+  
+  li {
+    margin: 10px;
+  }
+  
+  button {
+    padding: 15px 30px;
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    margin: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+  }
+  
+  button:hover {
+    background-color: #2980b9;
+  }
+  
+  p {
+    margin: 20px;
+    padding: 15px;
+    border: 2px solid #0f0e0e;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    font-weight: bold;
+    color: #080808;
+    font-size: 18px;
+  }
+  

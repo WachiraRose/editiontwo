@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kazi/Occupation</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="css\kazi.css" rel="stylesheet">
+    
+</head>
+<body class="bg-purple-400 p-8">
+    <div class="container mx-auto">
+        <h1 class="text-3xl font-bold mb-6">Kazi/Occupation</h1>
+        
+        <div id="quiz-container" class="mb-6">
+            <div id="score" class="mb-4 text-xl font-semibold">Score: 0</div>
+            <div id="question-container">
+                <ul id="questions-list">
+                    <li id="question-1" class="active">
+                        <label for="q1">Is involved in meal food preparation :</label>
+                        <input type="text" id="q1" onkeypress="handleKeyPress(event, 1)" class="border p-2">
+                        <button onclick="nextQuestion(1)" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600">Next</button>
+                    </li>
+                    <li id="question-2" class="hidden">
+                        <label for="q2">Uses wood to make items such as furniture:</label>
+                        <input type="text" id="q2" onkeypress="handleKeyPress(event, 2)" class="border p-2">
+                        <button onclick="nextQuestion(2)" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600">Next</button>
+                    </li>
+                    <li id="question-3" class="hidden">
+                        <label for="q3">Pronounces judgements in a court of laws :</label>
+                        <input type="text" id="q3" onkeypress="handleKeyPress(event, 3)" class="border p-2">
+                        <button onclick="nextQuestion(3)" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600">Next</button>
+                    </li>
+                    <li id="question-4" class="hidden">
+                        <label for="q4">Tills the land for planting and harvest crops:</label>
+                        <input type="text" id="q4" onkeypress="handleKeyPress(event, 4)" class="border p-2">
+                        <button onclick="nextQuestion(4)" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600">Next</button>
+                    </li>
+                    <li id="question-5" class="hidden">
+                        <label for="q5">Is head of a Republic/democratic Country:</label>
+                        <input type="text" id="q5" onkeypress="handleKeyPress(event, 5)" class="border p-2">
+                        <button onclick="nextQuestion(5)" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600">Next</button>
+                    </li>
+                    <li id="question-6" class="hidden">
+                        <label for="q6">Drives a vehicle:</label>
+                        <input type="text" id="q6" onkeypress="handleKeyPress(event, 6)" class="border p-2">
+                        <button onclick="nextQuestion(6)" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600">Next</button>
+                    </li>
+                    <li id="question-7" class="hidden">
+                        <label for="q7">Runs short races or marathon:</label>
+                        <input type="text" id="q7" onkeypress="handleKeyPress(event, 7)" class="border p-2">
+                        <button onclick="nextQuestion(7)" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600">Next</button>
+                    </li>
+                    <li id="question-8" class="hidden">
+                        <label for="q8">Makes items out of clay:</label>
+                        <input type="text" id="q8" onkeypress="handleKeyPress(event, 8)" class="border p-2">
+                        <button onclick="nextQuestion(8)" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600">Next</button>
+                    </li>
+                    <li id="question-9" class="hidden">
+                        <label for="q9">Cuts people’s hair:</label>
+                        <input type="text" id="q9" onkeypress="handleKeyPress(event, 9)" class="border p-2">
+                        <button onclick="nextQuestion(9)" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600">Next</button>
+                    </li>
+                    <li id="question-10" class="hidden">
+                        <label for="q10">Maintains of law and order:</label>
+                        <input type="text" id="q10" onkeypress="handleKeyPress(event, 10)" class="border p-2">
+                        <button onclick="nextQuestion(10)" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600">Next</button>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- List of Possible Answers -->
+            <div id="possible-answers" class="flex flex-wrap mt-4 mb-4">
+                <span class="border rounded-full px-3 py-1 m-1 bg-gray-300">Mpishi</span>
+                <span class="border rounded-full px-3 py-1 m-1 bg-gray-300">Seremala</span>
+                <span class="border rounded-full px-3 py-1 m-1 bg-gray-300">Hakimu</span>
+                <span class="border rounded-full px-3 py-1 m-1 bg-gray-300">Mkulima</span>
+                <span class="border rounded-full px-3 py-1 m-1 bg-gray-300">Rais</span>
+                <span class="border rounded-full px-3 py-1 m-1 bg-gray-300">Dereva</span>
+                <span class="border rounded-full px-3 py-1 m-1 bg-gray-300">Mwanariadha</span>
+                <span class="border rounded-full px-3 py-1 m-1 bg-gray-300">Mfinyanzi</span>
+                <span class="border rounded-full px-3 py-1 m-1 bg-gray-300">Kinyozi</span>
+                <span class="border rounded-full px-3 py-1 m-1 bg-gray-300">Askari</span>
+            </div>
+        </div>
+
+        <!-- Final Screen -->
+        <div id="final-screen" class="hidden">
+            <p class="mb-4">Your Score: <span id="final-score"></span></p>
+            <div id="failed-questions" class="mb-4"></div>
+            <button onclick="restartQuiz()" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600">Restart Quiz</button>
+        </div>
+
+        <!-- Congratulations Message -->
+        <div id="congratulations" class="congratulations">Congratulations! You got all answers correct!</div>
+    </div>
+
+    <script src="js\kazi.js"></script>
+</body>
+</html>

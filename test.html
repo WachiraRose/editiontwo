@@ -3,316 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Responsive Word Search Puzzle</title>
+    <title>Swahili Greetings Quiz</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <style>
+        .hidden {
+            display: none;
+        }
+        .correct {
+            background-color: lightgreen;
+        }
+        .wrong {
+            background-color: lightcoral;
+        }
+        .congratulations {
+            display: none;
+            font-size: 1.5em;
+            color: green;
+            margin-bottom: 20px;
+        }
         body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            height: 100vh;
-            margin: 0;
-            background-color: #f4f4f4;
-        }
-
-        h1 {
-            font-size: 20px; /* Adjusted font size */
-            margin-bottom: 5px; /* Adjusted margin */
-            color: #333;
-            text-align: center;
-        }
-
-        .puzzle-wrapper {
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            gap: 1px; /* Increased gap between puzzle and word list */
-            max-width: 90vw;
-            padding: 10px;
-            flex-direction: column; /* Changed to column to stack items */
-            align-items: center; /* Center aligned */
-        }
-
-        .word-search-container {
-            display: grid;
-            grid-template-columns: repeat(10, 1fr);
-            grid-gap: 1px;
-            border: 1px solid #333;
-            padding: 2px;
-            background-color: #fff;
-            width: 400px; /* Adjusted width */
-            height: 300px; /* Adjusted height */
-            min-width: 350px; /* Ensured minimum width */
-            min-height: 350px; /* Ensured minimum height */
-            max-width: 90vw; /* Adjusted maximum width for responsiveness */
-            max-height: 90vw; /* Adjusted maximum height for responsiveness */
-        }
-
-        .word-search-cell {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 1.5vw; /* Adjusted font size */
-            border: 1px solid #ddd;
-            user-select: none;
-            cursor: pointer;
-            height: 30px; /* Adjusted height */
-            width: 30px; /* Adjusted width */
-        }
-
-        .word-search-cell.selected {
-            background-color: #cce7ff;
-        }
-
-        .word-search-cell.found {
-            background-color: #a8d5e2;
-        }
-
-        .word-list {
-            text-align: center; /* Center align the word list */
-            margin-top: 35px; /* Added margin on top */
-        }
-
-        ul {
-            list-style-type: none;
-            padding: 0;
-            display: flex; /* Changed to flex for horizontal layout */
-            justify-content: center; /* Centered words */
-            flex-wrap: wrap; /* Allow words to wrap */
-        }
-
-        ul li {
-            margin-right: 15px; /* Added spacing between words */
-            font-size: 16px; /* Font size for words */
-        }
-
-        #restartBtn {
-            display: none;
-            margin-top: 15px;
-            padding: 8px 16px;
-            font-size: 14px;
-            cursor: pointer;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-        }
-
-        #congratulationsMessage {
-            display: none;
-            font-size: 18px; /* Adjusted font size */
-            color: #28a745;
-            margin-top: 15px;
-        }
-
-        #confettiCanvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            pointer-events: none;
+            font-family: 'Arial', sans-serif; /* Change to your desired font */
         }
     </style>
 </head>
-<body>
+<body class="bg-gradient-to-r from-purple-400 via-purple-300 to-purple-200 p-8">
+    <div class="container mx-auto">
+        <h1 class="text-4xl font-bold text-center mb-6">Swahili Greetings Quiz</h1>
+        
+        <div id="quiz-container" class="mb-6 bg-white shadow-md rounded-lg p-6">
+            <div id="score" class="mb-4 text-xl font-semibold">Score: 0</div>
+            <div id="question-container">
+                <ul id="questions-list">
+                    <li id="question-1" class="active mb-4">
+                        <label for="q1" class="block mb-2 font-semibold">Is involved in meal food preparation:</label>
+                        <input type="text" id="q1" onkeypress="handleKeyPress(event, 1)" class="border p-2 w-full rounded-md shadow-sm">
+                        <button onclick="nextQuestion(1)" class="bg-blue-500 text-white py-2 px-4 mt-2 rounded-lg hover:bg-blue-600">Next</button>
+                    </li>
+                    <li id="question-2" class="hidden mb-4">
+                        <label for="q2" class="block mb-2 font-semibold">Uses wood to make items such as furniture:</label>
+                        <input type="text" id="q2" onkeypress="handleKeyPress(event, 2)" class="border p-2 w-full rounded-md shadow-sm">
+                        <button onclick="nextQuestion(2)" class="bg-blue-500 text-white py-2 px-4 mt-2 rounded-lg hover:bg-blue-600">Next</button>
+                    </li>
+                    <li id="question-3" class="hidden mb-4">
+                        <label for="q3" class="block mb-2 font-semibold">Pronounces judgments in a court of laws:</label>
+                        <input type="text" id="q3" onkeypress="handleKeyPress(event, 3)" class="border p-2 w-full rounded-md shadow-sm">
+                        <button onclick="nextQuestion(3)" class="bg-blue-500 text-white py-2 px-4 mt-2 rounded-lg hover:bg-blue-600">Next</button>
+                    </li>
+                    <li id="question-4" class="hidden mb-4">
+                        <label for="q4" class="block mb-2 font-semibold">Tills the land for planting and harvesting crops:</label>
+                        <input type="text" id="q4" onkeypress="handleKeyPress(event, 4)" class="border p-2 w-full rounded-md shadow-sm">
+                        <button onclick="nextQuestion(4)" class="bg-blue-500 text-white py-2 px-4 mt-2 rounded-lg hover:bg-blue-600">Next</button>
+                    </li>
+                    <li id="question-5" class="hidden mb-4">
+                        <label for="q5" class="block mb-2 font-semibold">Is head of a Republic/democratic Country:</label>
+                        <input type="text" id="q5" onkeypress="handleKeyPress(event, 5)" class="border p-2 w-full rounded-md shadow-sm">
+                        <button onclick="nextQuestion(5)" class="bg-blue-500 text-white py-2 px-4 mt-2 rounded-lg hover:bg-blue-600">Next</button>
+                    </li>
+                    <li id="question-6" class="hidden mb-4">
+                        <label for="q6" class="block mb-2 font-semibold">Drives a vehicle:</label>
+                        <input type="text" id="q6" onkeypress="handleKeyPress(event, 6)" class="border p-2 w-full rounded-md shadow-sm">
+                        <button onclick="nextQuestion(6)" class="bg-blue-500 text-white py-2 px-4 mt-2 rounded-lg hover:bg-blue-600">Next</button>
+                    </li>
+                    <li id="question-7" class="hidden mb-4">
+                        <label for="q7" class="block mb-2 font-semibold">Runs short races or marathons:</label>
+                        <input type="text" id="q7" onkeypress="handleKeyPress(event, 7)" class="border p-2 w-full rounded-md shadow-sm">
+                        <button onclick="nextQuestion(7)" class="bg-blue-500 text-white py-2 px-4 mt-2 rounded-lg hover:bg-blue-600">Next</button>
+                    </li>
+                    <li id="question-8" class="hidden mb-4">
+                        <label for="q8" class="block mb-2 font-semibold">Makes items out of clay:</label>
+                        <input type="text" id="q8" onkeypress="handleKeyPress(event, 8)" class="border p-2 w-full rounded-md shadow-sm">
+                        <button onclick="nextQuestion(8)" class="bg-blue-500 text-white py-2 px-4 mt-2 rounded-lg hover:bg-blue-600">Next</button>
+                    </li>
+                    <li id="question-9" class="hidden mb-4">
+                        <label for="q9" class="block mb-2 font-semibold">Cuts people’s hair:</label>
+                        <input type="text" id="q9" onkeypress="handleKeyPress(event, 9)" class="border p-2 w-full rounded-md shadow-sm">
+                        <button onclick="nextQuestion(9)" class="bg-blue-500 text-white py-2 px-4 mt-2 rounded-lg hover:bg-blue-600">Next</button>
+                    </li>
+                    <li id="question-10" class="hidden mb-4">
+                        <label for="q10" class="block mb-2 font-semibold">Maintains law and order:</label>
+                        <input type="text" id="q10" onkeypress="handleKeyPress(event, 10)" class="border p-2 w-full rounded-md shadow-sm">
+                        <button onclick="nextQuestion(10)" class="bg-blue-500 text-white py-2 px-4 mt-2 rounded-lg hover:bg-blue-600">Next</button>
+                    </li>
+                </ul>
+            </div>
 
-    <canvas id="confettiCanvas"></canvas>
-
-    <h1>Word Search Puzzle</h1>
-
-    <div class="puzzle-wrapper">
-        <div class="word-search-container" id="wordSearchContainer">
-            <!-- JavaScript will populate the grid -->
+            <!-- List of Possible Answers -->
+            <div id="possible-answers" class="flex flex-wrap mt-4 mb-4">
+                <!-- Answers will be dynamically generated here -->
+            </div>
         </div>
 
-        <div class="word-list">
-            <h3>Find the Words:</h3>
-            <ul id="wordList">
-                <!-- Word list goes here -->
-            </ul>
+        <!-- Final Screen -->
+        <div id="final-screen" class="hidden">
+            <p class="mb-4 text-xl font-semibold">Your Score: <span id="final-score"></span></p>
+            <div id="failed-questions" class="mb-4"></div>
+            <button onclick="restartQuiz()" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600">Restart Quiz</button>
         </div>
+
+        <!-- Congratulations Message -->
+        <div id="congratulations" class="congratulations">Congratulations! You got all answers correct!</div>
     </div>
 
-    <div id="congratulationsMessage">Congratulations! You found all the words!</div>
-
-    <button id="restartBtn" onclick="restartPuzzle()">Restart Puzzle</button>
-
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js" async></script>
     <script>
-        const gridSize = 10;
-        const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        const words = ['KARAFUU', 'HARADALI', 'SHAMIRI', 'PAKANGA', 'KITUNGUU', 'MDALASINI', 'DHANIA', 'PILIPILI', 'NYANYA', 'CHUMVI']; // 10 words
-        const colors = ['#FF5733', '#33FF57', '#5733FF', '#FF33A1', '#FF33F6', '#FFD733', '#33FFDC', '#FF6B33', '#33D3FF', '#FFC733'];
-        let grid = Array(gridSize).fill(null).map(() => Array(gridSize).fill(''));
-        let wordsFound = 0;
-
-        function getRandomLetter() {
-            return alphabet[Math.floor(Math.random() * alphabet.length)];
-        }
-
-        function placeWord(word) {
-            let placed = false;
-            let attempts = 0;
-            while (!placed && attempts < 100) {
-                const direction = Math.random() > 0.5 ? 'horizontal' : 'vertical';
-                let row = Math.floor(Math.random() * gridSize);
-                let col = Math.floor(Math.random() * gridSize);
-
-                if (direction === 'horizontal' && col + word.length <= gridSize) {
-                    let fits = true;
-                    for (let i = 0; i < word.length; i++) {
-                        if (grid[row][col + i] !== '' && grid[row][col + i] !== word[i]) {
-                            fits = false;
-                            break;
-                        }
-                    }
-                    if (fits) {
-                        for (let i = 0; i < word.length; i++) {
-                            grid[row][col + i] = word[i];
-                        }
-                        placed = true;
-                    }
-                } else if (direction === 'vertical' && row + word.length <= gridSize) {
-                    let fits = true;
-                    for (let i = 0; i < word.length; i++) {
-                        if (grid[row + i][col] !== '' && grid[row + i][col] !== word[i]) {
-                            fits = false;
-                            break;
-                        }
-                    }
-                    if (fits) {
-                        for (let i = 0; i < word.length; i++) {
-                            grid[row + i][col] = word[i];
-                        }
-                        placed = true;
-                    }
-                }
-                attempts++; // Increment attempts counter
-            }
-            if (attempts >= 100) {
-                console.error(`Could not place word: ${word}`);
-            }
-        }
-
-        words.forEach(word => placeWord(word));
-
-        for (let row = 0; row < gridSize; row++) {
-            for (let col = 0; col < gridSize; col++) {
-                if (grid[row][col] === '') {
-                    grid[row][col] = getRandomLetter();
-                }
-            }
-        }
-
-        const wordSearchContainer = document.getElementById('wordSearchContainer');
-        grid.forEach((row, rowIndex) => {
-            row.forEach((letter, colIndex) => {
-                const cell = document.createElement('div');
-                cell.textContent = letter;
-                cell.className = 'word-search-cell';
-                cell.dataset.row = rowIndex;
-                cell.dataset.col = colIndex;
-                wordSearchContainer.appendChild(cell);
-            });
-        });
-
-        const wordList = document.getElementById('wordList');
-        words.forEach((word, index) => {
-            const li = document.createElement('li');
-            li.textContent = word;
-            li.dataset.color = colors[index];
-            wordList.appendChild(li);
-        });
-
-        let selectedCells = [];
-        let isSelecting = false;
-
-        function selectCell(cell) {
-            if (!cell.classList.contains('selected')) {
-                cell.classList.add('selected');
-                selectedCells.push(cell);
-            }
-        }
-
-        function checkSelectedWord() {
-            const selectedWord = selectedCells.map(cell => cell.textContent).join('');
-            if (words.includes(selectedWord)) {
-                const wordIndex = words.indexOf(selectedWord);
-                const wordColor = colors[wordIndex];
-                selectedCells.forEach(cell => {
-                    cell.classList.add('found');
-                    cell.style.backgroundColor = wordColor;
-                });
-                const li = [...wordList.getElementsByTagName('li')].find(li => li.textContent === selectedWord);
-                if (li) {
-                    li.style.textDecoration = 'line-through';
-                }
-                wordsFound++;
-                if (wordsFound === words.length) {
-                    showCongratulations();
-                }
-            }
-            selectedCells.forEach(cell => cell.classList.remove('selected'));
-            selectedCells = [];
-        }
-
-        function showCongratulations() {
-            document.getElementById('congratulationsMessage').style.display = 'block';
-            document.getElementById('restartBtn').style.display = 'block';
-            createConfetti();
-        }
-
-        function createConfetti() {
-            const canvas = document.getElementById('confettiCanvas');
-            const context = canvas.getContext('2d');
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-
-            const randomColor = () => colors[Math.floor(Math.random() * colors.length)];
-
-            const randomConfetti = () => ({
-                x: Math.random() * canvas.width,
-                y: Math.random() * canvas.height,
-                radius: Math.random() * 5 + 2,
-                color: randomColor(),
-                alpha: Math.random() * 0.5 + 0.5
-            });
-
-            const confetti = Array.from({ length: 100 }).map(randomConfetti);
-
-            function animateConfetti() {
-                context.clearRect(0, 0, canvas.width, canvas.height);
-                confetti.forEach(p => {
-                    context.beginPath();
-                    context.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-                    context.fillStyle = p.color;
-                    context.globalAlpha = p.alpha;
-                    context.fill();
-                });
-                requestAnimationFrame(animateConfetti);
-            }
-
-            animateConfetti();
-        }
-
-        wordSearchContainer.addEventListener('click', (e) => {
-            if (e.target.classList.contains('word-search-cell')) {
-                if (!isSelecting) {
-                    isSelecting = true;
-                }
-                selectCell(e.target);
-                checkSelectedWord();
-            }
-        });
-
-        wordSearchContainer.addEventListener('mouseup', () => {
-            isSelecting = false;
-        });
-
-        function restartPuzzle() {
-            // Reload the page to restart
-            location.reload();
-        }
-    </script>
+            </script>
 </body>
 </html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Animal Categorization</title>
+<style>
+    #container {
+        display: flex;
+        justify-content: space-around;
+        margin-top: 50px;
+    }
+    .category {
+        width: 200px;
+        border: 2px solid #ccc;
+        padding: 10px;
+        text-align: center;
+    }
+    img {
+        width: 150px;
+        cursor: pointer;
+    }
+</style>
+</head>
+<body>
+
+<div id="container">
+    <div class="category" id="domestic" ondrop="drop(event)" ondragover="allowDrop(event)">
+        <h2>Domestic Animals</h2>
+    </div>
+    <div class="category" id="wild" ondrop="drop(event)" ondragover="allowDrop(event)">
+        <h2>Wild Animals</h2>
+    </div>
+</div>
+
+<img src="cat.jpg" draggable="true" ondragstart="drag(event)" id="cat">
+<img src="dog.jpg" draggable="true" ondragstart="drag(event)" id="dog">
+<img src="lion.jpg" draggable="true" ondragstart="drag(event)" id="lion">
+<img src="elephant.jpg" draggable="true" ondragstart="drag(event)" id="elephant">
+
+<script>
+    function allowDrop(event) {
+        event.preventDefault();
+    }
+    
+    function drag(event) {
+        event.dataTransfer.setData("text", event.target.id);
+    }
+    
+    function drop(event) {
+        event.preventDefault();
+        var data = event.dataTransfer.getData("text");
+        var draggableElement = document.getElementById(data);
+        var targetCategory = event.target.closest('.category');
+        
+        if (targetCategory) {
+            targetCategory.appendChild(draggableElement);
+        }
+    }
+</script>
+
+</body>
+</html>

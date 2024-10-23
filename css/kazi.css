@@ -1,0 +1,18 @@
+.hidden {
+    display: none;
+}
+.correct {
+    background-color: lightgreen;
+}
+.wrong {
+    background-color: lightcoral;
+}
+.congratulations {
+    display: none;
+    font-size: 1.5em;
+    color: green;
+    margin-bottom: 20px;
+}
+body {
+    font-family: 'Arial', sans-serif; /* Change to your desired font */
+}
