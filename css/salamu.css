@@ -1,0 +1,153 @@
+
+body {
+    background: hsla(212, 79%, 72%, 0.937); /* Replace with your image URL */
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
+.drop-zone {
+    border: 2px dashed #666666;
+    padding: 5px 10px;
+    min-width: 100px;
+    background-color: #d8d5d5;
+    display: inline-block;
+    margin: 0 5px;
+}
+
+.draggable {
+    margin: 10px;
+    padding: 5px 10px;
+    background-color: #80d5e4;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.draggable:hover {
+    background-color: #ddd;
+}
+
+.popup-message {
+    position: absolute;
+    background-color: #f87171;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    display: none;
+    z-index: 10;
+}
+
+#confetti {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    display: none;
+}
+
+/* Section colors */
+.section-a {
+    /*background-color: #0aebf3;*/
+    background-color: #8fa1a1;
+}
+
+/* Answer container color */
+.answer-container {
+    background-color: #046063;
+}
+
+/* Container styles */
+.quiz-container {
+    background-color: hsl(12, 3%, 68%);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap; /* Ensure flexibility for small screens */
+    justify-content: space-between;
+}
+
+.questions {
+    flex: 1; /* Take available space */
+    margin-right: 20px;
+}
+
+.answers {
+    flex: 0 0 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+/* Media query for small screens */
+@media (max-width: 640px) {
+    .quiz-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .questions {
+        margin-right: 0;
+        margin-bottom: 20px;
+    }
+
+    .answers {
+        flex: 1;
+        width: 100%;
+        max-width: 320px;
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+    }
+
+    .drop-zone, .draggable {
+        font-size: 14px;
+        padding: 5px;
+        margin: 5px;
+    }
+}
+
+.refresh-btn {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: none;
+}
+
+.refresh-btn:hover {
+    background-color: #e4230a;
+}
+
+/* Right-aligned Next button */
+.next-container {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end; /* Aligns button to the right */
+}
+
+.next-btn {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #0a20e4;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.next-btn:hover {
+    background-color: #6088df;
+}

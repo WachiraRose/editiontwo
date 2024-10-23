@@ -2,334 +2,117 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fill in the Blanks Quiz</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Magonjwa/Diseases</title>
+    <link href="https://fonts.googleapis.com/css?family=Comfortaa|Bungee|Sirin+Stencil:400,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
     <style>
+        /* Basic styles for your quiz */
         body {
-            background: url('grey.jpg') no-repeat center center fixed; /* Replace with your image URL */
-            background-size: cover;
-            font-family: 'Arial', sans-serif;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 0;
+            font-family: 'Comfortaa', sans-serif;
+            background-color: #f8f9fa; /* light background for better readability */
         }
-        .drop-zone {
-            border: 2px dashed #666666;
-            padding: 5px 10px;
-            min-width: 100px;
-            background-color: #d8d5d5;
-            display: inline-block;
-            margin: 0 5px;
+        .section {
+            display: none; /* Hide all sections initially */
         }
-
-        .draggable {
-            margin: 10px;
-            padding: 5px 10px;
-            background-color: #80d5e4;
-            border: 1px solid #ccc;
-            cursor: pointer;
-            display: inline-block;
+        .active {
+            display: block; /* Show the active section */
         }
-
-        .draggable:hover {
-            background-color: #ddd;
+        .quiz-options {
+            margin: 20px 0;
         }
-
-        .popup-message {
-            position: absolute;
-            background-color: #f87171;
+        #next-btn {
+            background-color: #007bff; /* Bootstrap primary color */
             color: white;
-            padding: 5px 10px;
-            border-radius: 5px;
-            display: none;
-            z-index: 10;
-        }
-
-        #confetti {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            display: none;
-        }
-
-        /* Section colors */
-        .quiz-intro {
-            background-color: #f0f0f0; /* Light Grey */
-            color: #333333; /* Dark Charcoal */
-        }
-        .section-a {
-            background-color: plum;
-
-        }
-
-        /* Answer container color */
-        .answer-container {
-            background-color: #068488;
-        }
-
-        /* Container styles */
-        .quiz-container {
-            background-color:#ffebee;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            margin-bottom: 20px;
-            display: flex;
-            flex-wrap: wrap; /* Ensure flexibility for small screens */
-            justify-content: space-between;
-        }
-
-        .questions {
-            flex: 1; /* Take available space */
-            margin-right: 20px;
-        }
-
-        .answers {
-            flex: 0 0 150px;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-        }
-
-        /* Media query for small screens */
-        @media (max-width: 640px) {
-            .quiz-container {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .questions {
-                margin-right: 0;
-                margin-bottom: 20px;
-            }
-
-            .answers {
-                flex: 1;
-                width: 100%;
-                max-width: 320px;
-                display: flex;
-                justify-content: space-around;
-                flex-wrap: wrap;
-            }
-
-            .drop-zone, .draggable {
-                font-size: 14px;
-                padding: 5px;
-                margin: 5px;
-            }
-        }
-
-        .refresh-btn {
-            margin-top: 20px;
             padding: 10px 20px;
-            background-color: #293029;
-            color: white;
             border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            display: none;
-        }
-
-        .refresh-btn:hover {
-            background-color: #e4230a;
-        }
-
-        /* Right-aligned Next button */
-        .next-container {
-            width: 100%;
-            display: flex;
-            justify-content: flex-end; /* Aligns button to the right */
-        }
-
-        .next-btn {
-            margin-top: 20px;
-            padding: 10px 20px;
-            background-color: #ff6f61;
-            color: white;
-            border: none;
-            border-radius: 5px;
             cursor: pointer;
         }
-
-        .next-btn:hover {
-            background-color: #6088df;
+        #next-btn:hover {
+            background-color: #0056b3; /* Darker on hover */
         }
     </style>
 </head>
-<body class="bg-gray-100">
-    <h1 class="text-5xl font-bold my-4 text-white">JAZA MAPENGO</h1>
+<body>
 
-    <!-- Section to describe the quiz -->
-    <section class="quiz-intro bg-gradient-to-r from-teal-500 to-lime-500 text-white p-6 rounded-lg shadow-lg w-11/12 md:w-3/4 lg:w-1/2 mb-6 transform transition-all hover:scale-105 duration-300">
-        <h2 class="text-2xl font-extrabold mb-4">Lesson 1: Swahili Greetings Quiz</h2>
-        <p class="text-base md:text-lg font-medium">
-            Test your Swahili greetings with this fill-in-the-blanks quiz! Drag and drop the correct phrases into the sentences. It's a fun way to practice and improve your Swahili vocabulary. Good luck and have fun!
-        </p>
-    </section>
-    
-
-    <div class="quiz-container relative">
-        <!-- Section A (Fill in the Blanks) -->
-        <div id="quiz-container-a" class="section-a questions">
-            <h2 class="text-2xl font-bold my-4"> A. Salamu/Greetings</h2>
-            <div class="question my-2">
-                1. In the morning, you would say <span class="drop-zone" data-answer="Habari"></span> ya asubuhi.
-            </div>
-            <div class="question my-2">
-                2. When asking someone their name, you say “Jina lako ni <span class="drop-zone" data-answer="nani"></span>.”
-            </div>
-            <div class="question my-2">
-                3. When a child meets their mother, they say “<span class="drop-zone" data-answer="shikamoo"></span> mama.”
-            </div>
-            <div class="question my-2">
-                4. Before going to sleep at night, it's nice to say, "<span class="drop-zone" data-answer="usiku"></span> mwema."
-            </div>
-            <div class="question my-2">
-                5. To say sorry to someone, you say “<span class="drop-zone" data-answer="pole"></span> mama.”
-            </div>
+<!-- QUIZ SECTIONS -->
+<section class="section active" id="section-1">
+    <main>
+        <div class="text-container">
+            <h3>Magonjwa/Diseases Quiz</h3>
+            <p>QUESTION 1 OF 5</p>
+            <p>1. What is the Kiswahili word for "Epilepsy"?</p>
         </div>
+        <form>
+            <div class="quiz-options">
+                <input type="radio" class="input-radio" id="one-a" name="yes-1" required>
+                <label for="one-a">A: Kifafa</label>
 
-        <!-- Answer container for draggable items -->
-        <div id="answer-container" class="answer-container w-11/12 md:w-4/12 mt-4 p-4 rounded shadow-lg flex flex-col justify-start">
-            <p class="text-lg font-semibold mb-2">Drag and Drop the answers:</p>
-            <div class="flex flex-wrap justify-start" id="answer-items">
-                <!-- Answers will be populated here by JavaScript -->
+                <input type="radio" class="input-radio" id="one-b" name="yes-1">
+                <label for="one-b">B: Kifua Kikuu</label>
+
+                <input type="radio" class="input-radio" id="one-c" name="yes-1">
+                <label for="one-c">C: Ukimwi</label>
             </div>
+            <button type="button" id="next-btn" onclick="showSection(2)">Next</button>
+        </form>
+    </main>
+</section>
+
+<section class="section" id="section-2">
+    <main>
+        <div class="text-container">
+            <h3>Magonjwa/Diseases Quiz</h3>
+            <p>QUESTION 2 OF 5</p>
+            <p>How do you say "Whooping cough" in Kiswahili?</p>
         </div>
-    </div>
+        <form>
+            <div class="quiz-options">
+                <input type="radio" class="input-radio" id="two-a" name="no-2" required>
+                <label for="two-a">A: kipindipindu</label>
 
-    <!-- Confetti canvas -->
-    <canvas id="confetti"></canvas>
+                <input type="radio" class="input-radio" id="two-b" name="no-2" required>
+                <label for="two-b">B: Pepo punda</label>
 
-    <!-- Refresh Button -->
-    <button id="refresh-button" class="refresh-btn" onclick="refreshQuiz()">Refresh Quiz</button>
+                <input type="radio" class="input-radio" id="two-c" name="no-2" required>
+                <label for="two-c">C: kifaduro</label>
+            </div>
+            <button type="button" id="next-btn" onclick="showSection(3)">Next</button>
+        </form>
+    </main>
+</section>
 
-     <!-- Next Button in a right-aligned container -->
-     <div class="next-container">
-        <button id="next-button" class="next-btn" onclick="goToNextPage()">Next</button>
-    </div>
+<!-- Add similar structure for sections 3, 4, and 5 -->
 
-    <script>
-        const draggables = [
-            { text: "Habari", answer: "Habari" },
-            { text: "nani", answer: "nani" },
-            { text: "shikamoo", answer: "shikamoo" },
-            { text: "usiku", answer: "usiku" },
-            { text: "pole", answer: "pole" }
-        ];
+<!-- Score Counter Section -->
+<section class="section" id="section-6">
+    <main>
+        <div class="text-container">
+            <h3>Your Score</h3>
+            <p id="score">You scored X out of 5.</p>
+            <button onclick="restartQuiz()">Restart Quiz</button>
+        </div>
+    </main>
+</section>
 
-        const answerContainer = document.getElementById('answer-items');
-        const dropZones = document.querySelectorAll('.drop-zone');
-        const popupMessageA = document.getElementById('popup-message-a');
-        const confettiCanvas = document.getElementById('confetti');
-        const refreshButton = document.getElementById('refresh-button');
-        let confettiCtx = confettiCanvas.getContext('2d');
-        let confettiActive = false;
+<script>
+    // JavaScript to handle section navigation and score tracking
+    let currentSection = 1;
 
-        // Shuffle answers function
-        function shuffle(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
-            }
-        }
-
-        // Add draggable items to the answer container
-        function addDraggables() {
-            shuffle(draggables);
-            draggables.forEach(item => {
-                const draggableElement = document.createElement('div');
-                draggableElement.className = 'draggable';
-                draggableElement.draggable = true;
-                draggableElement.dataset.answer = item.answer;
-                draggableElement.textContent = item.text;
-
-                // Set drag event
-                draggableElement.addEventListener('dragstart', (e) => {
-                    e.dataTransfer.setData('text/plain', item.answer);
-                });
-
-                answerContainer.appendChild(draggableElement);
-            });
-        }
-
-        // Allow dropping on drop zones
-        dropZones.forEach(dropZone => {
-            dropZone.addEventListener('dragover', (e) => {
-                e.preventDefault();
-            });
-
-            dropZone.addEventListener('drop', (e) => {
-                e.preventDefault();
-                const droppedAnswer = e.dataTransfer.getData('text/plain');
-                if (droppedAnswer === dropZone.dataset.answer) {
-                    dropZone.textContent = droppedAnswer;
-                    const draggableElement = document.querySelector(`[data-answer="${droppedAnswer}"]`);
-                    if (draggableElement) {
-                        draggableElement.style.display = 'none';
-                    }
-                    checkAnswersA();
-                }
-            });
+    function showSection(sectionNumber) {
+        document.querySelectorAll('.section').forEach(section => {
+            section.classList.remove('active');
         });
+        document.getElementById(`section-${sectionNumber}`).classList.add('active');
+        currentSection = sectionNumber;
+    }
 
-        function checkAnswersA() {
-            let allCorrect = true;
-            dropZones.forEach(dropZone => {
-                if (dropZone.textContent !== dropZone.dataset.answer) {
-                    allCorrect = false;
-                }
-            });
+    function restartQuiz() {
+        currentSection = 1;
+        showSection(currentSection);
+        document.getElementById('score').innerText = '';
+    }
+</script>
 
-            if (allCorrect) {
-                refreshButton.style.display = 'block';
-                triggerConfetti();
-            }
-        }
-
-        // Refresh the quiz by clearing all answers
-        function refreshQuiz() {
-            dropZones.forEach(dropZone => {
-                dropZone.textContent = '';
-            });
-
-            answerContainer.innerHTML = '';
-            addDraggables();
-            refreshButton.style.display = 'none';
-            stopConfetti();
-        }
-
-        // Trigger confetti
-        function triggerConfetti() {
-            confettiActive = true;
-            confettiCanvas.style.display = 'block';
-            requestAnimationFrame(confettiAnimation);
-        }
-
-        // Stop confetti
-        function stopConfetti() {
-            confettiActive = false;
-            confettiCanvas.style.display = 'none';
-        }
-
-        // Simple confetti animation
-        function confettiAnimation() {
-            if (!confettiActive) return;
-            confettiCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
-            // Confetti logic goes here...
-            requestAnimationFrame(confettiAnimation);
-        }
-
-        // Initialize the quiz
-        addDraggables();
-    </script>
 </body>
 </html>

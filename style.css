@@ -132,7 +132,12 @@ label .jdsjkefkefkefefexco {
 .two-c:valid+label,
 .three-c:valid+label,
 .four-b:valid+label,
-.five-a:valid+label {
+.five-a:valid+label,
+.six-d:valid+label,
+.seven-a:valid+label,
+.eight-a:valid+label,
+.nine-a:valid+label
+.ten-a:valid+label {
     animation: flash 0.6s infinite;
 }
 
@@ -225,14 +230,19 @@ form:invalid #btn {
 }
 
 .score-counter::after {
-    content: counter(points) "/5";
+    content: counter(points) "/10";
 }
 
 .one-a:checked,
 .two-c:checked,
 .three-c:checked,
 .four-b:checked,
-.five-a:checked {
+.five-a:checked,
+.six-d:checked,
+.seven-a:checked,
+.eight-a:checked,
+.nine-a:checked,
+.ten-a:checked{
     counter-increment: points;
 }
 
@@ -254,7 +264,8 @@ form:invalid #btn {
 
 #game-over h1 {
     background: url("https://res.cloudinary.com/dvhndpbun/image/upload/e_brightness:-20/v1588605696/01-01_web_designers_code_ld_img_dgytil.png");
-    -webkit-background-clip: text;
+    -webkit-background-clip: text; /* For Chrome and Safari */
+    background-clip: text; /* For other browsers that support it */
     color: transparent;
     background-size: contain;
     font-size: 5rem;
@@ -270,7 +281,8 @@ h1::before {
     top: 0;
     width: 100%;
     background: linear-gradient(45deg, rgba(255, 255, 255, 0) 45%, rgba(255, 255, 255, 0.8) 50%, rgba(255, 255, 255, 0) 55%, rgba(255, 255, 255, 0) 100%);
-    -webkit-background-clip: text;
+    -webkit-background-clip: text; /* For Chrome and Safari */
+    background-clip: text; /* For other browsers that support it */
     color: transparent;
     mix-blend-mode: screen;
     animation: shine 1s infinite;

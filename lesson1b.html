@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salamu</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="css\salamu2.css">
+</head>
+<body>
+    <div class="container my-4">
+        <h1 class="text-center text-white mb-4">LESSON 1: SALAMU (GREETINGS)</h1>
+
+        <!-- Section to describe the quiz -->
+       <!-- Section to describe the quiz -->
+        <section class="quiz-intro custom-gradient text-cream p-6 rounded-lg shadow-lg w-11/12 md:w-3/4 lg:w-1/2 mb-6 transform transition-all hover:scale-105 duration-300">
+            <h2 class="text-2xl font-extrabold mb-4 text-black">Jaza Mapengo (Fill in the Blanks)</h2>
+            <p class="text-base md:text-lg font-medium text-white">
+                 Test your Swahili greetings with this fill-in-the-blanks quiz! Drag and drop the correct phrases into the sentences. It's a fun way to practice and improve your Swahili vocabulary. Good luck and have fun!
+            </p>
+        </section>
+
+
+        <div class="row g-4">
+            <!-- Question Section -->
+            <div class="col-md-8">
+                <div class="bg-warning p-4 rounded shadow">
+                    <h2 class="text-xl font-bold my-4"> B. Jibu Ukweli au Uwongo:</h2>
+
+                    <div class="question my-2">
+                        1. "Habari ya asubuhi" means "Good night" in Kiswahili. <span class="drop-zone" data-answer="False"></span>
+                    </div>
+                    <div class="question my-2">
+                        2. You would say "Hodi, hodi?” to mean “May I come in?” <span class="drop-zone" data-answer="True"></span>
+                    </div>
+                    <div class="question my-2">
+                        3. "Lala unono" is a greeting you use in the morning. <span class="drop-zone" data-answer="False"></span>
+                    </div>
+                    <div class="question my-2">
+                        4. "Habari ya jioni" translates to "Good evening" in English. <span class="drop-zone" data-answer="True"></span>
+                    </div>
+                    <div class="question my-2">
+                        5. “Hatujambo” means “We are fine.” <span class="drop-zone" data-answer="True"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Answer Section -->
+            <div class="col-md-4">
+                <div class="answer-container shadow">
+                    <h4 class="text-white">Drag and Drop Answers:</h4>
+                    <div id="answer-items" class="d-flex flex-wrap justify-content-start">
+                        <!-- Answers will be inserted here via JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Confetti Canvas -->
+        <canvas id="confetti"></canvas>
+
+        <!-- Refresh Button -->
+        <div class="text-center mt-4">
+            <button id="refresh-button" class="refresh-btn" onclick="refreshQuiz()">Refresh Quiz</button>
+        </div>
+
+        <!-- Next Button -->
+        <div class="d-flex justify-content-end mt-4">
+            <button id="next-button" class="next-btn" onclick="goToNextPage()">Next</button>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies (Popper.js, etc.) -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+    <script src="js\salamu2.js"></script>
+    
+</body>
+</html>
