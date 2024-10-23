@@ -1,110 +1,219 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Swahili Greetings Quiz</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <style>
-        .hidden {
-            display: none;
-        }
-        .correct {
-            background-color: lightgreen;
-        }
-        .wrong {
-            background-color: lightcoral;
-        }
-        .congratulations {
-            display: none;
-            font-size: 1.5em;
-            color: green;
-            margin-bottom: 20px;
-        }
-        body {
-            font-family: 'Arial', sans-serif; /* Change to your desired font */
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Drag and Drop Kitchen Appliances</title>
+
+  <!-- jQuery and jQuery UI CDN Links -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+  <style>
+    @import url('https://fonts.googleapis.com/css?family=Montserrat');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: linear-gradient(135deg, #7a5e3b, #e5c1a5); /* Shades of brown */
+      color: #111;
+      padding: 1rem; /* Padding for mobile responsiveness */
+    }
+
+    h2 {
+      text-align: center;
+      margin: 2rem 0;
+      font-size: 2.5rem; /* Larger font size */
+      color: #4a3c28; /* Darker shade for contrast */
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+    }
+
+    .introduction {
+      text-align: center;
+      margin-bottom: 2rem;
+      font-size: 1.2rem;
+      color: #4a3c28; /* Darker shade for contrast */
+      background-color: rgba(255, 255, 255, 0.8); /* Light background for readability */
+      padding: 1rem;
+      border-radius: 8px; /* Rounded corners */
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect */
+    }
+
+    .draggable-elements {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap; /* Allow wrapping for small screens */
+      margin: 2rem 0;
+    }
+
+    .draggable {
+      height: 5rem;
+      width: 5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0.5rem;
+      cursor: move;
+      position: relative; /* To apply z-index */
+      z-index: 10; /* Ensure dragged image appears on top */
+    }
+
+    .draggable img {
+      max-height: 100%;
+      max-width: 100%;
+      border-radius: 5px; /* Optional: rounded corners */
+    }
+
+    .droppable {
+      height: 6.5rem;
+      width: 6.5rem;
+      margin: 1rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      text-align: center;
+      font-size: 1rem;
+      font-weight: bold;
+      background-color: #d1b89a; /* Light earthy color for the droppable box */
+      border: 3px dashed #4a4a2c; /* Darker border for contrast */
+      position: relative; /* For positioning the dropped image */
+      overflow: hidden; /* Prevent overflow of images */
+    }
+
+    .droppable.dropped {
+      border-style: solid;
+      background-color: #bca78d; /* Slightly darker when dropped */
+    }
+
+    .dragged {
+      opacity: 0.5; /* Make the dragged item semi-transparent */
+    }
+
+    .completion-message {
+      display: none;
+      text-align: center;
+      font-size: 1.5rem;
+      color: green;
+      margin-top: 2rem;
+    }
+
+    @media (max-width: 600px) {
+      html { font-size: 14px; }
+      .draggable-elements { margin: 1.5rem; }
+      .draggable, .droppable {
+          height: 4rem; /* Reduce height for smaller screens */
+          width: 4rem; /* Reduce width for smaller screens */
+      }
+    }
+  </style>
 </head>
-<body class="bg-gradient-to-r from-purple-400 via-purple-300 to-purple-200 p-8">
-    <div class="container mx-auto">
-        <h1 class="text-4xl font-bold text-center mb-6">Swahili Greetings Quiz</h1>
-        
-        <div id="quiz-container" class="mb-6 bg-white shadow-md rounded-lg p-6">
-            <div id="score" class="mb-4 text-xl font-semibold">Score: 0</div>
-            <div id="question-container">
-                <ul id="questions-list">
-                    <li id="question-1" class="active mb-4">
-                        <label for="q1" class="block mb-2 font-semibold">Is involved in meal food preparation:</label>
-                        <input type="text" id="q1" onkeypress="handleKeyPress(event, 1)" class="border p-2 w-full rounded-md shadow-sm">
-                        <button onclick="nextQuestion(1)" class="bg-blue-500 text-white py-2 px-4 mt-2 rounded-lg hover:bg-blue-600">Next</button>
-                    </li>
-                    <li id="question-2" class="hidden mb-4">
-                        <label for="q2" class="block mb-2 font-semibold">Uses wood to make items such as furniture:</label>
-                        <input type="text" id="q2" onkeypress="handleKeyPress(event, 2)" class="border p-2 w-full rounded-md shadow-sm">
-                        <button onclick="nextQuestion(2)" class="bg-blue-500 text-white py-2 px-4 mt-2 rounded-lg hover:bg-blue-600">Next</button>
-                    </li>
-                    <li id="question-3" class="hidden mb-4">
-                        <label for="q3" class="block mb-2 font-semibold">Pronounces judgments in a court of laws:</label>
-                        <input type="text" id="q3" onkeypress="handleKeyPress(event, 3)" class="border p-2 w-full rounded-md shadow-sm">
-                        <button onclick="nextQuestion(3)" class="bg-blue-500 text-white py-2 px-4 mt-2 rounded-lg hover:bg-blue-600">Next</button>
-                    </li>
-                    <li id="question-4" class="hidden mb-4">
-                        <label for="q4" class="block mb-2 font-semibold">Tills the land for planting and harvesting crops:</label>
-                        <input type="text" id="q4" onkeypress="handleKeyPress(event, 4)" class="border p-2 w-full rounded-md shadow-sm">
-                        <button onclick="nextQuestion(4)" class="bg-blue-500 text-white py-2 px-4 mt-2 rounded-lg hover:bg-blue-600">Next</button>
-                    </li>
-                    <li id="question-5" class="hidden mb-4">
-                        <label for="q5" class="block mb-2 font-semibold">Is head of a Republic/democratic Country:</label>
-                        <input type="text" id="q5" onkeypress="handleKeyPress(event, 5)" class="border p-2 w-full rounded-md shadow-sm">
-                        <button onclick="nextQuestion(5)" class="bg-blue-500 text-white py-2 px-4 mt-2 rounded-lg hover:bg-blue-600">Next</button>
-                    </li>
-                    <li id="question-6" class="hidden mb-4">
-                        <label for="q6" class="block mb-2 font-semibold">Drives a vehicle:</label>
-                        <input type="text" id="q6" onkeypress="handleKeyPress(event, 6)" class="border p-2 w-full rounded-md shadow-sm">
-                        <button onclick="nextQuestion(6)" class="bg-blue-500 text-white py-2 px-4 mt-2 rounded-lg hover:bg-blue-600">Next</button>
-                    </li>
-                    <li id="question-7" class="hidden mb-4">
-                        <label for="q7" class="block mb-2 font-semibold">Runs short races or marathons:</label>
-                        <input type="text" id="q7" onkeypress="handleKeyPress(event, 7)" class="border p-2 w-full rounded-md shadow-sm">
-                        <button onclick="nextQuestion(7)" class="bg-blue-500 text-white py-2 px-4 mt-2 rounded-lg hover:bg-blue-600">Next</button>
-                    </li>
-                    <li id="question-8" class="hidden mb-4">
-                        <label for="q8" class="block mb-2 font-semibold">Makes items out of clay:</label>
-                        <input type="text" id="q8" onkeypress="handleKeyPress(event, 8)" class="border p-2 w-full rounded-md shadow-sm">
-                        <button onclick="nextQuestion(8)" class="bg-blue-500 text-white py-2 px-4 mt-2 rounded-lg hover:bg-blue-600">Next</button>
-                    </li>
-                    <li id="question-9" class="hidden mb-4">
-                        <label for="q9" class="block mb-2 font-semibold">Cuts people’s hair:</label>
-                        <input type="text" id="q9" onkeypress="handleKeyPress(event, 9)" class="border p-2 w-full rounded-md shadow-sm">
-                        <button onclick="nextQuestion(9)" class="bg-blue-500 text-white py-2 px-4 mt-2 rounded-lg hover:bg-blue-600">Next</button>
-                    </li>
-                    <li id="question-10" class="hidden mb-4">
-                        <label for="q10" class="block mb-2 font-semibold">Maintains law and order:</label>
-                        <input type="text" id="q10" onkeypress="handleKeyPress(event, 10)" class="border p-2 w-full rounded-md shadow-sm">
-                        <button onclick="nextQuestion(10)" class="bg-blue-500 text-white py-2 px-4 mt-2 rounded-lg hover:bg-blue-600">Next</button>
-                    </li>
-                </ul>
-            </div>
+<body>
 
-            <!-- List of Possible Answers -->
-            <div id="possible-answers" class="flex flex-wrap mt-4 mb-4">
-                <!-- Answers will be dynamically generated here -->
-            </div>
-        </div>
+  <h2>Drag the Kitchen Appliances to the Correct Boxes</h2>
+  
+  <div class="introduction">
+    <p>Welcome to the Drag and Drop activity! Your task is to match the kitchen appliances with their respective names. Have fun!</p>
+  </div>
+  
+  <section class="draggable-elements" id="draggable-container">
+      <div class="draggable" id="blender" draggable="true"><img src="img/Jikoni/blender.jpg" alt="Blender"></div>
+      <div class="draggable" id="toaster" draggable="true"><img src="img/Jikoni/toaster.jpg" alt="Toaster"></div>
+      <div class="draggable" id="microwave" draggable="true"><img src="img/Jikoni/cooker.jpg" alt="Microwave"></div>
+      <div class="draggable" id="oven" draggable="true"><img src="img/Jikoni/oven.jpg" alt="Oven"></div>
+      <div class="draggable" id="kettle" draggable="true"><img src="img/Jikoni/kettle.jpg" alt="Kettle"></div>
+  </section>
+  
+  <section class="droppable-elements" style="display: flex; justify-content: center;">
+      <div class="droppable" data-draggable-id="blender">
+          <span>Blender</span>
+      </div>
+      <div class="droppable" data-draggable-id="toaster">
+          <span>Toaster</span>
+      </div>
+      <div class="droppable" data-draggable-id="microwave">
+          <span>Microwave</span>
+      </div>
+      <div class="droppable" data-draggable-id="oven">
+          <span>Oven</span>
+      </div>
+      <div class="droppable" data-draggable-id="kettle">
+          <span>Kettle</span>
+      </div>
+  </section>
 
-        <!-- Final Screen -->
-        <div id="final-screen" class="hidden">
-            <p class="mb-4 text-xl font-semibold">Your Score: <span id="final-score"></span></p>
-            <div id="failed-questions" class="mb-4"></div>
-            <button onclick="restartQuiz()" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600">Restart Quiz</button>
-        </div>
+  <div class="completion-message">Congratulations! You've matched all the kitchen appliances!</div>
 
-        <!-- Congratulations Message -->
-        <div id="congratulations" class="congratulations">Congratulations! You got all answers correct!</div>
-    </div>
+  <script>
+    $(function () {
+        let matchedCount = 0; // Count matched items
 
-    <script>
-            </script>
+        // Shuffle function
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        // Shuffle the draggable elements
+        const draggables = $('#draggable-container .draggable').toArray();
+        const shuffledDraggables = shuffleArray(draggables);
+
+        // Empty the container and append shuffled elements
+        $('#draggable-container').empty().append(shuffledDraggables);
+
+        // Make the elements draggable
+        $(".draggable").draggable({
+            revert: "invalid", // Return to original position if not dropped
+            helper: "clone", // Create a clone of the element to drag
+            start: function(event, ui) {
+                $(this).addClass("dragged"); // Add dragged class for styling
+            },
+            stop: function(event, ui) {
+                $(this).removeClass("dragged"); // Remove dragged class on stop
+            }
+        });
+
+        // Make the droppable areas droppable
+        $(".droppable").droppable({
+            accept: ".draggable",
+            drop: function (event, ui) {
+                const draggableId = ui.draggable.attr("id");
+                const droppableId = $(this).data("draggable-id");
+
+                if (draggableId === droppableId) {
+                    $(this).addClass("dropped");
+                    // Place the image inside the droppable area
+                    const imageClone = ui.draggable.clone().css({
+                        position: 'absolute',
+                        top: '0',
+                        left: '0',
+                        width: '100%', // Adjust to fit droppable area
+                        height: '100%', // Adjust to fit droppable area
+                        zIndex: 5 // Ensure the image appears in front
+                    });
+                    $(this).append(imageClone); // Add the image clone to the droppable area
+                    ui.draggable.hide(); // Hide the original dragged image
+                    matchedCount++; // Increment matched count
+
+                    // Check if all items are matched
+                    if (matchedCount === 5) {
+                        $(".completion-message").fadeIn(); // Show completion message
+                    }
+                } else {
+                    $(this).removeClass("dropped"); // Remove drop class if incorrect
+                }
+            }
+        });
+    });
+  </script>
 </body>
 </html>
