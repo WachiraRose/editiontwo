@@ -30,6 +30,8 @@ a {
     color: inherit;
 }
 
+
+
 section {
     background: #a8c0ff;
     background: -webkit-linear-gradient(to right, #3f2b96, #a8c0ff);
@@ -134,10 +136,10 @@ label .jdsjkefkefkefefexco {
 .four-b:valid+label,
 .five-a:valid+label,
 .six-d:valid+label,
-.seven-a:valid+label,
-.eight-a:valid+label,
-.nine-a:valid+label
-.ten-a:valid+label {
+.seven-c:valid+label,
+.eight-d:valid+label,
+.nine-d:valid+label,
+.ten-b:valid+label {
     animation: flash 0.6s infinite;
 }
 
@@ -239,10 +241,10 @@ form:invalid #btn {
 .four-b:checked,
 .five-a:checked,
 .six-d:checked,
-.seven-a:checked,
-.eight-a:checked,
-.nine-a:checked,
-.ten-a:checked{
+.seven-c:checked,
+.eight-d:checked,
+.nine-d:checked,
+.ten-b:checked{
     counter-increment: points;
 }
 
@@ -263,7 +265,8 @@ form:invalid #btn {
 }
 
 #game-over h1 {
-    background: url("https://res.cloudinary.com/dvhndpbun/image/upload/e_brightness:-20/v1588605696/01-01_web_designers_code_ld_img_dgytil.png");
+    /*background: url("https://res.cloudinary.com/dvhndpbun/image/upload/e_brightness:-20/v1588605696/01-01_web_designers_code_ld_img_dgytil.png");*/
+    background: url("https://i.ytimg.com/vi/1jruXDBYDBo/hqdefault.jpg");
     -webkit-background-clip: text; /* For Chrome and Safari */
     background-clip: text; /* For other browsers that support it */
     color: transparent;
