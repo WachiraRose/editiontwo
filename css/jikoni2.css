@@ -40,7 +40,7 @@
     }
 
     .draggable {
-      height: 5rem;
+      height: 7.5rem;
       width: 5rem;
       display: flex;
       align-items: center;
@@ -52,8 +52,8 @@
     }
 
     .draggable img {
-      width: 100%; /* Adjust to fill the draggable area */
-      height: 100%; /* Adjust to fill the draggable area */
+      width: 200%; /* Adjust to fill the draggable area */
+      height: 200%; /* Adjust to fill the draggable area */
       border-radius: 5px; /* Optional: rounded corners */
     }
 
