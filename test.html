@@ -126,57 +126,60 @@
   <div class="completion-message">Congratulations! You've matched all the kitchen appliances!</div>
 
   <script>
-    $(function () {
-        let matchedCount = 0;
+    // Detect touch or mouse events based on device capabilities
+    const draggables = document.querySelectorAll('.draggable');
+    const droppables = document.querySelectorAll('.droppable');
 
-        function shuffleArray(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
-            }
-            return array;
-        }
+    draggables.forEach(draggable => {
+      draggable.addEventListener('touchstart', (e) => {
+        e.target.classList.add('dragging');
+      });
 
-        const draggables = $('#draggable-container .draggable').toArray();
-        const shuffledDraggables = shuffleArray(draggables);
-        $('#draggable-container').empty().append(shuffledDraggables);
+      draggable.addEventListener('touchmove', (e) => {
+        e.preventDefault();
+        const touch = e.targetTouches[0];
+        draggable.style.position = 'absolute';
+        draggable.style.left = `${touch.pageX - 50}px`; // Center on touch
+        draggable.style.top = `${touch.pageY - 50}px`;
+      });
 
-        $(".draggable").draggable({
-            revert: "invalid",
-            helper: "clone",
-            start: function() { $(this).addClass("dragged"); },
-            stop: function() { $(this).removeClass("dragged"); }
-        });
-
-        $(".droppable").droppable({
-            accept: ".draggable",
-            drop: function (event, ui) {
-                const draggableId = ui.draggable.attr("id");
-                const droppableId = $(this).data("draggable-id");
-
-                if (draggableId === droppableId) {
-                    $(this).addClass("dropped");
-                    const imageClone = ui.draggable.clone().css({
-                        position: 'absolute',
-                        top: '0',
-                        left: '0',
-                        width: '100%',
-                        height: '100%',
-                        zIndex: 5
-                    });
-                    $(this).append(imageClone);
-                    ui.draggable.hide();
-                    matchedCount++;
-
-                    if (matchedCount === 5) {
-                        $(".completion-message").fadeIn();
-                    }
-                } else {
-                    $(this).removeClass("dropped");
-                }
-            }
-        });
+      draggable.addEventListener('touchend', () => {
+        draggable.classList.remove('dragging');
+        checkDropZone(draggable);
+      });
     });
+
+    droppables.forEach(droppable => {
+      droppable.addEventListener('dragover', (e) => e.preventDefault());
+      droppable.addEventListener('drop', (e) => {
+        const dragging = document.querySelector('.dragging');
+        if (dragging && dragging.dataset.answer === droppable.dataset.answer) {
+          droppable.appendChild(dragging);
+          dragging.style.position = 'initial';
+        } else {
+          dragging.style.position = 'initial';
+        }
+      });
+    });
+
+    function checkDropZone(draggable) {
+      droppables.forEach(droppable => {
+        const rect = droppable.getBoundingClientRect();
+        const dragRect = draggable.getBoundingClientRect();
+        if (
+          dragRect.left < rect.right &&
+          dragRect.right > rect.left &&
+          dragRect.top < rect.bottom &&
+          dragRect.bottom > rect.top &&
+          draggable.dataset.answer === droppable.dataset.answer
+        ) {
+          droppable.appendChild(draggable);
+          draggable.style.position = 'initial';
+        } else {
+          draggable.style.position = 'initial';
+        }
+      });
+    }
   </script>
 </body>
 </html>

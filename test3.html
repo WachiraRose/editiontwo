@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Drag and Drop Kitchen Appliances</title>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css?family=Montserrat');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: linear-gradient(135deg, #7a5e3b, #e5c1a5); /* Shades of brown */
+      color: #111;
+      padding: 1rem; /* Padding for mobile responsiveness */
+    }
+
+    h2 {
+      text-align: center;
+      margin: 2rem 0;
+      font-size: 2.5rem; /* Larger font size */
+      color: #4a3c28; /* Darker shade for contrast */
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+    }
+
+    .introduction {
+      text-align: center;
+      margin-bottom: 2rem;
+      font-size: 1.2rem;
+      color: #4a3c28; /* Darker shade for contrast */
+      background-color: rgba(255, 255, 255, 0.8); /* Light background for readability */
+      padding: 1rem;
+      border-radius: 8px; /* Rounded corners */
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect */
+    }
+
+    .draggable-elements {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap; /* Allow wrapping for small screens */
+      margin: 2rem 0;
+    }
+
+    .draggable {
+      height: 5rem;
+      width: 5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0.5rem;
+      cursor: move;
+      position: relative; /* To apply z-index */
+      z-index: 10; /* Ensure dragged image appears on top */
+      touch-action: none; /* Required for touch drag functionality */
+    }
+
+    .draggable img {
+      width: 100%; /* Adjust to fill the draggable area */
+      height: 100%; /* Adjust to fill the draggable area */
+      border-radius: 5px; /* Optional: rounded corners */
+    }
+
+    .droppable-elements {
+      display: flex; /* Arrange boxes in a row */
+      justify-content: center;
+      margin: 2rem 0; /* Margin around droppable section */
+    }
+
+    .droppable {
+      height: 6.5rem;
+      width: 6.5rem;
+      margin: 1rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      text-align: center;
+      font-size: 1rem;
+      font-weight: bold;
+      background-color: #d1b89a; /* Light earthy color for the droppable box */
+      border: 3px dashed #4a4a2c; /* Darker border for contrast */
+      position: relative; /* For positioning the dropped image */
+      overflow: hidden; /* Prevent overflow of images */
+    }
+
+    .droppable.dropped {
+      border-style: solid;
+      background-color: #bca78d; /* Slightly darker when dropped */
+    }
+
+    .dragged {
+      opacity: 0.5; /* Make the dragged item semi-transparent */
+    }
+
+    .completion-message {
+      display: none;
+      text-align: center;
+      font-size: 1.5rem;
+      color: green;
+      margin-top: 2rem;
+    }
+
+    /* Adjustments for small screens */
+    @media (max-width: 600px) {
+      body { padding: 0.5rem; }
+      h2 { font-size: 2rem; } /* Adjust title size */
+      .introduction { font-size: 1rem; padding: 0.8rem; }
+      .draggable-elements { margin: 1rem 0; }
+      .draggable, .droppable {
+        height: 4rem; /* Reduce height for smaller screens */
+        width: 4rem; /* Reduce width for smaller screens */
+        font-size: 0.8rem; /* Smaller text size */
+        margin: 0.5rem; /* Reduce spacing */
+      }
+    }
+
+  </style>
+</head>
+<body>
+
+  <h2>Drag the Kitchen Appliances to the Correct Boxes</h2>
+  
+  <div class="introduction">
+    <p>Welcome to the Drag and Drop activity! Your task is to match the kitchen appliances with their respective names. Have fun!</p>
+  </div>
+  
+  <section class="draggable-elements" id="draggable-container">
+      <div class="draggable" id="blender" data-match="blender"><img src="img/Jikoni/blender.jpg" alt="Blender"></div>
+      <div class="draggable" id="toaster" data-match="toaster"><img src="img/Jikoni/toaster.jpg" alt="Toaster"></div>
+      <div class="draggable" id="microwave" data-match="microwave"><img src="img/Jikoni/cooker.jpg" alt="Microwave"></div>
+      <div class="draggable" id="oven" data-match="oven"><img src="img/Jikoni/oven.jpg" alt="Oven"></div>
+      <div class="draggable" id="kettle" data-match="kettle"><img src="img/Jikoni/kettle.jpg" alt="Kettle"></div>
+  </section>
+  
+  <section class="droppable-elements">
+      <div class="droppable" data-match="blender">Blender</div>
+      <div class="droppable" data-match="toaster">Toaster</div>
+      <div class="droppable" data-match="microwave">Microwave</div>
+      <div class="droppable" data-match="oven">Oven</div>
+      <div class="droppable" data-match="kettle">Kettle</div>
+  </section>
+
+  <div class="completion-message">Congratulations! You've matched all the kitchen appliances!</div>
+
+  <script>
+    const appliances = [
+      { id: "blender", match: "blender", img: "img/Jikoni/blender.jpg" },
+      { id: "toaster", match: "toaster", img: "img/Jikoni/toaster.jpg" },
+      { id: "microwave", match: "microwave", img: "img/Jikoni/cooker.jpg" },
+      { id: "oven", match: "oven", img: "img/Jikoni/oven.jpg" },
+      { id: "kettle", match: "kettle", img: "img/Jikoni/kettle.jpg" },
+    ];
+  
+    // Shuffle appliances
+    appliances.sort(() => Math.random() - 0.5);
+  
+    // Populate draggable elements
+    const draggableContainer = document.getElementById('draggable-container');
+    draggableContainer.innerHTML = '';
+    appliances.forEach(appliance => {
+      const draggableDiv = document.createElement('div');
+      draggableDiv.className = 'draggable';
+      draggableDiv.id = appliance.id;
+      draggableDiv.setAttribute('data-match', appliance.match);
+      draggableDiv.innerHTML = `<img src="${appliance.img}" alt="${appliance.match}">`;
+      draggableContainer.appendChild(draggableDiv);
+    });
+  
+    let matchedCount = 0;
+  
+    const draggables = document.querySelectorAll('.draggable');
+    const droppables = document.querySelectorAll('.droppable');
+  
+    draggables.forEach(draggable => {
+      // Touch events
+      draggable.addEventListener('touchstart', handleTouchStart);
+      draggable.addEventListener('touchmove', handleTouchMove);
+      draggable.addEventListener('touchend', handleTouchEnd);
+  
+      // Mouse events
+      draggable.addEventListener('mousedown', handleMouseDown);
+    });
+  
+    function handleTouchStart(e) {
+      e.preventDefault();
+      const touch = e.touches[0];
+      const target = e.target.closest('.draggable');
+      startDragging(target, touch.pageX, touch.pageY);
+    }
+  
+    function handleMouseDown(e) {
+      e.preventDefault();
+      const target = e.target.closest('.draggable');
+      startDragging(target, e.pageX, e.pageY);
+      document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('mouseup', handleMouseUp);
+    }
+  
+    function startDragging(target, pageX, pageY) {
+      target.touchOffsetX = pageX - target.getBoundingClientRect().left;
+      target.touchOffsetY = pageY - target.getBoundingClientRect().top;
+      target.style.opacity = '0.5';
+      target.style.zIndex = '10';
+    }
+  
+    function handleMouseMove(e) {
+      const target = document.querySelector('.draggable[style*="z-index: 10"]'); // Find the currently dragged element
+      if (target) {
+        target.style.position = 'absolute';
+        target.style.left = `${e.pageX - target.touchOffsetX}px`;
+        target.style.top = `${e.pageY - target.touchOffsetY}px`;
+      }
+    }
+  
+    function handleMouseUp(e) {
+      const draggable = document.querySelector('.draggable[style*="z-index: 10"]');
+      if (draggable) {
+        draggable.style.opacity = '1';
+        draggable.style.zIndex = '1';
+  
+        let dropped = false;
+  
+        droppables.forEach(droppable => {
+          const rect = droppable.getBoundingClientRect();
+          
+          if (e.pageX >= rect.left && e.pageX <= rect.right &&
+              e.pageY >= rect.top && e.pageY <= rect.bottom) {
+            if (draggable.dataset.match === droppable.dataset.match) {
+              dropped = true;
+              droppable.classList.add('dropped');
+              droppable.innerHTML = `<img src="${draggable.querySelector('img').src}" style="width: 100%; height: 100%; border-radius: 5px;"/><div>${droppable.innerHTML}</div>`;
+              draggable.remove();
+              matchedCount++;
+              checkCompletion();
+            }
+          }
+        });
+  
+        if (!dropped) {
+          draggable.style.position = 'static'; // Reset position if not dropped
+        }
+  
+        // Remove mouse move and up listeners
+        document.removeEventListener('mousemove', handleMouseMove);
+        document.removeEventListener('mouseup', handleMouseUp);
+      }
+    }
+  
+    function handleTouchMove(e) {
+      e.preventDefault();
+      const touch = e.touches[0];
+      const target = document.querySelector('.draggable[style*="z-index: 10"]');
+      if (target) {
+        target.style.position = 'absolute';
+        target.style.left = `${touch.pageX - target.touchOffsetX}px`;
+        target.style.top = `${touch.pageY - target.touchOffsetY}px`;
+      }
+    }
+  
+    function handleTouchEnd(e) {
+      const draggable = document.querySelector('.draggable[style*="z-index: 10"]');
+      if (draggable) {
+        draggable.style.opacity = '1';
+        draggable.style.zIndex = '1';
+  
+        let dropped = false;
+  
+        droppables.forEach(droppable => {
+          const rect = droppable.getBoundingClientRect();
+          const touch = e.changedTouches[0];
+  
+          if (touch.pageX >= rect.left && touch.pageX <= rect.right &&
+              touch.pageY >= rect.top && touch.pageY <= rect.bottom) {
+            if (draggable.dataset.match === droppable.dataset.match) {
+              dropped = true;
+              droppable.classList.add('dropped');
+              droppable.innerHTML = `<img src="${draggable.querySelector('img').src}" style="width: 100%; height: 100%; border-radius: 5px;"/><div>${droppable.innerHTML}</div>`;
+              draggable.remove();
+              matchedCount++;
+              checkCompletion();
+            }
+          }
+        });
+  
+        if (!dropped) {
+          draggable.style.position = 'static'; // Reset position if not dropped
+        }
+      }
+    }
+  
+    function checkCompletion() {
+      if (matchedCount === droppables.length) {
+        document.querySelector('.completion-message').style.display = 'block';
+      }
+    }
+  </script>
+  
+
+</body>
+</html>
