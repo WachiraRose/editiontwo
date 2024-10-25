@@ -1,143 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Drag and Drop</title>
-  <style>
-    body {
-      font-family: 'Montserrat', sans-serif;
-      background-color: #f0f8ff; /* Light blue background */
-      color: #333;
-      margin: 0;
-      padding: 0;
-    }
-
-    .navbar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 50px;
-      background-color: #333;
-      color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .container {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      margin-top: 100px; /* Adjust spacing between navbar and container */
-      padding: 20px;
-      box-sizing: border-box;
-    }
-
-    .box {
-      width: calc(15% - 20px); /* Increased box width */
-      height: calc(25vh - 20px); /* Increased box height */
-      border: 3px solid #333;
-      border-radius: 0.5rem;
-      margin: 10px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      font-size: 1.3rem; /* Adjusted font size */
-      font-weight: bold;
-      cursor: move;
-      background-color: #d5dad5; /* Light green background */
-      transition: background-color 0.3s ease;
-      overflow: hidden; /* Prevent overflow of words */
-      word-wrap: break-word; /* Wrap long words */
-    }
-
-    .box:hover {
-      background-color: #a8e00b; /* Lilac background */
-    }
-
-    .correct {
-      background-color: #afeeee; /* Light blue background */
-    }
-
-    .popup {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background-color: #fff;
-      padding: 2rem;
-      border-radius: 0.5rem;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-      z-index: 9999;
-      display: none; /* initially hide the popup */
-    }
-
-    #nextLevelButton, #restartButton {
-      margin-top: 1rem;
-      padding: 0.5rem 1rem;
-      font-size: 1.2rem;
-      background-color: #4caf50;
-      color: #fff;
-      border: none;
-      border-radius: 0.5rem;
-      cursor: pointer;
-      display: none; /* initially hide the buttons */
-    }
-
-    #restartButton {
-      background-color: #f44336;
-      margin-left: 10px;
-    }
-
-    #levelText {
-      text-align: center;
-      margin-top: 55px; /* Adjusted to move below the navbar */
-    }
-
-    @media (max-width: 600px) {
-      .container {
-        padding: 10px;
-      }
-      .box {
-        width: calc(30% - 20px); /* Adjusted box width for small screens */
-        height: calc(15vh - 20px); /* Adjusted box height for small screens */
-        font-size: 1rem; /* Adjusted font size for small screens */
-      }
-    }
-  </style>
-</head>
-<body>
-  <div class="navbar">
-    Navbar
-  </div>
-
-  <div class="container" id="container">
-    <div class="box" draggable="true">Moja</div>
-    <div class="box" draggable="true">Mbili</div>
-    <div class="box" draggable="true">Tatu</div>
-    <div class="box" draggable="true">Nne</div>
-    <div class="box" draggable="true">Tano</div>
-    <div class="box" draggable="true">Sita</div>
-    <div class="box" draggable="true">Saba</div>
-    <div class="box" draggable="true">Nane</div>
-    <div class="box" draggable="true">Tisa</div>
-    <div class="box" draggable="true">Kumi</div>
-  </div>
-
-  <p id="levelText">Drag and drop the boxes to organize them! </p>
-
-  <div id="popup" class="popup">
-    <p id="popupMessage"></p>
-    <button id="nextLevelButton">Next Level</button>
-    <button id="restartButton">Restart</button>
-  </div>
-
-  <script>
-   // JavaScript code
-
 const boxes = document.querySelectorAll('.box');
 const container = document.getElementById('container');
 const levelRanges = [
@@ -219,6 +79,7 @@ shuffleBoxes(levelRanges[0].words);
 
 // Attach event listeners to boxes
 boxes.forEach(function (box) {
+
   box.addEventListener('dragstart', handleDragStart, false);
   box.addEventListener('dragover', handleDragOver, false);
   box.addEventListener('drop', handleDrop, false);
@@ -241,7 +102,3 @@ document.getElementById('restartButton').addEventListener('click', function() {
   document.getElementById('popup').style.display = 'none';
   document.getElementById('restartButton').style.display = 'none';
 });
-
-  </script>
-</body>
-</html>
