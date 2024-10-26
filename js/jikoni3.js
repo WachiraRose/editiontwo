@@ -83,7 +83,7 @@ const appliances = [
           if (draggable.dataset.match === droppable.dataset.match) {
             dropped = true;
             droppable.classList.add('dropped');
-            droppable.innerHTML = `<img src="${draggable.querySelector('img').src}" style="width: 100%; height: 100%; border-radius: 5px;"/><div>${droppable.innerHTML}</div>`;
+            droppable.innerHTML = `<img src="${draggable.querySelector('img').src}" style="width: 100%; height: 80%; border-radius: 5px;"/><div>${droppable.innerHTML}</div>`;
             draggable.remove();
             matchedCount++;
             checkCompletion();
@@ -129,7 +129,7 @@ const appliances = [
           if (draggable.dataset.match === droppable.dataset.match) {
             dropped = true;
             droppable.classList.add('dropped');
-            droppable.innerHTML = `<img src="${draggable.querySelector('img').src}" style="width: 100%; height: 100%; border-radius: 5px;"/><div>${droppable.innerHTML}</div>`;
+            droppable.innerHTML = `<img src="${draggable.querySelector('img').src}" style="width: 100%; height: 80%; border-radius: 5px;"/><div>${droppable.innerHTML}</div>`;
             draggable.remove();
             matchedCount++;
             checkCompletion();
@@ -145,6 +145,10 @@ const appliances = [
 
   function checkCompletion() {
     if (matchedCount === droppables.length) {
-      document.querySelector('.completion-message').style.display = 'block';
+        document.querySelector('.completion-message').style.display = 'block';
+        // Redirect to the next page after a short delay
+        setTimeout(() => {
+            window.location.href = 'jikoni.html'; // Change to your next page URL
+        }, 2000); // 2000 milliseconds = 2 seconds
     }
-  }
+}
