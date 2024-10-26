@@ -1,44 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Salamu/Greetings Part 2</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="css\salamu2.css">
-    
-        
+
+
 </head>
-<body >
+
+<body>
     <h1 class="text-4xl font-bold my-4 text-white">LESSON 1: SALAMU(GREETINGS)</h1>
 
     <!-- Section to describe the quiz -->
-    <section class="quiz-intro bg-gradient-to-r from-pink-800 to-purple-600 text-cream-300 p-6 rounded-lg shadow-lg w-11/12 md:w-3/4 lg:w-1/2 mb-6 transform transition-all hover:scale-105 duration-300">
+    <section
+        class="quiz-intro bg-gradient-to-r from-pink-800 to-purple-600 text-cream-300 p-6 rounded-lg shadow-lg w-11/12 md:w-3/4 lg:w-1/2 mb-6 transform transition-all hover:scale-105 duration-300">
         <h2 class="text-2xl font-extrabold mb-4 text-gray-800">Jaza Mapengo (Fill in the Blanks)</h2>
         <p class="text-base md:text-lg font-medium text-white">
-            Test your Swahili greetings with this fill-in-the-blanks quiz! Drag and drop the correct phrases into the sentences. It's a fun way to practice and improve your Swahili vocabulary. Good luck and have fun!
+            Test your Swahili greetings with this fill-in-the-blanks quiz! Drag and drop the correct phrases into the
+            sentences. It's a fun way to practice and improve your Swahili vocabulary. Good luck and have fun!
         </p>
     </section>
 
     <div class="quiz-container relative flex">
         <!-- Section A (Fill in the Blanks) -->
-        
+
 
         <!-- Section B (True/False) -->
         <div id="quiz-container-" class="section-b questions">
             <h2 class="text-xl font-bold my-4"> B. Jibu Ukweli au Uwongo(True/False):</h2>
 
             <div class="question my-2">
-                1. "Habari ya asubuhi" means "Good night" in Kiswahili. <span class="drop-zone" data-answer="False"></span>
+                1. "Habari ya asubuhi" means "Good night" in Kiswahili. <span class="drop-zone"
+                    data-answer="False"></span>
             </div>
             <div class="question my-2">
-                2. You would say "Hodi, hodi?” to mean “May I come in?” <span class="drop-zone" data-answer="True"></span>
+                2. You would say "Hodi, hodi?” to mean “May I come in?” <span class="drop-zone"
+                    data-answer="True"></span>
             </div>
             <div class="question my-2">
-                3. "Lala unono" is a greeting you use in the morning. <span class="drop-zone" data-answer="False"></span>
+                3. "Lala unono" is a greeting you use in the morning. <span class="drop-zone"
+                    data-answer="False"></span>
             </div>
             <div class="question my-2">
-                4. "Habari ya jioni" translates to "Good evening" in English. <span class="drop-zone" data-answer="True"></span>
+                4. "Habari ya jioni" translates to "Good evening" in English. <span class="drop-zone"
+                    data-answer="True"></span>
             </div>
             <div class="question my-2">
                 5. “Hatujambo” means “We are fine.” <span class="drop-zone" data-answer="True"></span>
@@ -47,7 +55,8 @@
         </div>
 
         <!-- Answer container for draggable items -->
-        <div id="answer-container" class="answer-container w-11/12 md:w-4/12 mt-4 p-4 rounded shadow-lg flex flex-col justify-start">
+        <div id="answer-container"
+            class="answer-container w-11/12 md:w-4/12 mt-4 p-4 rounded shadow-lg flex flex-col justify-start">
             <p class="text-lg font-semibold mb-2">Drag and Drop:</p>
             <div class="flex flex-wrap justify-start" id="answer-items">
                 <!-- Answers will be populated here by JavaScript -->
@@ -55,7 +64,7 @@
         </div>
     </div>
 
-    
+
 
     <!-- Confetti canvas -->
     <canvas id="confetti"></canvas>
@@ -63,12 +72,13 @@
     <!-- Refresh Button -->
     <button id="refresh-button" class="refresh-btn" onclick="refreshQuiz()">Refresh Quiz</button>
 
-     <!-- Next Button in a right-aligned container -->
-     <div class="previous-container">
+    <!-- Next Button in a right-aligned container -->
+    <div class="previous-container">
         <button id="previous-button" class="previous-btn" onclick="goToNextPage()">Back</button>
     </div>
 
-    
-       <script src="js\jstest.js"></script>
+
+    <script src="js\jtest.js"></script>
 </body>
+
 </html>
