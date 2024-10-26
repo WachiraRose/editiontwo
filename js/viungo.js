@@ -1,145 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Responsive Word Search Puzzle</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            height: 100vh;
-            margin: 0;
-            background-color: #f4f4f4;
-        }
-
-        h1 {
-            font-size: 20px; /* Adjusted font size */
-            margin-bottom: 5px; /* Adjusted margin */
-            color: #333;
-            text-align: center;
-        }
-
-        .puzzle-wrapper {
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            gap: 1px; /* Increased gap between puzzle and word list */
-            max-width: 90vw;
-            padding: 10px;
-            flex-direction: column; /* Changed to column to stack items */
-            align-items: center; /* Center aligned */
-        }
-
-        .word-search-container {
-            display: grid;
-            grid-template-columns: repeat(10, 1fr);
-            grid-gap: 1px;
-            border: 1px solid #333;
-            padding: 2px;
-            background-color: #fff;
-            width: 400px; /* Adjusted width */
-            height: 300px; /* Adjusted height */
-            min-width: 350px; /* Ensured minimum width */
-            min-height: 350px; /* Ensured minimum height */
-            max-width: 90vw; /* Adjusted maximum width for responsiveness */
-            max-height: 90vw; /* Adjusted maximum height for responsiveness */
-        }
-
-        .word-search-cell {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 1.5vw; /* Adjusted font size */
-            border: 1px solid #ddd;
-            user-select: none;
-            cursor: pointer;
-            height: 30px; /* Adjusted height */
-            width: 30px; /* Adjusted width */
-        }
-
-        .word-search-cell.selected {
-            background-color: #cce7ff;
-        }
-
-        .word-search-cell.found {
-            background-color: #a8d5e2;
-        }
-
-        .word-list {
-            text-align: center; /* Center align the word list */
-            margin-top: 35px; /* Added margin on top */
-        }
-
-        ul {
-            list-style-type: none;
-            padding: 0;
-            display: flex; /* Changed to flex for horizontal layout */
-            justify-content: center; /* Centered words */
-            flex-wrap: wrap; /* Allow words to wrap */
-        }
-
-        ul li {
-            margin-right: 15px; /* Added spacing between words */
-            font-size: 16px; /* Font size for words */
-        }
-
-        #restartBtn {
-            display: none;
-            margin-top: 15px;
-            padding: 8px 16px;
-            font-size: 14px;
-            cursor: pointer;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-        }
-
-        #congratulationsMessage {
-            display: none;
-            font-size: 18px; /* Adjusted font size */
-            color: #28a745;
-            margin-top: 15px;
-        }
-
-        #confettiCanvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            pointer-events: none;
-        }
-    </style>
-</head>
-<body>
-
-    <canvas id="confettiCanvas"></canvas>
-
-    <h1>Viungo/Spices Puzzle</h1>
-
-    <div class="puzzle-wrapper">
-        <div class="word-search-container" id="wordSearchContainer">
-            <!-- JavaScript will populate the grid -->
-        </div>
-
-        <div class="word-list">
-            <h3>Tafuta Majina ya viungo(Word search for spices):</h3>
-            <ul id="wordList">
-                <!-- Word list goes here -->
-            </ul>
-        </div>
-    </div>
-
-    <div id="congratulationsMessage">Hongera/Congratulations! You found all the words!</div>
-
-    <button id="restartBtn" onclick="restartPuzzle()">Restart Puzzle</button>
-
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js" async></script>
-    <script>
-        const gridSize = 10;
+const gridSize = 10;
         const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         const words = ['KARAFUU', 'HARADALI', 'SHAMIRI', 'PAKANGA', 'KITUNGUU', 'MDALASINI', 'DHANIA', 'PILIPILI', 'NYANYA', 'CHUMVI'];
         const colors = ['#FF5733', '#33FF57', '#5733FF', '#FF33A1', '#FF33F6', '#FFD733', '#33FFDC', '#FF6B33', '#33D3FF', '#FFC733'];
@@ -257,16 +116,10 @@
         }
 
         function showCongratulations() {
-            document.getElementById('congratulationsMessage').style.display = 'block';
+            const message = document.getElementById('congratulationsMessage');
+            message.style.display = 'block';
             document.getElementById('restartBtn').style.display = 'block';
-            const canvas = document.getElementById('confettiCanvas');
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            confetti({
-                particleCount: 200,
-                spread: 70,
-                origin: { y: 0.6 },
-            });
+            confetti();
         }
 
         function restartPuzzle() {
@@ -275,11 +128,15 @@
             selectedCells = [];
             document.getElementById('congratulationsMessage').style.display = 'none';
             document.getElementById('restartBtn').style.display = 'none';
-            wordList.querySelectorAll('li').forEach(li => {
-                li.style.textDecoration = 'none';
+            wordList.querySelectorAll('li').forEach(li => li.style.textDecoration = 'none');
+            const cells = document.querySelectorAll('.word-search-cell');
+            cells.forEach(cell => {
+                cell.classList.remove('found', 'selected');
+                cell.style.backgroundColor = ''; // Reset background color
             });
-            wordSearchContainer.innerHTML = '';
+
             words.forEach(word => placeWord(word));
+
             for (let row = 0; row < gridSize; row++) {
                 for (let col = 0; col < gridSize; col++) {
                     if (grid[row][col] === '') {
@@ -287,22 +144,19 @@
                     }
                 }
             }
-            grid.forEach((row, rowIndex) => {
-                row.forEach((letter, colIndex) => {
-                    const cell = document.createElement('div');
-                    cell.textContent = letter;
-                    cell.className = 'word-search-cell';
-                    cell.dataset.row = rowIndex;
-                    cell.dataset.col = colIndex;
-                    wordSearchContainer.appendChild(cell);
-                });
+
+            const newCells = document.querySelectorAll('.word-search-cell');
+            newCells.forEach((cell, index) => {
+                const rowIndex = Math.floor(index / gridSize);
+                const colIndex = index % gridSize;
+                cell.textContent = grid[rowIndex][colIndex];
             });
-            addCellEventListeners();
         }
 
         function addCellEventListeners() {
             const cells = document.querySelectorAll('.word-search-cell');
             cells.forEach(cell => {
+                // Mouse events
                 cell.addEventListener('mousedown', (event) => {
                     event.preventDefault();
                     isSelecting = true;
@@ -321,10 +175,59 @@
                         isSelecting = false; // Stop selection on mouse up
                     }
                 });
+
+                // Touch events
+                cell.addEventListener('touchstart', (event) => {
+                    event.preventDefault(); // Prevent scrolling
+                    isSelecting = true;
+                    selectCell(cell);
+                });
+
+                cell.addEventListener('touchmove', (event) => {
+                    if (isSelecting) {
+                        const touch = event.touches[0]; // Get the touch position
+                        const targetCell = document.elementFromPoint(touch.clientX, touch.clientY);
+                        if (targetCell && targetCell.classList.contains('word-search-cell') && !selectedCells.includes(targetCell)) {
+                            selectCell(targetCell);
+                        }
+                    }
+                });
+
+                cell.addEventListener('touchend', () => {
+                    if (isSelecting) {
+                        checkSelectedWord();
+                        isSelecting = false; // Stop selection on touch end
+                    }
+                });
             });
         }
 
         addCellEventListeners();
-    </script>
-</body>
-</html>
+
+        // Confetti function
+        function confetti() {
+            const canvas = document.getElementById('confettiCanvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            function randomColor() {
+                const colors = ['#FF5733', '#33FF57', '#5733FF', '#FF33A1', '#FF33F6', '#FFD733', '#33FFDC', '#FF6B33', '#33D3FF', '#FFC733'];
+                return colors[Math.floor(Math.random() * colors.length)];
+            }
+
+            function createConfetti() {
+                const x = Math.random() * canvas.width;
+                const y = Math.random() * canvas.height;
+                const size = Math.random() * 10 + 5;
+                const color = randomColor();
+                ctx.beginPath();
+                ctx.arc(x, y, size, 0, Math.PI * 2);
+                ctx.fillStyle = color;
+                ctx.fill();
+            }
+
+            for (let i = 0; i < 100; i++) {
+                createConfetti();
+            }
+        }
