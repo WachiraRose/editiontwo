@@ -23,7 +23,7 @@ body {
 .draggable {
     margin: 10px;
     padding: 5px 10px;
-    background-color: #80d5e4;
+    background-color: #e48f80;
     border: 1px solid #ccc;
     cursor: pointer;
     display: inline-block;
@@ -110,7 +110,7 @@ body {
     }
 
     .drop-zone, .draggable {
-        font-size: 14px;
+        font-size: 20px;
         padding: 5px;
         margin: 5px;
     }
