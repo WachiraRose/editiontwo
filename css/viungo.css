@@ -6,14 +6,23 @@ body {
     flex-direction: column;
     height: 100vh;
     margin: 0;
-    background-color: #e60e0e;
+    background-color: #f82d2d;
 }
 
 h1 {
     font-size: 20px; /* Adjusted font size */
     margin-bottom: 5px; /* Adjusted margin */
-    color: #333333;
+    color: whitesmoke;
     text-align: center;
+    font-size: xx-large;
+}
+
+h5 {
+    font-size: 20px; /* Adjusted font size */
+    margin-bottom: 5px; /* Adjusted margin */
+    color: rgb(72, 236, 13);
+    text-align: center;
+    font-size: large;
 }
 
 .puzzle-wrapper {
@@ -55,7 +64,7 @@ h1 {
 }
 
 .word-search-cell.selected {
-    background-color: #cce7ff;
+    background-color: #e80da7;
 }
 
 .word-search-cell.found {
@@ -65,10 +74,12 @@ h1 {
 .word-list {
     text-align: center; /* Center align the word list */
     margin-top: 35px; /* Added margin on top */
+    color:rgb(226, 228, 228);
+    
 }
 
 ul {
-    list-style-type: none;
+    list-style-type:none;
     padding: 0;
     display: flex; /* Changed to flex for horizontal layout */
     justify-content: center; /* Centered words */
@@ -86,7 +97,7 @@ ul li {
     padding: 8px 16px;
     font-size: 14px;
     cursor: pointer;
-    background-color: #4CAF50;
+    background-color: #0df114;
     color: white;
     border: none;
     border-radius: 5px;
@@ -94,8 +105,8 @@ ul li {
 
 #congratulationsMessage {
     display: none;
-    font-size: 18px; /* Adjusted font size */
-    color: #28a745;
+    font-size: 20px; /* Adjusted font size */
+    color: #eef6f0;
     margin-top: 15px;
 }
 

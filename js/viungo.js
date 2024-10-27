@@ -13,10 +13,10 @@ function placeWord(word) {
     let placed = false;
     let attempts = 0;
     while (!placed && attempts < 100) {
-        const direction = Math.floor(Math.random() * 4); // 0: horizontal, 1: vertical, 2: right-to-left, 3: bottom-to-top
+        const direction = Math.floor(Math.random() * 3); // 0: horizontal, 1: vertical, 2: diagonal
         let row, col;
 
-        if (direction === 0) { // Horizontal
+        if (direction === 0) { // horizontal
             row = Math.floor(Math.random() * gridSize);
             col = Math.floor(Math.random() * (gridSize - word.length));
             let fits = true;
@@ -32,7 +32,7 @@ function placeWord(word) {
                 }
                 placed = true;
             }
-        } else if (direction === 1) { // Vertical
+        } else if (direction === 1) { // vertical
             row = Math.floor(Math.random() * (gridSize - word.length));
             col = Math.floor(Math.random() * gridSize);
             let fits = true;
@@ -48,50 +48,32 @@ function placeWord(word) {
                 }
                 placed = true;
             }
-        } else if (direction === 2) { // Right-to-left
-            row = Math.floor(Math.random() * gridSize);
+        } else if (direction === 2) { // diagonal
+            row = Math.floor(Math.random() * (gridSize - word.length));
             col = Math.floor(Math.random() * (gridSize - word.length));
             let fits = true;
             for (let i = 0; i < word.length; i++) {
-                if (grid[row][col + word.length - 1 - i] !== '' && grid[row][col + word.length - 1 - i] !== word[i]) {
+                if (grid[row + i][col + i] !== '' && grid[row + i][col + i] !== word[i]) {
                     fits = false;
                     break;
                 }
             }
             if (fits) {
                 for (let i = 0; i < word.length; i++) {
-                    grid[row][col + word.length - 1 - i] = word[i];
-                }
-                placed = true;
-            }
-        } else if (direction === 3) { // Bottom-to-top
-            row = Math.floor(Math.random() * gridSize);
-            col = Math.floor(Math.random() * gridSize);
-            let fits = true;
-            for (let i = 0; i < word.length; i++) {
-                if (grid[row - i] === undefined || grid[row - i][col] !== '' && grid[row - i][col] !== word[i]) {
-                    fits = false;
-                    break;
-                }
-            }
-            if (fits) {
-                for (let i = 0; i < word.length; i++) {
-                    grid[row - i][col] = word[i];
+                    grid[row + i][col + i] = word[i];
                 }
                 placed = true;
             }
         }
         attempts++;
     }
-    if (!placed) {
+    if (attempts >= 100) {
         console.error(`Could not place word: ${word}`);
     }
 }
 
-// Place all words in the grid
 words.forEach(word => placeWord(word));
 
-// Fill empty cells with random letters
 for (let row = 0; row < gridSize; row++) {
     for (let col = 0; col < gridSize; col++) {
         if (grid[row][col] === '') {
@@ -100,7 +82,6 @@ for (let row = 0; row < gridSize; row++) {
     }
 }
 
-// Render the grid in the DOM
 const wordSearchContainer = document.getElementById('wordSearchContainer');
 grid.forEach((row, rowIndex) => {
     row.forEach((letter, colIndex) => {
@@ -113,7 +94,6 @@ grid.forEach((row, rowIndex) => {
     });
 });
 
-// Render the word list
 const wordList = document.getElementById('wordList');
 words.forEach((word, index) => {
     const li = document.createElement('li');
@@ -122,7 +102,6 @@ words.forEach((word, index) => {
     wordList.appendChild(li);
 });
 
-// Word selection logic
 let selectedCells = [];
 let isSelecting = false;
 
@@ -175,10 +154,8 @@ function restartPuzzle() {
         cell.style.backgroundColor = ''; // Reset background color
     });
 
-    // Place all words in the grid again
     words.forEach(word => placeWord(word));
 
-    // Fill empty cells with random letters again
     for (let row = 0; row < gridSize; row++) {
         for (let col = 0; col < gridSize; col++) {
             if (grid[row][col] === '') {
@@ -205,7 +182,7 @@ function addCellEventListeners() {
             selectCell(cell);
         });
 
-        cell.addEventListener('mouseover', () => {
+        cell.addEventListener('mouseenter', () => {
             if (isSelecting) {
                 selectCell(cell);
             }
@@ -220,16 +197,17 @@ function addCellEventListeners() {
 
         // Touch events
         cell.addEventListener('touchstart', (event) => {
-            event.preventDefault(); // Prevent scrolling
+            event.preventDefault(); // Prevent default touch behavior
             isSelecting = true;
             selectCell(cell);
         });
 
         cell.addEventListener('touchmove', (event) => {
+            event.preventDefault(); // Prevent default touch behavior
             if (isSelecting) {
                 const touch = event.touches[0]; // Get the touch position
                 const targetCell = document.elementFromPoint(touch.clientX, touch.clientY);
-                if (targetCell && targetCell.classList.contains('word-search-cell')) {
+                if (targetCell && targetCell.classList.contains('word-search-cell') && !selectedCells.includes(targetCell)) {
                     selectCell(targetCell);
                 }
             }
@@ -244,8 +222,32 @@ function addCellEventListeners() {
     });
 }
 
-// Initialize the event listeners
 addCellEventListeners();
 
-// Restart button event listener
-document.getElementById('restartBtn').addEventListener('click', restartPuzzle);
+// Confetti function
+function confetti() {
+    const canvas = document.getElementById('confettiCanvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    function randomColor() {
+        const colors = ['#FF5733', '#33FF57', '#5733FF', '#FF33A1', '#FF33F6', '#FFD733', '#33FFDC', '#FF6B33', '#33D3FF', '#FFC733'];
+        return colors[Math.floor(Math.random() * colors.length)];
+    }
+
+    function createConfetti() {
+        const x = Math.random() * canvas.width;
+        const y = Math.random() * canvas.height;
+        const size = Math.random() * 10 + 5;
+        const color = randomColor();
+        ctx.beginPath();
+        ctx.arc(x, y, size, 0, Math.PI * 2);
+        ctx.fillStyle = color;
+        ctx.fill();
+    }
+
+    for (let i = 0; i < 100; i++) {
+        createConfetti();
+    }
+}
