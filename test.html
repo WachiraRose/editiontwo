@@ -9,49 +9,42 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
   <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  
+  <!-- jQuery UI Touch Punch for touch support -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js"></script>
 
   <style>
     @import url('https://fonts.googleapis.com/css?family=Montserrat');
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: 'Montserrat', sans-serif;
-      background: linear-gradient(135deg, #7a5e3b, #e5c1a5); /* Shades of brown */
+      background: linear-gradient(135deg, #7a5e3b, #e5c1a5);
       color: #111;
-      padding: 1rem; /* Padding for mobile responsiveness */
+      padding: 1rem;
     }
-
     h2 {
       text-align: center;
       margin: 2rem 0;
-      font-size: 2.5rem; /* Larger font size */
-      color: #4a3c28; /* Darker shade for contrast */
-      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+      font-size: 2.5rem;
+      color: #4a3c28;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
     }
-
     .introduction {
       text-align: center;
       margin-bottom: 2rem;
       font-size: 1.2rem;
-      color: #4a3c28; /* Darker shade for contrast */
-      background-color: rgba(255, 255, 255, 0.8); /* Light background for readability */
+      color: #4a3c28;
+      background-color: rgba(255, 255, 255, 0.8);
       padding: 1rem;
-      border-radius: 8px; /* Rounded corners */
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect */
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
-
     .draggable-elements {
       display: flex;
       justify-content: center;
-      flex-wrap: wrap; /* Allow wrapping for small screens */
+      flex-wrap: wrap;
       margin: 2rem 0;
     }
-
     .draggable {
       height: 5rem;
       width: 5rem;
@@ -60,16 +53,14 @@
       justify-content: center;
       margin: 0.5rem;
       cursor: move;
-      position: relative; /* To apply z-index */
-      z-index: 10; /* Ensure dragged image appears on top */
+      position: relative;
+      z-index: 10;
     }
-
     .draggable img {
       max-height: 100%;
       max-width: 100%;
-      border-radius: 5px; /* Optional: rounded corners */
+      border-radius: 5px;
     }
-
     .droppable {
       height: 6.5rem;
       width: 6.5rem;
@@ -81,21 +72,16 @@
       text-align: center;
       font-size: 1rem;
       font-weight: bold;
-      background-color: #d1b89a; /* Light earthy color for the droppable box */
-      border: 3px dashed #4a4a2c; /* Darker border for contrast */
-      position: relative; /* For positioning the dropped image */
-      overflow: hidden; /* Prevent overflow of images */
+      background-color: #d1b89a;
+      border: 3px dashed #4a4a2c;
+      position: relative;
+      overflow: hidden;
     }
-
     .droppable.dropped {
       border-style: solid;
-      background-color: #bca78d; /* Slightly darker when dropped */
+      background-color: #bca78d;
     }
-
-    .dragged {
-      opacity: 0.5; /* Make the dragged item semi-transparent */
-    }
-
+    .dragged { opacity: 0.5; }
     .completion-message {
       display: none;
       text-align: center;
@@ -103,13 +89,12 @@
       color: green;
       margin-top: 2rem;
     }
-
     @media (max-width: 600px) {
       html { font-size: 14px; }
       .draggable-elements { margin: 1.5rem; }
       .draggable, .droppable {
-          height: 4rem; /* Reduce height for smaller screens */
-          width: 4rem; /* Reduce width for smaller screens */
+        height: 4rem;
+        width: 4rem;
       }
     }
   </style>
@@ -123,97 +108,78 @@
   </div>
   
   <section class="draggable-elements" id="draggable-container">
-      <div class="draggable" id="blender" draggable="true"><img src="img/Jikoni/blender.jpg" alt="Blender"></div>
-      <div class="draggable" id="toaster" draggable="true"><img src="img/Jikoni/toaster.jpg" alt="Toaster"></div>
-      <div class="draggable" id="microwave" draggable="true"><img src="img/Jikoni/cooker.jpg" alt="Microwave"></div>
-      <div class="draggable" id="oven" draggable="true"><img src="img/Jikoni/oven.jpg" alt="Oven"></div>
-      <div class="draggable" id="kettle" draggable="true"><img src="img/Jikoni/kettle.jpg" alt="Kettle"></div>
+      <div class="draggable" id="blender"><img src="img/Jikoni/blender.jpg" alt="Blender"></div>
+      <div class="draggable" id="toaster"><img src="img/Jikoni/toaster.jpg" alt="Toaster"></div>
+      <div class="draggable" id="microwave"><img src="img/Jikoni/cooker.jpg" alt="Microwave"></div>
+      <div class="draggable" id="oven"><img src="img/Jikoni/oven.jpg" alt="Oven"></div>
+      <div class="draggable" id="kettle"><img src="img/Jikoni/kettle.jpg" alt="Kettle"></div>
   </section>
   
   <section class="droppable-elements" style="display: flex; justify-content: center;">
-      <div class="droppable" data-draggable-id="blender">
-          <span>Blender</span>
-      </div>
-      <div class="droppable" data-draggable-id="toaster">
-          <span>Toaster</span>
-      </div>
-      <div class="droppable" data-draggable-id="microwave">
-          <span>Microwave</span>
-      </div>
-      <div class="droppable" data-draggable-id="oven">
-          <span>Oven</span>
-      </div>
-      <div class="droppable" data-draggable-id="kettle">
-          <span>Kettle</span>
-      </div>
+      <div class="droppable" data-draggable-id="blender"><span>Blender</span></div>
+      <div class="droppable" data-draggable-id="toaster"><span>Toaster</span></div>
+      <div class="droppable" data-draggable-id="microwave"><span>Microwave</span></div>
+      <div class="droppable" data-draggable-id="oven"><span>Oven</span></div>
+      <div class="droppable" data-draggable-id="kettle"><span>Kettle</span></div>
   </section>
 
   <div class="completion-message">Congratulations! You've matched all the kitchen appliances!</div>
 
   <script>
-    $(function () {
-        let matchedCount = 0; // Count matched items
+    // Detect touch or mouse events based on device capabilities
+    const draggables = document.querySelectorAll('.draggable');
+    const droppables = document.querySelectorAll('.droppable');
 
-        // Shuffle function
-        function shuffleArray(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
-            }
-            return array;
-        }
+    draggables.forEach(draggable => {
+      draggable.addEventListener('touchstart', (e) => {
+        e.target.classList.add('dragging');
+      });
 
-        // Shuffle the draggable elements
-        const draggables = $('#draggable-container .draggable').toArray();
-        const shuffledDraggables = shuffleArray(draggables);
+      draggable.addEventListener('touchmove', (e) => {
+        e.preventDefault();
+        const touch = e.targetTouches[0];
+        draggable.style.position = 'absolute';
+        draggable.style.left = `${touch.pageX - 50}px`; // Center on touch
+        draggable.style.top = `${touch.pageY - 50}px`;
+      });
 
-        // Empty the container and append shuffled elements
-        $('#draggable-container').empty().append(shuffledDraggables);
-
-        // Make the elements draggable
-        $(".draggable").draggable({
-            revert: "invalid", // Return to original position if not dropped
-            helper: "clone", // Create a clone of the element to drag
-            start: function(event, ui) {
-                $(this).addClass("dragged"); // Add dragged class for styling
-            },
-            stop: function(event, ui) {
-                $(this).removeClass("dragged"); // Remove dragged class on stop
-            }
-        });
-
-        // Make the droppable areas droppable
-        $(".droppable").droppable({
-            accept: ".draggable",
-            drop: function (event, ui) {
-                const draggableId = ui.draggable.attr("id");
-                const droppableId = $(this).data("draggable-id");
-
-                if (draggableId === droppableId) {
-                    $(this).addClass("dropped");
-                    // Place the image inside the droppable area
-                    const imageClone = ui.draggable.clone().css({
-                        position: 'absolute',
-                        top: '0',
-                        left: '0',
-                        width: '100%', // Adjust to fit droppable area
-                        height: '100%', // Adjust to fit droppable area
-                        zIndex: 5 // Ensure the image appears in front
-                    });
-                    $(this).append(imageClone); // Add the image clone to the droppable area
-                    ui.draggable.hide(); // Hide the original dragged image
-                    matchedCount++; // Increment matched count
-
-                    // Check if all items are matched
-                    if (matchedCount === 5) {
-                        $(".completion-message").fadeIn(); // Show completion message
-                    }
-                } else {
-                    $(this).removeClass("dropped"); // Remove drop class if incorrect
-                }
-            }
-        });
+      draggable.addEventListener('touchend', () => {
+        draggable.classList.remove('dragging');
+        checkDropZone(draggable);
+      });
     });
+
+    droppables.forEach(droppable => {
+      droppable.addEventListener('dragover', (e) => e.preventDefault());
+      droppable.addEventListener('drop', (e) => {
+        const dragging = document.querySelector('.dragging');
+        if (dragging && dragging.dataset.answer === droppable.dataset.answer) {
+          droppable.appendChild(dragging);
+          dragging.style.position = 'initial';
+        } else {
+          dragging.style.position = 'initial';
+        }
+      });
+    });
+
+    function checkDropZone(draggable) {
+      droppables.forEach(droppable => {
+        const rect = droppable.getBoundingClientRect();
+        const dragRect = draggable.getBoundingClientRect();
+        if (
+          dragRect.left < rect.right &&
+          dragRect.right > rect.left &&
+          dragRect.top < rect.bottom &&
+          dragRect.bottom > rect.top &&
+          draggable.dataset.answer === droppable.dataset.answer
+        ) {
+          droppable.appendChild(draggable);
+          draggable.style.position = 'initial';
+        } else {
+          draggable.style.position = 'initial';
+        }
+      });
+    }
   </script>
 </body>
 </html>

@@ -1,0 +1,98 @@
+/* General Styles */
+body {
+    background-color: #1b2838;
+    color: #ffffff;
+    font-family: 'Roboto', sans-serif;
+    padding-top: 20px;
+}
+
+h1, h3 {
+    color: #ffcb47;
+}
+
+.container {
+    max-width: 900px;
+    padding: 20px;
+}
+
+/* Shape image size */
+#shapeImage {
+    width: 30%;
+    height: auto;
+    margin-top: 20px;
+    border-radius: 8px;
+}
+
+/* Smaller image on large screens */
+@media (min-width: 992px) {
+    #shapeImage {
+        max-width: 50%;
+    }
+}
+
+/* Answer input field */
+#shapeAnswer {
+    color: #ffffff;
+    border-bottom: 2px solid #ffcb47;
+}
+
+/* Message styling */
+.message.correct {
+    color: #4caf50;
+    font-weight: bold;
+}
+
+.message.incorrect {
+    color: #f44336;
+    font-weight: bold;
+}
+
+/* Submit and Refresh button styles */
+.btn-custom {
+    background-color: #ffcb47;
+    color: #1b2838;
+    font-weight: bold;
+    margin: 5px;
+}
+
+/* Answers lists styling */
+.answers-list {
+    background-color: #283747;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.answers-list li {
+    color: #ffffff;
+    background-color: #34495e;
+    margin: 5px 0;
+    padding: 5px;
+    border-radius: 4px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.strike-through {
+    text-decoration: line-through;
+    color: red;
+    text-decoration-color: red; /* Strike-through line color */
+    text-decoration-thickness: 3px; /* Adjust thickness as needed */
+}
+
+
+
+/* Responsive design for smaller screens */
+@media (max-width: 600px) {
+    #shapeImage {
+        max-height: 150px;
+    }
+
+    .answers-list {
+        flex-direction: column;
+        margin-bottom: 10px;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+}

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,22 +10,25 @@
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="css\salamu.css">
-    
+
 </head>
-<body >
+
+<body>
     <h1 class="text-4xl font-bold my-4 text-white">LESSON 1: SALAMU(GREETINGS)</h1>
 
     <!-- Section to describe the quiz -->
-    <section class="quiz-intro bg-gradient-to-r from-cyan-400 to-cyan-600 text-cream-300 p-6 rounded-lg shadow-lg w-11/12 md:w-3/4 lg:w-1/2 mb-6 transform transition-all hover:scale-105 duration-300">
+    <section
+        class="quiz-intro bg-gradient-to-r from-cyan-400 to-cyan-600 text-cream-300 p-6 rounded-lg shadow-lg w-11/12 md:w-3/4 lg:w-1/2 mb-6 transform transition-all hover:scale-105 duration-300">
         <h2 class="text-2xl font-extrabold mb-4 text-gray-800">Jaza Mapengo (Fill in the Blanks)</h2>
         <p class="text-base md:text-lg font-medium text-white">
-            Test your Swahili greetings with this fill-in-the-blanks quiz! Drag and drop the correct phrases into the sentences. It's a fun way to practice and improve your Swahili vocabulary. Good luck and have fun!
+            Test your Swahili greetings with this fill-in-the-blanks quiz! Drag and drop the correct phrases into the
+            sentences. It's a fun way to practice and improve your Swahili vocabulary. Good luck and have fun!
         </p>
     </section>
-    
-    
-    
-    
+
+
+
+
 
     <div class="quiz-container relative">
         <!-- Section A (Fill in the Blanks) -->
@@ -34,13 +38,16 @@
                 1. In the morning, you would say <span class="drop-zone" data-answer="Habari"></span> ya asubuhi.
             </div>
             <div class="question my-2">
-                2. When asking someone their name, you say “Jina lako ni <span class="drop-zone" data-answer="nani"></span>.”
+                2. When asking someone their name, you say “Jina lako ni <span class="drop-zone"
+                    data-answer="nani"></span>.”
             </div>
             <div class="question my-2">
-                3. When a child meets their mother, they say “<span class="drop-zone" data-answer="shikamoo"></span> mama.”
+                3. When a child meets their mother, they say “<span class="drop-zone" data-answer="shikamoo"></span>
+                mama.”
             </div>
             <div class="question my-2">
-                4. Before going to sleep at night, it's nice to say, "<span class="drop-zone" data-answer="usiku"></span> mwema."
+                4. Before going to sleep at night, it's nice to say, "<span class="drop-zone"
+                    data-answer="usiku"></span> mwema."
             </div>
             <div class="question my-2">
                 5. To say sorry to someone, you say “<span class="drop-zone" data-answer="pole"></span> mama.”
@@ -48,7 +55,8 @@
         </div>
 
         <!-- Answer container for draggable items -->
-        <div id="answer-container" class="answer-container w-11/12 md:w-4/12 mt-4 p-4 rounded shadow-lg flex flex-col justify-start">
+        <div id="answer-container"
+            class="answer-container w-11/12 md:w-4/12 mt-4 p-4 rounded shadow-lg flex flex-col justify-start">
             <p class="text-lg font-semibold mb-2">Drag and Drop the answers:</p>
             <div class="flex flex-wrap justify-start" id="answer-items">
                 <!-- Answers will be populated here by JavaScript -->
@@ -62,13 +70,14 @@
     <!-- Refresh Button -->
     <button id="refresh-button" class="refresh-btn" onclick="refreshQuiz()">Refresh Quiz</button>
 
-     <!-- Next Button in a right-aligned container -->
-     <div class="next-container">
+    <!-- Next Button in a right-aligned container -->
+    <div class="next-container">
         <button id="next-button" class="next-btn" onclick="goToNextPage()">Next</button>
     </div>
 
     <script src="js\salamu.js"></script>
 
-   
+
 </body>
+
 </html>

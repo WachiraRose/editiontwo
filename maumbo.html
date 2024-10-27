@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maumbo/Shapes Quiz</title>
+    <!-- Materialize CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
+    <link href="css/maumbo.css" rel="stylesheet">
+</head>
+<body>
+
+    <div class="container center-align">
+        <h1>Maumbo/Shapes Quiz</h1>
+        <h5>Test your knowledge by writing the Kiswahili names of the shapes below.</h5>
+
+        <!-- Shape Image and Input -->
+        <div class="row">
+            <div class="col s12 center-align">
+                <img id="shapeImage" class="responsive-img" alt="Shape Image">
+                <label for="shapeAnswer" class="white-text"></label>
+                <input type="text" id="shapeAnswer" class="validate" placeholder="Enter shape name">
+                <span id="message" class="message"></span>
+            </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="row">
+            <div class="col s12">
+                <button id="submit" class="btn btn-custom">Submit</button>
+                <button id="refresh" class="btn btn-custom" style="display: none;">Refresh Quiz</button>
+            </div>
+        </div>
+
+        <!-- Possible Answers aligned left and right -->
+        <div class="row">
+            <!-- Left-aligned list -->
+            <div class="col s6 answers-list">
+                <ul id="answers-list-left">
+                    <li id="answer1-left" class="collection-item">Duara</li>
+                    <li id="answer2-left" class="collection-item">Pembe Tatu</li>
+                    <li id="answer3-left" class="collection-item">Mraba</li>
+                    <li id="answer4-left" class="collection-item">Mstatili</li>
+                </ul>
+            </div>
+        
+            <!-- Right-aligned list -->
+            <div class="col s6 answers-list">
+                <ul id="answers-list-right">
+                    <li id="answer1-right" class="collection-item">Duara dufu</li>
+                    <li id="answer2-right" class="collection-item">Mche Mstatili</li>
+                    <li id="answer3-right" class="collection-item">Pembe Tano</li>
+                    <li id="answer4-right" class="collection-item">Mche mraba</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Materialize JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+    <script src="js/maumbo.js">
+        
+    </script>
+</body>
+</html>

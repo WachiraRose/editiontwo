@@ -1,0 +1,101 @@
+body {
+    background-color: #f5deb3; /* Light brown background */
+    padding-top: 20px;
+    font-family: Arial, sans-serif; /* Change font */
+    color: #333; /* Change font color */
+}
+
+.navbar {
+    background-color: #795548; /* Brown navbar color */
+    color: #fff; /* Text color */
+}
+
+.question-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.question-card {
+    padding: 5px; /* Smaller padding */
+    border-radius: 5px;
+    box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.1); /* Light brown shadow */
+    background-color: #fff;
+    transition: background-color 0.3s, transform 0.3s; /* Add transition */
+    margin-bottom: 10px; /* Smaller margin */
+}
+
+.question-card.hidden {
+    display: none;
+}
+
+.question-card.show {
+    display: block;
+}
+
+.question-card.hidden .card-content {
+    visibility: hidden;
+    height: 0;
+    overflow: hidden;
+}
+
+.question-card.show .card-content {
+    visibility: visible;
+    height: auto;
+    overflow: visible;
+}
+
+.question-card:hover {
+    transform: scale(1.03); /* Scale up on hover */
+    background-color: #f5f5f5; /* Lighten background color on hover */
+}
+
+.question-image {
+    width: 200px; /* Set width for images */
+    height: 200px; /* Set height for images */
+    object-fit: cover; /* Maintain aspect ratio */
+    border-radius: 5px;
+    box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.1); /* Light brown shadow */
+    display: block; /* Ensure block display for centering */
+    margin: 0 auto; /* Center the image horizontally */
+}
+
+.collection-item label {
+    cursor: pointer;
+}
+
+.collection-item input[type="radio"]:checked+label {
+    background-color: #00e676; /* Change background to green when selected */
+}
+
+.collection-item input[type="radio"]:checked.wrong+label {
+    background-color: #ff1744; /* Change background to red when selected answer is wrong */
+}
+
+.result-message {
+    margin-top: 10px; /* Smaller margin */
+    font-weight: bold;
+}
+
+.btn {
+    margin-top: 10px; /* Smaller margin */
+}
+
+.score-card {
+    display: none; /* Hide score card initially */
+    background-color: #fff;
+    padding: 10px; /* Smaller padding */
+    border-radius: 5px;
+    box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.1); /* Light brown shadow */
+    margin-top: 20px;
+    text-align: center;
+}
+
+/* Style for Try Again button */
+.try-again-btn {
+    background-color: #a1887f !important; /* Brown lighten-2 */
+    color: #fff !important; /* Text color */
+}
+
+.try-again-btn:hover {
+    background-color: #8d6e63 !important; /* Darken on hover */
+}

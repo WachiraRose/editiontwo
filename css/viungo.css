@@ -1,0 +1,127 @@
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100vh;
+    margin: 0;
+    background-color: #f82d2d;
+}
+
+h1 {
+    font-size: 20px; /* Adjusted font size */
+    margin-bottom: 5px; /* Adjusted margin */
+    color: whitesmoke;
+    text-align: center;
+    font-size: xx-large;
+}
+
+h5 {
+    font-size: 20px; /* Adjusted font size */
+    margin-bottom: 5px; /* Adjusted margin */
+    color: rgb(72, 236, 13);
+    text-align: center;
+    font-size: large;
+}
+
+.puzzle-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 1px; /* Increased gap between puzzle and word list */
+    max-width: 90vw;
+    padding: 10px;
+    flex-direction: column; /* Changed to column to stack items */
+    align-items: center; /* Center aligned */
+}
+
+.word-search-container {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-gap: 1px;
+    border: 1px solid #333;
+    padding: 2px;
+    background-color:  rgb(240, 207, 207);
+    width: 400px; /* Adjusted width */
+    height: 300px; /* Adjusted height */
+    min-width: 350px; /* Ensured minimum width */
+    min-height: 350px; /* Ensured minimum height */
+    max-width: 90vw; /* Adjusted maximum width for responsiveness */
+    max-height: 90vw; /* Adjusted maximum height for responsiveness */
+}
+
+.word-search-cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5vw; /* Adjusted font size */
+    border: 1px solid #ddd;
+    user-select: none;
+    cursor: pointer;
+    height: 30px; /* Adjusted height */
+    width: 30px; /* Adjusted width */
+}
+
+.word-search-cell.selected {
+    background-color: #e80da7;
+}
+
+.word-search-cell.found {
+    background-color: #a8d5e2;
+}
+
+.word-list {
+    text-align: center; /* Center align the word list */
+    margin-top: 35px; /* Added margin on top */
+    color:rgb(226, 228, 228);
+    
+}
+
+ul {
+    list-style-type:none;
+    padding: 0;
+    display: flex; /* Changed to flex for horizontal layout */
+    justify-content: center; /* Centered words */
+    flex-wrap: wrap; /* Allow words to wrap */
+}
+
+ul li {
+    margin-right: 15px; /* Added spacing between words */
+    font-size: 16px; /* Font size for words */
+}
+
+#restartBtn {
+    display: none;
+    margin-top: 15px;
+    padding: 8px 16px;
+    font-size: 14px;
+    cursor: pointer;
+    background-color: #0df114;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+
+#congratulationsMessage {
+    display: none;
+    font-size: 20px; /* Adjusted font size */
+    color: #eef6f0;
+    margin-top: 15px;
+}
+
+#confettiCanvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    .word-search-cell {
+        height: 25px; /* Adjust height for smaller screens */
+        width: 25px; /* Adjust width for smaller screens */
+        font-size: 3vw; /* Responsive font size */
+    }
+}

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D Shapes Quiz</title>
+    <title>Maumbo/Shapes</title>
     <!-- Materialize CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
     <style>
@@ -16,31 +16,33 @@
         #shapeImage {
             max-width: 100%;
             height: auto;
-            max-height: 300px; /* Set a fixed height to maintain uniformity */
+            max-height: 180px; /* Set a fixed height to maintain uniformity */
         }
 
         /* Darker background */
         body {
-            background-color: #37474f;
+            background-color: #173442;
         }
 
         /* Adjust message color */
         .message.correct {
             color: green;
+            font-size: 30px;
         }
 
         .message.incorrect {
             color: red;
+            font-size: 30px;
         }
 
-        /* Darker background for possible answers list */
-        ul#answers-list {
-            background-color: #455a64;
+        /* Styling for answer lists */
+        .answers-list {
+            background-color: #169ad3;
             padding: 10px;
             border-radius: 10px;
         }
 
-        ul#answers-list li {
+        .answers-list li {
             color: white;
         }
     </style>
@@ -48,13 +50,14 @@
 <body class="grey lighten-1">
 
     <div class="container">
-        <h1 class="center-align white-text">3D Shapes Quiz</h1>
+        <h1 class="center-align white-text">Maumbo/Shapes Quiz</h1>
+        <h3 class="center-align white-text">Taja Majina ya Kiswahili-Name the Kiswahili words of the shapes </h3>
 
         <!-- Shape Image and Input -->
         <div class="row">
             <div class="col s12 m6 offset-m3 center-align">
                 <img id="shapeImage" class="responsive-img" alt="Shape Image">
-                <label for="shapeAnswer" class="left-align white-text">Name this shape:</label>
+                <label for="shapeAnswer" class="left-align white-text"></label>
                 <input type="text" id="shapeAnswer" class="validate">
                 <span id="message" class="message"></span>
             </div>
@@ -69,13 +72,24 @@
         </div>
 
         <!-- Possible Answers -->
-        <h2 class="center-align white-text">Possible Answers:</h2>
-        <ul id="answers-list" class="center-align">
-            <li id="answer1" class="collection-item">Cube</li>
-            <li id="answer2" class="collection-item">Cuboid</li>
-            <li id="answer3" class="collection-item">Square</li>
-            <li id="answer4" class="collection-item">Cone</li>
-        </ul>
+        <h2 class="center-align white-text">Majibu/Possible Answers:</h2>
+        <div class="row">
+            <!-- Left-aligned list -->
+            <ul id="answers-list-left" class="answers-list col s6">
+                <li id="answer1-left" class="collection-item">Pyramid</li>
+                <li id="answer2-left" class="collection-item">Cuboid</li>
+                <li id="answer3-left" class="collection-item">Square</li>
+                <li id="answer4-left" class="collection-item">Cone</li>
+            </ul>
+        
+            <!-- Right-aligned list -->
+            <ul id="answers-list-right" class="answers-list col s6">
+                <li id="answer1-right" class="collection-item">Cube</li>
+                <li id="answer2-right" class="collection-item">Cuboid</li>
+                <li id="answer3-right" class="collection-item">Square</li>
+                <li id="answer4-right" class="collection-item">Cone</li>
+            </ul>
+        </div>
     </div>
 
     <!-- Materialize JavaScript -->
@@ -83,10 +97,10 @@
 
     <script>
         const shapes = [
-            { image: "pyramid.jpg", answer: "pyramid", answerId: "answer1" },
-            { image: "rectangular.jpg", answer: "rectangle", answerId: "answer2" },
-            { image: "cylinder.jpg", answer: "cylinder", answerId: "answer3" },
-            { image: "cone.jpg", answer: "cone", answerId: "answer4" }
+            { image: "img/shapes/pyramid.jpg", answer: "pyramid", answerId: "answer1-left" },
+            { image: "img/shapes/rectangular.jpg", answer: "rectangle", answerId: "answer2-left" },
+            { image: "img/shapes/cylinder.jpg", answer: "cylinder", answerId: "answer3-left" },
+            { image: "img/shapes/cone.jpg", answer: "cone", answerId: "answer4-left" }
         ];
 
         let currentShapeIndex = 0;
@@ -155,7 +169,7 @@
             loadShape(currentShapeIndex);
             document.getElementById("submit").style.display = "block";
             document.getElementById("refresh").style.display = "none";
-            let answerListItems = document.querySelectorAll("#answers-list li");
+            let answerListItems = document.querySelectorAll(".answers-list li");
             answerListItems.forEach(item => item.classList.remove("strike-through"));
         });
     </script>

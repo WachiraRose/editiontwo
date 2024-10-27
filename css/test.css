@@ -1,0 +1,99 @@
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: #f0f8ff;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    background-color: #333;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 100px;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.box {
+    width: calc(20% - 20px); /* Box width adjusts with screen size */
+    height: calc(25vh - 20px);
+    border: 3px solid #333;
+    border-radius: 0.5rem;
+    margin: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 1.3rem;
+    font-weight: bold;
+    cursor: move;
+    background-color: #d5dad5;
+    transition: background-color 0.3s ease;
+    overflow: hidden;
+    word-wrap: break-word;
+}
+
+.correct {
+    background-color: #28a745; /* Turn green when correct */
+}
+
+.popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    z-index: 9999;
+    display: none;
+}
+
+#nextLevelButton, #restartButton {
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    font-size: 1.2rem;
+    background-color: #4caf50;
+    color: #fff;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    display: none;
+}
+
+#restartButton {
+    background-color: #f44336;
+    margin-left: 10px;
+}
+
+#levelText {
+    text-align: center;
+    margin-top: 55px;
+}
+
+@media (max-width: 600px) {
+    .container {
+        justify-content: space-between; /* Make sure boxes don't overlap */
+    }
+
+    .box {
+        width: calc(45% - 20px); /* Adjust box width for small screens */
+        height: calc(20vh - 20px); /* Adjust box height for small screens */
+        font-size: 1rem; /* Adjust font size */
+    }
+}

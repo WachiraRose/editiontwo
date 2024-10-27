@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Viungo/spices</title>
+    <link href="css/viungo.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+    <canvas id="confettiCanvas"></canvas>
+
+    <h1>Viungo/Spices Puzzle</h1>
+
+    <div class="puzzle-wrapper">
+        <div class="word-search-container" id="wordSearchContainer">
+            <!-- JavaScript will populate the grid -->
+        </div>
+
+        <div class="word-list">
+            <h5>Tafuta Majina ya viungo(Word search for spices):</h5>
+            <ul id="wordList">
+                <!-- Word list goes here -->
+            </ul>
+        </div>
+    </div>
+
+    <div id="congratulationsMessage">Hongera/Congratulations! You found all the words!</div>
+
+    <button id="restartBtn" onclick="restartPuzzle()">Restart Puzzle</button>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js" async></script>
+    <script src="js/viungo.js"></script>
+</body>
+
+</html>
