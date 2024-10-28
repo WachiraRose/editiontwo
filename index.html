@@ -103,35 +103,21 @@
 
     <div class="row">
       <div class="col s12 m4">
-        <div class="card-panel orange lighten-2" onclick="selectCategory('matunda', this)">
-          <span class="white-text card-title">Matunda</span>
+        <div class="card-panel orange lighten-2" onclick="selectCategory('nyumbani', this)">
+          <span class="white-text card-title">Wanyama wa Nyumbani(Domestic Animals)</span>
         </div>
       </div>
       <div class="col s12 m4">
-        <div class="card-panel green lighten-2" onclick="selectCategory('wanyama', this)">
-          <span class="white-text card-title">Wanyama</span>
+        <div class="card-panel green lighten-2" onclick="selectCategory('porini', this)">
+          <span class="white-text card-title">Wanyama wa Porini(Wild Animals)</span>
         </div>
       </div>
       <div class="col s12 m4">
-        <div class="card-panel purple lighten-2" onclick="selectCategory('rangi', this)">
-          <span class="white-text card-title">Rangi</span>
+        <div class="card-panel purple lighten-2" onclick="selectCategory('majini', this)">
+          <span class="white-text card-title">Wanyama wa Majini(sea Animals)</span>
         </div>
       </div>
-      <div class="col s12 m4">
-        <div class="card-panel blue lighten-2" onclick="selectCategory('one', this)">
-          <span class="white-text card-title">NambariDrag n Drop</span>
-        </div>
-      </div>
-      <div class="col s12 m4">
-        <div class="card-panel red lighten-2" onclick="selectCategory('two', this)">
-          <span class="white-text card-title">Aina ya Chakula</span>
-        </div>
-      </div>
-      <div class="col s12 m4">
-        <div class="card-panel orange lighten-2" onclick="selectCategory('three', this)">
-          <span class="white-text card-title">TBD</span>
-        </div>
-      </div>
+      
     </div>
   </div>
 
@@ -140,20 +126,12 @@
     function selectCategory(category, element) {
       let templateName;
       switch (category) {
-        case 'matunda':
-        case 'wanyama':
-        case 'rangi':
-          templateName = 'multiple-choice.html';
+        case 'nyumbani':
+        case 'porini':
+        case 'majini':
+          templateName = 'wanyama.html';
           break;
-        case 'one':
-          templateName = 'nambari.html';
-          break;
-        case 'two':
-          templateName = 'ainayachakula.html';
-          break;
-        case 'three':
-          templateName = 'tbd.html';
-          break;
+        
         default:
           // Default to a common template
           templateName = 'common-template.html';

@@ -4,13 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Guess the Food</title>
+    <!-- Include Tailwind CSS -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <style>
+        /* Pop-in animation for page content */
         @keyframes popIn {
             0% { opacity: 0; transform: scale(0.8); }
             100% { opacity: 1; transform: scale(1); }
         }
 
+        /* Style enhancements */
         .home-button {
             position: fixed;
             top: 20px;
@@ -35,6 +38,7 @@
             backdrop-filter: blur(4px);
         }
 
+        /* Animations */
         .container, #imageContainer img {
             animation: popIn 0.4s ease-in-out;
         }
@@ -47,9 +51,7 @@
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
         }
 
-        .bg-proteins { background-color: #D9EAD3; }
-        .bg-carbohydrates { background-color: #EDD6C0; }
-        .bg-vitamins { background-color: #F9D5E5; }
+        .bg-fruits { background-color: #FFD3B6; } /* Light peach */
     </style>
 </head>
 <body class="min-h-screen flex flex-col items-center justify-center">
@@ -57,80 +59,78 @@
         <h1 class="text-gray-800 text-4xl font-semibold mb-8 text-center" id="heading">Choose a Category</h1>
         <div id="categoryContainer" class="w-full mb-6">
             <select id="categorySelect" class="block w-full bg-gray-50 border border-gray-300 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-300 transition duration-200">
-                <option value="" disabled selected>Choose Category</option>
-                <option value="proteins">Proteins</option>
-                <option value="carbohydrates">Carbohydrates</option>
-                <option value="vitamins">Vitamins</option>
+                <option value="fruits">Matunda</option> <!-- Only matunda option -->
             </select>
         </div>
         <div id="imageContainer" class="center-align mt-4 mb-6"></div>
         <div id="choicesContainer" class="mb-4 space-y-2"></div>
     </div>
 
+    <!-- Pop-up message -->
     <div id="popupMessage" class="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 hidden">
         <div class="bg-white p-6 rounded-lg shadow-lg text-center max-w-md mx-4 transition duration-300" id="popupContent">
             <p class="text-lg font-semibold mb-4" id="popupText"></p>
-            <button id="nextButton" class="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg hidden" onclick="loadNextQuestion()">Next</button>
+            <button id="nextButton" class="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg hidden">Next</button>
             <button id="exitButton" class="bg-red-500 hover:bg-red-700 text-white font-semibold py-2 px-6 rounded-lg hidden" onclick="goToHome()">Exit</button>
         </div>
     </div>
 
+    <!-- Home Button -->
     <button class="home-button" onclick="goToHome()">Home</button>
 
+    <!-- JavaScript -->
     <script>
         var foods = {
-            "proteins": ["maziwa", "yai", "maharagwe"],
-            "carbohydrates": ["mchele", "mkate", "viazi"],
-            "vitamins": ["sukuma wiki", "nyanya", "karoti"]
+            "fruits": ["embe", "ndizi", "machungwa"], // Fruits only
         };
-    
-        var currentCategory;
-        var currentIndex;
+
+        var currentCategory = "fruits"; // Set to fruits
+        var currentIndex = 0;
         var attemptCount = 0;
-    
+
         document.addEventListener('DOMContentLoaded', function() {
             var categorySelect = document.getElementById("categorySelect");
             categorySelect.addEventListener("change", chooseCategory);
+            document.getElementById("nextButton").onclick = loadNextCategory;
+
+            // Automatically choose the only category available
+            chooseCategory();
         });
-    
+
         function chooseCategory() {
-            var categorySelect = document.getElementById("categorySelect");
-            currentCategory = categorySelect.value;
             currentIndex = 0;
             attemptCount = 0;
-    
-            // Hide category selection and show the correct background
+
+            // Hide category selection and set background
             document.getElementById("categoryContainer").style.display = "none";
             document.getElementById("heading").innerText = currentCategory.charAt(0).toUpperCase() + currentCategory.slice(1);
-            document.body.className = currentCategory === "proteins" ? "bg-proteins" : currentCategory === "carbohydrates" ? "bg-carbohydrates" : "bg-vitamins";
-    
-            if (currentCategory) {
-                showFoodImage();
-            }
+            document.body.className = "bg-fruits"; // Only background for fruits
+
+            showFoodImage();
         }
-    
+
         function showFoodImage() {
             var imageContainer = document.getElementById("imageContainer");
             if (currentIndex < foods[currentCategory].length) {
                 var food = foods[currentCategory][currentIndex];
-                var imagePath = "img/" + currentCategory + "/" + food + ".jpg";
+                var imagePath = "images/" + currentCategory + "/" + food + ".jpg";
                 imageContainer.innerHTML = "<img src='" + imagePath + "' alt='" + food + "'>";
                 displayChoices(food);
             } else {
-                showCategoryCompletionPopup();
+                showCompletionPopup();
             }
         }
-    
+
         function displayChoices(correctAnswer) {
             var choicesContainer = document.getElementById("choicesContainer");
             choicesContainer.innerHTML = "";
-    
+
             var choices = [...foods[currentCategory]];
             choices = shuffleArray(choices);
             if (!choices.includes(correctAnswer)) choices.push(correctAnswer);
             choices = choices.slice(0, 3);
             choices = shuffleArray(choices);
-    
+
             choices.forEach(choice => {
                 var button = document.createElement("button");
                 button.className = "w-full py-2 px-4 border rounded-lg bg-gray-100 hover:bg-blue-200 transition duration-200";
@@ -141,10 +141,10 @@
                 choicesContainer.appendChild(button);
             });
         }
-    
+
         function checkGuess(selectedChoice) {
             var correctAnswer = foods[currentCategory][currentIndex];
-    
+
             if (selectedChoice === correctAnswer) {
                 showPopup("Hongera! Correct!", "correct");
                 setTimeout(() => {
@@ -168,44 +168,34 @@
                 }
             }
         }
-    
+
         function showPopup(message, status) {
             var popupText = document.getElementById("popupText");
             popupText.innerText = message;
-    
+
             document.getElementById("popupMessage").classList.remove("hidden");
-            if (status === "wrong") {
-                setTimeout(() => {
-                    closePopup();
-                }, 2000);
+            if (status === "correct") {
+                document.getElementById("nextButton").classList.remove("hidden");
+            } else {
+                document.getElementById("nextButton").classList.add("hidden");
             }
         }
-    
+
         function closePopup() {
             document.getElementById("popupMessage").classList.add("hidden");
+            document.getElementById("nextButton").classList.add("hidden");
         }
-    
-        function showCategoryCompletionPopup() {
-            var nextCategory = getNextCategory();
-            showPopup("Great job! You've completed this category.  Try the " + nextCategory + " category?", "correct");
-            document.getElementById("popupText").innerHTML += `<br><button onclick="loadNextCategory()" class="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg">Next</button>`;
+
+        function showCompletionPopup() {
+            showPopup("Great job! You've completed this category.", "correct");
+            document.getElementById("exitButton").classList.remove("hidden");
         }
-    
+
         function loadNextCategory() {
-            var nextCategory = getNextCategory();
-            if (nextCategory) {
-                closePopup(); // Hide the popup
-                document.getElementById("categorySelect").value = nextCategory;
-                chooseCategory(); // Load the next category
-            }
+            closePopup();
+            showCompletionPopup(); // No next category
         }
-    
-        function getNextCategory() {
-            const categories = ["proteins", "carbohydrates", "vitamins"];
-            const currentIndex = categories.indexOf(currentCategory);
-            return categories[(currentIndex + 1) % categories.length];
-        }
-    
+
         function shuffleArray(array) {
             for (let i = array.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
@@ -213,10 +203,10 @@
             }
             return array;
         }
-    
+
         function goToHome() {
-            window.location.href = "index.html"; // Change this to your home page
+            window.location.href = "index.html"; // Redirect to index.html
         }
     </script>
-    </body>
+</body>
 </html>

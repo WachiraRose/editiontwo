@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="sw">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Taja Picha</title>
+    <!-- Import Materialize CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <!-- Import Google Fonts -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="css/multipleChoice.css" >
+
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-wrapper">
+            <a href="#" class="brand-logo center">Taja Picha</a>
+        </div>
+    </nav>
+    <div class="question-container">
+        <div class="question-card card show">
+            <div class="card-content">
+                <!-- Questions and choices will be dynamically added here -->
+            </div>
+        </div>
+        <div class="question-card card hidden">
+            <div class="card-content">
+                <!-- Questions and choices will be dynamically added here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Score Tally Card -->
+    <div class="score-card card">
+        <div class="card-content">
+            <p>Kategoria: <span id="category"></span></p>
+            <p>Alama Yako: <span id="score"></span></p>
+            <a class="btn try-again-btn waves-effect waves-light" href="index.html">Cheza tena</a>
+        </div>
+    </div>
+
+    <!-- Import Materialize JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="js/multipleChoice.js"></script>
+</body>
+
+</html>

@@ -3,89 +3,40 @@ document.addEventListener('DOMContentLoaded', function () {
     const category = urlParams.get("category");
 
     const images = {
-        nyumbani: [
-            "img/wanyama/cat.jpg",
-            "img/wanyama/cow.jpg",
-            "img/wanyama/mbwa.jpg",
-            "img/wanyama/rabbit.jpg",
-            "img/wanyama/goat.jpg",
-            "img/wanyama/turkey.jpg",
-            "img/wanyama/horse.jpg",
-            "img/wanyama/pig.jpg",
-            "img/wanyama/sheep.jpg",
-            "img/wanyama/duck.jpg"
+        matunda: [
+            "img/matunda/apples.png",
+            "img/matunda/mango.jpg",
+            "img/matunda/pineapple.jpg",
+            "img/matunda/orange.png",
+            "img/matunda/banana.jpg",
+            "img/matunda/grapes.jpg",
+            "img/matunda/kiwi.jpg",
+            "img/matunda/lemon.jpg",
+            "img/matunda/passion.jpg",
+            "img/matunda/watermelon.jpg"
         ],
-        porini: [
-            "img/wanyama/lion.jpg",
-            "img/wanyama/elephant.jpg",
-            "img/wanyama/porcupine.jpg",
-            "img/wanyama/buffalo.jpg",
-            "img/wanyama/cheetah.jpg",
-            "img/wanyama/racoon.jpg",
-            "img/wanyama/baboon.jpg",
-            "img/wanyama/warthog.jpg",
-            "img/wanyama/hippo.jpg",
-            "img/wanyama/reindeer.jpg"
-        ],
-        majini: [
-            "img/wanyama/whale.jpg",
-            "img/wanyama/eel.jpg",
-            "img/wanyama/shark.jpg",
-            "img/wanyama/octopus.jpg",
-            "img/wanyama/swordfish.jpg",
-            "img/wanyama/catfish.jpg",
-            "img/wanyama/oyster.jpg",
-            "img/wanyama/dolphin.jpg",
-            "img/wanyama/seaurchin.jpg",
-            "img/wanyama/seal.jpg"
-        ],
+       
     };
 
     const choices = {
-        nyumbani: [
-            ["Paka", "Chui", "Mbwa"],
-            ["Mbuzi", "Ng'ombe", "Kiwi"],
-            ["Mbwa", "Simba", "Kuku"],
-            ["Mbuzi", "Sungura", "Paka"],
-            ["Kuku", "Chui", "Mbuzi"],
-            ["Ng'ombe", "Farasi", "Bata Mzinga"],
-            ["Paka", "Farasi", "Sungura"],
-            ["Kuku", "Nguruwe", "Mbu"],
-            ["Simba", "Ndovu", "KONDOO"],
-            ["Bata", "Nungu", "Tembo"],
+        matunda: [
+            ["Tofaa", "Ndizi", "Chungwa"],
+            ["Maharagwe", "Maembe", "Kiwi"],
+            ["Nanasi", "Lemon", "Ndimu"],
+            ["Tikiti Maji", "Tofaa", "Chungwa"],
+            ["Maembe", "Ndizi", "Kiwi"],
+            ["Ndimu", "Grapes", "Zabibu"],
+            ["Maharagwe", "Kiwi", "Mahindi"],
+            ["Ndimu", "Zabibu", "Maji"],
+            ["Nanasi", "Pasheni", "Tofaa"],
+            ["Bohora", "Kakara", "Tikiti Maji"],
         ],
-        porini: [
-            ["Paka", "Simba", "Kiboko"],
-            ["Sungura", "Nungu", "Ndovu"],
-            ["Nungunungu", "Punda", "Tembo"],
-            ["Kifaru", "Panya", "Kuku"],
-            ["Mbu", "Nyati", "Chui"],
-            ["Paka", "Komba", "Ng'ombe"],
-            ["Punda", "Kifaru", "Nyani"],
-            ["Ndovu", "Mbuzi", "Ngiri"],
-            ["Chaza", "Kiboko", "Nzi"],
-            ["Farasi", "Kulungu", "Sungura"]
-            // Add choices for each question in wanyama
-        ],
-        majini: [
-            ["Mbu", "Kifaru", "Nyangumi"],
-            ["Sungura", "Mkunga", "Paka"],
-            ["Simba", "Papa", "Kiboko"],
-            ["Nyangumi", "Pweza", "Papa"],
-            ["Chuchunge", "Nyati", "Chui"],
-            ["Kambare", "Nyangumi", "Mbu"],
-            ["Kuku", "Simba", "Chaza"],
-            ["Sili", "Pomboo", "Mwanamizi"],
-            ["Mbuzi", "Paka", "Mwanamizi"],
-            ["Chura", "Sili", "Twiga"],
-            // Add choices for each question in rangi
-        ],
+        
     };
 
     const correctAnswers = {
-        nyumbani: ["Paka", "Ng'ombe", "Mbwa", "Sungura", "Mbuzi", "Bata Mzinga", "Farasi", "Nguruwe", "Kondo", "Bata"],
-        wanyama: ["Simba", "Ndovu", "Nungunungu", "Kifaru", "Chui", "Komba", "Nyani", "Ngiri", "Kiboko", "Kulungu"],
-        majini: ["Nyangumi", "Mkunga", "Papa", "Pweza", "Chuchunge", "Kambare", "Chaza", "Pomboo", "Mwanamizi", "Sili"],
+        matunda: ["Tofaa", "Maembe", "Nanasi", "Chungwa", "Ndizi", "Zabibu", "Kiwi", "Ndimu", "Pasheni", "Tikiti Maji"],
+        
     };
 
     let score = 0;
