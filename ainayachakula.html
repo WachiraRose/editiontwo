@@ -3,129 +3,236 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guess the Food</title>
-    <!-- Include Tailwind CSS -->
+    <title>Aina ya Chakula</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <style>
+        @keyframes popIn {
+            0% { opacity: 0; transform: scale(0.8); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
         .home-button {
             position: fixed;
             top: 20px;
             right: 20px;
-            background-color: #6B7280; /* Blue Grey color */
+            background-color: #4A5568;
             color: white;
-            padding: 15px 25px;
+            padding: 12px 20px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             font-size: 16px;
-            z-index: 50; /* Ensure the button is on top of other content */
+            transition: background-color 0.3s, transform 0.2s;
+            z-index: 50;
         }
 
         .home-button:hover {
-            background-color: #7aaef8; /* Darker shade of Blue Grey color */
+            background-color: #3182CE;
+            transform: scale(1.05);
         }
+
+        #popupMessage {
+            backdrop-filter: blur(4px);
+        }
+
+        .container, #imageContainer img {
+            animation: popIn 0.4s ease-in-out;
+        }
+
+        #imageContainer img {
+            width: 300px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 12px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .bg-proteins { background-color: #D9EAD3; }
+        .bg-carbohydrates { background-color: #EDD6C0; }
+        .bg-vitamins { background-color: #F9D5E5; }
     </style>
 </head>
-<body  class="bg-blue-100 min-h-screen flex flex-col justify-center items-center">
-    <div class="container mx-auto p-4 max-w-lg">
-        <h1 class="text-gray-800 text-4xl font-semibold mb-8 text-center">Guess the Food</h1>
-        <div class="w-full">
-            <select id="categorySelect" class="block w-full bg-white border border-gray-300 rounded py-2 px-4 mb-4 focus:outline-none">
+<body class="min-h-screen flex flex-col items-center justify-center">
+    <div class="container mx-auto p-6 max-w-lg shadow-xl rounded-lg bg-white border border-gray-200">
+        <h1 class="text-gray-800 text-4xl font-semibold mb-8 text-center" id="heading">Choose a Category</h1>
+        <div id="categoryContainer" class="w-full mb-6">
+            <select id="categorySelect" class="block w-full bg-gray-50 border border-gray-300 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-300 transition duration-200">
                 <option value="" disabled selected>Choose Category</option>
                 <option value="proteins">Proteins</option>
                 <option value="carbohydrates">Carbohydrates</option>
                 <option value="vitamins">Vitamins</option>
             </select>
         </div>
-        <div id="imageContainer" class="center-align mt-4"></div>
-        <input type="text" id="guessInput" placeholder="Enter your guess" class="block w-full bg-white border border-gray-300 rounded py-2 px-4 mb-4 text-gray-800 focus:outline-none">
-        <button onclick="checkGuess()" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded w-full transition duration-300 ease-in-out transform hover:scale-105">Submit Guess</button>
+        <div id="imageContainer" class="center-align mt-4 mb-6"></div>
+        <div id="choicesContainer" class="mb-4 space-y-2"></div>
     </div>
 
-    <!-- Pop-up message -->
-    <div id="popupMessage" class="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-50 hidden">
-        <div class="bg-white p-8 rounded-lg text-center">
-            <p class="text-lg font-semibold" id="popupText"></p>
-            <button onclick="closePopup()" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-4">Close</button>
+    <div id="popupMessage" class="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 hidden">
+        <div class="bg-white p-6 rounded-lg shadow-lg text-center max-w-md mx-4 transition duration-300" id="popupContent">
+            <p class="text-lg font-semibold mb-4" id="popupText"></p>
+            <button id="nextButton" class="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg hidden" onclick="loadNextQuestion()">Next</button>
+            <button id="exitButton" class="bg-red-500 hover:bg-red-700 text-white font-semibold py-2 px-6 rounded-lg hidden" onclick="goToHome()">Exit</button>
         </div>
     </div>
 
-    <!-- Home Button -->
     <button class="home-button" onclick="goToHome()">Home</button>
 
-    <!-- Import JavaScript -->
     <script>
-        // Dictionary containing food items categorized by proteins, carbohydrates, and vitamins
         var foods = {
             "proteins": ["maziwa", "yai", "maharagwe"],
             "carbohydrates": ["mchele", "mkate", "viazi"],
-            "vitamins": ["sukuma wiki", "nyanya", "karoti"]
+            "vitamins": ["sukumawiki", "nyanya", "karoti"]
         };
-
-        // Current category and index
+    
         var currentCategory;
         var currentIndex;
-
-        // Function to initialize dropdown
+        var attemptCount = 0;
+    
         document.addEventListener('DOMContentLoaded', function() {
             var categorySelect = document.getElementById("categorySelect");
             categorySelect.addEventListener("change", chooseCategory);
-            chooseCategory();
         });
-
-        // Function to handle category selection
+    
         function chooseCategory() {
             var categorySelect = document.getElementById("categorySelect");
             currentCategory = categorySelect.value;
             currentIndex = 0;
+            attemptCount = 0;
+    
+            // Hide category selection and show the correct background
+            document.getElementById("categoryContainer").style.display = "none";
+            document.getElementById("heading").innerText = currentCategory.charAt(0).toUpperCase() + currentCategory.slice(1);
+            document.body.className = currentCategory === "proteins" ? "bg-proteins" : currentCategory === "carbohydrates" ? "bg-carbohydrates" : "bg-vitamins";
+    
             if (currentCategory) {
                 showFoodImage();
             }
         }
-
-        // Function to display food image
+    
         function showFoodImage() {
             var imageContainer = document.getElementById("imageContainer");
             if (currentIndex < foods[currentCategory].length) {
                 var food = foods[currentCategory][currentIndex];
-                var imagePath = "images/" + currentCategory + "/" + food + ".jpg"; // Construct the image path
-                imageContainer.innerHTML = "<img src='" + imagePath + "' alt='" + food + "' class='w-full rounded-lg shadow-lg'>";
-            }
-        }
-
-        // Function to check user's guess
-        function checkGuess() {
-            var guessInput = document.getElementById("guessInput");
-            var userGuess = guessInput.value.toLowerCase();
-            var correctAnswer = foods[currentCategory][currentIndex];
-            if (userGuess === correctAnswer) {
-                showPopup("Hongera! Correct!");
-                currentIndex++;
-                showFoodImage();
-                guessInput.value = "";
+                var imagePath = "img/" + currentCategory + "/" + food + ".jpg";
+                imageContainer.innerHTML = "<img src='" + imagePath + "' alt='" + food + "'>";
+                displayChoices(food);
             } else {
-                showPopup("Incorrect! Try again.");
+                showCategoryCompletionPopup();
             }
         }
-
-        // Function to show pop-up message
-        function showPopup(message) {
+    
+        function displayChoices(correctAnswer) {
+            var choicesContainer = document.getElementById("choicesContainer");
+            choicesContainer.innerHTML = "";
+    
+            var choices = [...foods[currentCategory]];
+            choices = shuffleArray(choices);
+            if (!choices.includes(correctAnswer)) choices.push(correctAnswer);
+            choices = choices.slice(0, 3);
+            choices = shuffleArray(choices);
+    
+            choices.forEach(choice => {
+                var button = document.createElement("button");
+                button.className = "w-full py-2 px-4 border rounded-lg bg-gray-100 hover:bg-blue-200 transition duration-200";
+                button.innerText = choice;
+                button.onclick = function() {
+                    checkGuess(choice);
+                };
+                choicesContainer.appendChild(button);
+            });
+        }
+    
+        function checkGuess(selectedChoice) {
+            var correctAnswer = foods[currentCategory][currentIndex];
+    
+            if (selectedChoice === correctAnswer) {
+                showPopup("Hongera! Correct!", "correct");
+                setTimeout(() => {
+                    closePopup();
+                    currentIndex++;
+                    attemptCount = 0;
+                    showFoodImage();
+                }, 1000);
+            } else {
+                attemptCount++;
+                if (attemptCount >= 2) {
+                    showPopup("The correct answer is: " + correctAnswer, "wrong");
+                    attemptCount = 0;
+                    currentIndex++;
+                    setTimeout(() => {
+                        closePopup();
+                        showFoodImage();
+                    }, 1000);
+                } else {
+                    showPopup("Incorrect! Try again.", "wrong");
+                }
+            }
+        }
+    
+        function showPopup(message, status) {
             var popupText = document.getElementById("popupText");
             popupText.innerText = message;
-            var popup = document.getElementById("popupMessage");
-            popup.classList.remove("hidden");
+    
+            document.getElementById("popupMessage").classList.remove("hidden");
+            if (status === "wrong") {
+                setTimeout(() => {
+                    closePopup();
+                }, 1000);
+            }
         }
-
-        // Function to close pop-up message
+    
         function closePopup() {
-            var popup = document.getElementById("popupMessage");
-            popup.classList.add("hidden");
+            document.getElementById("popupMessage").classList.add("hidden");
+        }
+    
+        function showCategoryCompletionPopup() {
+            closePopup();
+            var nextCategory = getNextCategory();
+            if (nextCategory) {
+                showPopup("Great job! You've completed this category. Do you want to try the " + nextCategory + " category?", "correct");
+                document.getElementById("popupText").innerHTML += `
+                    <div class="mt-4 space-x-4">
+                        <button onclick="loadNextCategory()" class="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg">Yes</button>
+                        <button onclick="redirectToFood()" class="bg-red-500 hover:bg-red-700 text-white font-semibold py-2 px-6 rounded-lg">No</button>
+                    </div>`;
+            } else {
+                showPopup("Hongera, well done! You've completed all categories.", "completion");
+                document.getElementById("popupText").innerHTML = `
+                    <p class="text-lg font-semibold">Hongera, well done! You've completed all categories.</p>
+                    <button onclick="goToHome()" class="mt-4 bg-green-500 hover:bg-green-700 text-white font-semibold py-2 px-6 rounded-lg">Exit</button>`;
+            }
+        }
+    
+        function loadNextCategory() {
+            var nextCategory = getNextCategory();
+            if (nextCategory) {
+                closePopup(); // Hide the popup
+                document.getElementById("categorySelect").value = nextCategory;
+                chooseCategory(); // Load the next category
+            }
         }
 
-        // Function to navigate to home
+        function redirectToFood() {
+            window.location.href = "ainayachakula.html";
+        }
+    
+        function getNextCategory() {
+            const categories = ["proteins", "carbohydrates", "vitamins"];
+            const currentIndex = categories.indexOf(currentCategory);
+            return categories[(currentIndex + 1) % categories.length];
+        }
+    
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+    
         function goToHome() {
-            window.location.href = "index.html"; // Change "index.html" to the actual home page URL
+            window.location.href = "foods.html"; // Change this to your home page
         }
     </script>
-</body>
+    </body>
 </html>
