@@ -38,6 +38,8 @@
             backdrop-filter: blur(4px);
         }
 
+        .bg-green { background-color: #28a745; color: white; }
+
         /* Animations */
         .container, #imageContainer img {
             animation: popIn 0.4s ease-in-out;
@@ -51,7 +53,9 @@
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
         }
 
-        .bg-fruits { background-color: #FFD3B6; } /* Light peach */
+        .bg-proteins { background-color: #D9EAD3; }
+        .bg-carbohydrates { background-color: #EDD6C0; }
+        .bg-vitamins { background-color: #F9D5E5; }
     </style>
 </head>
 <body class="min-h-screen flex flex-col items-center justify-center">
@@ -59,7 +63,10 @@
         <h1 class="text-gray-800 text-4xl font-semibold mb-8 text-center" id="heading">Choose a Category</h1>
         <div id="categoryContainer" class="w-full mb-6">
             <select id="categorySelect" class="block w-full bg-gray-50 border border-gray-300 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-300 transition duration-200">
-                <option value="fruits">Matunda</option> <!-- Only matunda option -->
+                <option value="" disabled selected>Choose Category</option>
+                <option value="proteins">Proteins</option>
+                <option value="carbohydrates">Carbohydrates</option>
+                <option value="vitamins">Vitamins</option>
             </select>
         </div>
         <div id="imageContainer" class="center-align mt-4 mb-6"></div>
@@ -70,8 +77,6 @@
     <div id="popupMessage" class="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 hidden">
         <div class="bg-white p-6 rounded-lg shadow-lg text-center max-w-md mx-4 transition duration-300" id="popupContent">
             <p class="text-lg font-semibold mb-4" id="popupText"></p>
-            <button id="nextButton" class="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg hidden">Next</button>
-            <button id="exitButton" class="bg-red-500 hover:bg-red-700 text-white font-semibold py-2 px-6 rounded-lg hidden" onclick="goToHome()">Exit</button>
         </div>
     </div>
 
@@ -81,34 +86,38 @@
     <!-- JavaScript -->
     <script>
         var foods = {
-            "fruits": ["embe", "ndizi", "machungwa"], // Fruits only
+            "proteins": ["maziwa", "yai", "maharagwe"],
+            "carbohydrates": ["mchele", "mkate", "viazi"],
+            "vitamins": ["sukuma wiki", "nyanya", "karoti"]
         };
-
-        var currentCategory = "fruits"; // Set to fruits
-        var currentIndex = 0;
+    
+        var currentCategory;
+        var currentIndex;
         var attemptCount = 0;
-
+        var completedCategories = new Set();
+    
         document.addEventListener('DOMContentLoaded', function() {
             var categorySelect = document.getElementById("categorySelect");
             categorySelect.addEventListener("change", chooseCategory);
-            document.getElementById("nextButton").onclick = loadNextCategory;
-
-            // Automatically choose the only category available
-            chooseCategory();
         });
-
+    
         function chooseCategory() {
+            var categorySelect = document.getElementById("categorySelect");
+            currentCategory = categorySelect.value;
             currentIndex = 0;
             attemptCount = 0;
-
-            // Hide category selection and set background
+            completedCategories.add(currentCategory);
+    
+            // Hide category selection and update background
             document.getElementById("categoryContainer").style.display = "none";
             document.getElementById("heading").innerText = currentCategory.charAt(0).toUpperCase() + currentCategory.slice(1);
-            document.body.className = "bg-fruits"; // Only background for fruits
-
-            showFoodImage();
+            document.body.className = currentCategory === "proteins" ? "bg-proteins" : currentCategory === "carbohydrates" ? "bg-carbohydrates" : "bg-vitamins";
+    
+            if (currentCategory) {
+                showFoodImage();
+            }
         }
-
+    
         function showFoodImage() {
             var imageContainer = document.getElementById("imageContainer");
             if (currentIndex < foods[currentCategory].length) {
@@ -117,20 +126,20 @@
                 imageContainer.innerHTML = "<img src='" + imagePath + "' alt='" + food + "'>";
                 displayChoices(food);
             } else {
-                showCompletionPopup();
+                showCategoryCompletionPopup();
             }
         }
-
+    
         function displayChoices(correctAnswer) {
             var choicesContainer = document.getElementById("choicesContainer");
             choicesContainer.innerHTML = "";
-
+    
             var choices = [...foods[currentCategory]];
             choices = shuffleArray(choices);
             if (!choices.includes(correctAnswer)) choices.push(correctAnswer);
             choices = choices.slice(0, 3);
             choices = shuffleArray(choices);
-
+    
             choices.forEach(choice => {
                 var button = document.createElement("button");
                 button.className = "w-full py-2 px-4 border rounded-lg bg-gray-100 hover:bg-blue-200 transition duration-200";
@@ -141,10 +150,10 @@
                 choicesContainer.appendChild(button);
             });
         }
-
+    
         function checkGuess(selectedChoice) {
             var correctAnswer = foods[currentCategory][currentIndex];
-
+    
             if (selectedChoice === correctAnswer) {
                 showPopup("Hongera! Correct!", "correct");
                 setTimeout(() => {
@@ -168,45 +177,65 @@
                 }
             }
         }
-
+    
         function showPopup(message, status) {
             var popupText = document.getElementById("popupText");
             popupText.innerText = message;
-
+    
             document.getElementById("popupMessage").classList.remove("hidden");
-            if (status === "correct") {
-                document.getElementById("nextButton").classList.remove("hidden");
-            } else {
-                document.getElementById("nextButton").classList.add("hidden");
+            if (status === "wrong") {
+                setTimeout(() => {
+                    closePopup();
+                }, 2000);
             }
         }
-
+    
         function closePopup() {
             document.getElementById("popupMessage").classList.add("hidden");
-            document.getElementById("nextButton").classList.add("hidden");
         }
-
-        function showCompletionPopup() {
-            showPopup("Great job! You've completed this category.", "correct");
-            document.getElementById("exitButton").classList.remove("hidden");
-        }
-
-        function loadNextCategory() {
+    
+        function showCategoryCompletionPopup() {
             closePopup();
-            showCompletionPopup(); // No next category
-        }
-
-        function shuffleArray(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
+            var nextCategory = getNextCategory();
+            if (nextCategory) {
+                showPopup("Great job! You've completed this category. Do you want to try the " + nextCategory + " category?", "correct");
+                document.getElementById("popupText").innerHTML += `
+                    <div class="mt-4 space-x-4">
+                        <button onclick="loadNextCategory()" class="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg">Yes</button>
+                        <button onclick="redirectToFood()" class="bg-red-500 hover:bg-red-700 text-white font-semibold py-2 px-6 rounded-lg">No</button>
+                    </div>`;
+            } else {
+                showPopup("Hongera, well done! You've completed all categories.", "completion");
+                document.getElementById("popupText").innerHTML = `
+                    <p class="text-lg font-semibold">Hongera, well done! You've completed all categories.</p>
+                    <button onclick="goToHome()" class="mt-4 bg-green-500 hover:bg-green-700 text-white font-semibold py-2 px-6 rounded-lg">Exit</button>`;
             }
-            return array;
         }
-
+    
+        function loadNextCategory() {
+            var nextCategory = getNextCategory();
+            if (nextCategory) {
+                document.getElementById("categorySelect").value = nextCategory;
+                chooseCategory();
+            }
+        }
+    
+        function redirectToFood() {
+            window.location.href = "food.html";
+        }
+    
+        function getNextCategory() {
+            const categories = ["proteins", "carbohydrates", "vitamins"];
+            return categories.find(category => !completedCategories.has(category));
+        }
+    
+        function shuffleArray(array) {
+            return array.sort(() => Math.random() - 0.5);
+        }
+    
         function goToHome() {
-            window.location.href = "index.html"; // Redirect to index.html
+            window.location.href = "choose_category.html";
         }
     </script>
-</body>
+    </body>
 </html>

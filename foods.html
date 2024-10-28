@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guess the Food</title>
+    <title>Aina ya Chakula</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <style>
         @keyframes popIn {
@@ -81,7 +81,7 @@
         var foods = {
             "proteins": ["maziwa", "yai", "maharagwe"],
             "carbohydrates": ["mchele", "mkate", "viazi"],
-            "vitamins": ["sukuma wiki", "nyanya", "karoti"]
+            "vitamins": ["sukumawiki", "nyanya", "karoti"]
         };
     
         var currentCategory;
@@ -152,7 +152,7 @@
                     currentIndex++;
                     attemptCount = 0;
                     showFoodImage();
-                }, 2000);
+                }, 1000);
             } else {
                 attemptCount++;
                 if (attemptCount >= 2) {
@@ -162,7 +162,7 @@
                     setTimeout(() => {
                         closePopup();
                         showFoodImage();
-                    }, 2000);
+                    }, 1000);
                 } else {
                     showPopup("Incorrect! Try again.", "wrong");
                 }
@@ -177,7 +177,7 @@
             if (status === "wrong") {
                 setTimeout(() => {
                     closePopup();
-                }, 2000);
+                }, 1000);
             }
         }
     
@@ -186,9 +186,21 @@
         }
     
         function showCategoryCompletionPopup() {
+            closePopup();
             var nextCategory = getNextCategory();
-            showPopup("Great job! You've completed this category.  Try the " + nextCategory + " category?", "correct");
-            document.getElementById("popupText").innerHTML += `<br><button onclick="loadNextCategory()" class="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg">Next</button>`;
+            if (nextCategory) {
+                showPopup("Great job! You've completed this category. Do you want to try the " + nextCategory + " category?", "correct");
+                document.getElementById("popupText").innerHTML += `
+                    <div class="mt-4 space-x-4">
+                        <button onclick="loadNextCategory()" class="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg">Yes</button>
+                        <button onclick="redirectToFood()" class="bg-red-500 hover:bg-red-700 text-white font-semibold py-2 px-6 rounded-lg">No</button>
+                    </div>`;
+            } else {
+                showPopup("Hongera, well done! You've completed all categories.", "completion");
+                document.getElementById("popupText").innerHTML = `
+                    <p class="text-lg font-semibold">Hongera, well done! You've completed all categories.</p>
+                    <button onclick="goToHome()" class="mt-4 bg-green-500 hover:bg-green-700 text-white font-semibold py-2 px-6 rounded-lg">Exit</button>`;
+            }
         }
     
         function loadNextCategory() {
@@ -198,6 +210,10 @@
                 document.getElementById("categorySelect").value = nextCategory;
                 chooseCategory(); // Load the next category
             }
+        }
+
+        function redirectToFood() {
+            window.location.href = "ainayachakula.html";
         }
     
         function getNextCategory() {
@@ -215,7 +231,7 @@
         }
     
         function goToHome() {
-            window.location.href = "index.html"; // Change this to your home page
+            window.location.href = "foods.html"; // Change this to your home page
         }
     </script>
     </body>
