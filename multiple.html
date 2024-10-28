@@ -2,10 +2,40 @@
 <html lang="sw">
 <head>
   <meta charset="UTF-8">
-  <title>Taja Picha</title>
-  <link rel="stylesheet" href="styles.css">
+  <title>wanyama</title>
+  <link rel="stylesheet" href="css/multipleChoice.css">
 </head>
 <body>
+  <nav class="navbar">
+    <div class="nav-wrapper">
+        <a href="#" class="brand-logo center">Taja Picha</a>
+    </div>
+</nav>
+<div class="question-container">
+    <div class="question-card card show">
+        <div class="card-content">
+            <!-- Questions and choices will be dynamically added here -->
+        </div>
+    </div>
+    <div class="question-card card hidden">
+        <div class="card-content">
+            <!-- Questions and choices will be dynamically added here -->
+        </div>
+    </div>
+</div>
+
+<!-- Score Tally Card -->
+<div class="score-card card">
+    <div class="card-content">
+        <p>Kategoria: <span id="category"></span></p>
+        <p>Alama Yako: <span id="score"></span></p>
+        <a class="btn try-again-btn waves-effect waves-light" href="index.html">Cheza tena</a>
+    </div>
+</div>
+  <!-- Import Materialize JavaScript -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+
   <script>
     const urlParams = new URLSearchParams(window.location.search);
     const category = urlParams.get("category");
@@ -13,40 +43,40 @@
     // Load images and choices based on category
     const images = {
       matunda: [
-        "matunda/apple.jpg",
-        "matunda/mango.jpg",
-        "matunda/pineapple.jpg",
-        "matunda/orange.png",
-        "matunda/banana.jpg",
-        "matunda/grapes.jpg",
-        "matunda/kiwi.jpg",
-        "matunda/lemon.jpg",
-        "matunda/passion.jpg",
-        "matunda/watermelon.jpg"
+        "img/matunda/apple.jpg",
+        "img/matunda/mango.jpg",
+        "img/matunda/pineapple.jpg",
+        "img/matunda/orange.png",
+        "img/matunda/banana.jpg",
+        "img/matunda/grapes.jpg",
+        "img/matunda/kiwi.jpg",
+        "img/matunda/lemon.jpg",
+        "img/matunda/passion.jpg",
+        "img/matunda/watermelon.jpg"
       ],
       wanyama: [
-        "wanyama/lion.jpg",
-        "wanyama/elephant.jpg",
-        "wanyama/cat.jpg",
-        "wanyama/buffalo.jpg",
-        "wanyama/cheetah.jpg",
-        "wanyama/cow.jpg",
-        "wanyama/dog.jpg",
-        "wanyama/goat.jpg",
-        "wanyama/hippo.jpg",
-        "wanyama/rabbit.jpg"
+        "img/wanyama/lion.jpg",
+        "img/wanyama/elephant.jpg",
+        "img/wanyama/cat.jpg",
+        "img/wanyama/buffalo.jpg",
+        "img/wanyama/cheetah.jpg",
+        "img/wanyama/cow.jpg",
+        "img/wanyama/dog.jpg",
+        "img/wanyama/goat.jpg",
+        "img/wanyama/hippo.jpg",
+        "img/wanyama/rabbit.jpg"
       ],
       rangi: [
-        "rangi/red.jpg",
-        "rangi/blue.jpg",
-        "rangi/yellow.jpg",
-        "rangi/green.jpg",
-        "rangi/purple.jpg",
-        "rangi/orange.jpg",
-        "rangi/brown.jpg",
-        "rangi/black.jpg",
-        "rangi/white.jpg",
-        "rangi/grey.jpg"
+        "img/rangi/red.jpg",
+        "img/rangi/blue.jpg",
+        "img/rangi/yellow.jpg",
+        "img/rangi/green.jpg",
+        "img/rangi/purple.jpg",
+        "img/rangi/orange.jpg",
+        "img/rangi/brown.jpg",
+        "img/rangi/black.jpg",
+        "img/rangi/white.jpg",
+        "img/rangi/grey.jpg"
       ],
     };
 

@@ -41,7 +41,7 @@ body {
     font-size: 1.3rem; /* Adjusted font size */
     font-weight: bold;
     cursor: move;
-    background-color: #d5dad5; /* Light green background */
+    background-color: #e2a408; /* Light green background */
     transition: background-color 0.3s ease;
     overflow: hidden; /* Prevent overflow of words */
     word-wrap: break-word; /* Wrap long words */
@@ -88,6 +88,7 @@ body {
 #levelText {
     text-align: center;
     margin-top: 55px; /* Adjusted to move below the navbar */
+    color: purple;
 }
 
 @media (max-width: 600px) {

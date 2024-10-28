@@ -3,23 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Scrambled Word Game</title>
+  <title>Miti Game</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <style>
     body {
       font-family: 'Roboto', sans-serif;
-      background: linear-gradient(to right, #a8caba, #5d4e73);
+      background: linear-gradient(to right, #5d4e73, #5d4e73);
       color: #333;
     }
     .game-container {
       padding: 1rem;
-      background: rgba(194, 146, 182, 0.9);
+      background: rgba(244, 239, 243, 0.9);
       border-radius: 10px;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     }
     .submit-button {
-      background: linear-gradient(to right, #83d68a, #d2d2d3);
+      background: linear-gradient(to right, #0525f456, #b11ba7);
       color: #fff;
       border-radius: 5px;
       padding: 10px 15px;
@@ -42,7 +42,8 @@
 </head>
 <body class="flex items-center justify-center min-h-screen">
   <div class="game-container w-full max-w-lg">
-    <h2 class="text-2xl font-bold text-center mb-4">Unscramble the Words!</h2>
+    <h2 class="text-2xl font-bold text-center mb-4">MITI/TREES</h2>
+    <h3 class="text-2xl font-bold text-center mb-4">Unscramble the Words!</h3>
 
     <!-- Word containers -->
     <div id="wordContainers"></div>
@@ -52,16 +53,16 @@
 
   <script>
     const words = [
-      { scrambled: 'TAEPLME', correct: 'TEMPLATE' },
-      { scrambled: 'RALFWO', correct: 'FLOWER' },
-      { scrambled: 'AKLEC', correct: 'CANDLE' },
-      { scrambled: 'SUHNOSIE', correct: 'SUNSHINE' },
-      { scrambled: 'BLETNA', correct: 'TABLET' },
-      { scrambled: 'MPETUOCR', correct: 'COMPUTER' },
-      { scrambled: 'CRESNCEI', correct: 'SCIENCE' },
-      { scrambled: 'ODAWINW', correct: 'WINDOW' },
-      { scrambled: 'LEPEHANT', correct: 'ELEPHANT' },
-      { scrambled: 'NEPAR', correct: 'PAPER' }
+      { scrambled: 'ANMIZ(COCONUT TREE)', correct: 'MNAZI' },
+      { scrambled: 'SANRIBANOM(PINE TREE)', correct: 'MSONOBARI' },
+      { scrambled: 'PINGIM(THORN TREE)', correct: 'MPINGI' },
+      { scrambled: 'ELUVM(EBONY TREE)', correct: 'MVULE' },
+      { scrambled: 'PEMRA(GUAVA TREE)', correct: 'MPERA' },
+      { scrambled: 'CHUNWAGM(ORANGE TREE)', correct: 'MCHUNGWA' },
+      { scrambled: 'MEWBEM(MANGO TREE)', correct: 'MWEMBE' },
+      { scrambled: 'ZIJO(WALNUT TREE)', correct: 'JOZI' },
+      { scrambled: 'NIMBU(COFFEE TREE)', correct: 'MBUNI' },
+      { scrambled: 'ATMGON(CUCUMBER TREE)', correct: 'MTANGO' }
     ];
 
     let currentWords = [...words];
