@@ -24,26 +24,6 @@ body {
     margin-bottom: 10px; /* Smaller margin */
 }
 
-.question-card.hidden {
-    display: none;
-}
-
-.question-card.show {
-    display: block;
-}
-
-.question-card.hidden .card-content {
-    visibility: hidden;
-    height: 0;
-    overflow: hidden;
-}
-
-.question-card.show .card-content {
-    visibility: visible;
-    height: auto;
-    overflow: visible;
-}
-
 .question-card:hover {
     transform: scale(1.03); /* Scale up on hover */
     background-color: #f5f5f5; /* Lighten background color on hover */
@@ -98,4 +78,47 @@ body {
 
 .try-again-btn:hover {
     background-color: #8d6e63 !important; /* Darken on hover */
+}
+
+/* Responsive Styles for Small Screens */
+@media only screen and (max-width: 600px) {
+    body {
+        padding-top: 10px;
+    }
+
+    .question-container {
+        width: 100%;
+        padding: 10px;
+    }
+
+    .question-card {
+        padding: 8px;
+        margin-bottom: 8px;
+    }
+
+    .question-image {
+        width: 100%;
+        height: auto;
+    }
+
+    .result-message {
+        font-size: 0.9em;
+    }
+
+    h1, p {
+        font-size: 1.1em;
+        padding: 0 5px;
+        text-align: center;
+    }
+
+    .btn, .try-again-btn {
+        width: 100%;
+        font-size: 0.9em;
+        margin-top: 8px;
+    }
+
+    .score-card {
+        padding: 8px;
+        font-size: 0.9em;
+    }
 }

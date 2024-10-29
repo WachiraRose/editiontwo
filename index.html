@@ -67,6 +67,7 @@
 
     .card-panel.orange.lighten-2 {
       background-color: #ffcc80 !important; /* Orange lighten-2 */
+
     }
 
     .card-panel.green.lighten-2 {
@@ -83,7 +84,31 @@
 
     .card-panel.red.lighten-2 {
       background-color: #ef9a9a !important; /* Red lighten-2 */
+    } /* Small screen adjustments */
+  @media only screen and (max-width: 600px) {
+    .container {
+      margin-top: 20px;
     }
+
+    h1, p {
+      font-size: 1.2em;
+      padding: 0 10px;
+    }
+
+    .card-panel {
+      width: 100%;
+      height: auto;
+      padding: 10px;
+      font-size: 0.9em;
+    }
+
+    .card-panel span {
+      font-size: 1em;
+      text-align: center;
+    }
+  }
+
+
   </style>
 </head>
 <body>
