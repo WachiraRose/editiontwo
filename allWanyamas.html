@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+  <meta charset="UTF-8">
+  <title>Wanyama/Animals</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <link rel="stylesheet" href="css/allWanyamas.css">
+  </head>
+<body>
+
+  <nav>
+    <div class="nav-wrapper">
+        <a href="#" class="brand-logo">LESSON: WANYAMA</a>
+        <ul id="nav-mobile" class="right">
+            <li><a href="#" onclick="goToHome()" class="white-text">Home</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container">
+    <h1 class="center-align">Welcome to our Swahili lesson!</h1>
+    <p class="center-align">Choose a category to start naming the pictures:</p>
+
+
+    <div class="row">
+        <div class="col s12 m4">
+            <div class="card-panel orange" onclick="selectCategory('nyumbani', this)">
+                <span class="white-text card-title">Wanyama wa Nyumbani(Domestic Animals)</span>
+            </div>
+        </div>
+        <div class="col s12 m4">
+            <div class="card-panel green" onclick="selectCategory('porini', this)">
+                <span class="white-text card-title">Wanyama wa Porini(Wild Animals)</span>
+            </div>
+        </div>
+        <div class="col s12 m4">
+            <div class="card-panel purple" onclick="selectCategory('majini', this)">
+                <span class="white-text card-title">Wanyama wa Majini(sea Animals)</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script src="js/allWanyamas.js"></script>
+  
+</body>
+</html>

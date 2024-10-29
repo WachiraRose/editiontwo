@@ -2,6 +2,12 @@ document.addEventListener('DOMContentLoaded', function () {
     const urlParams = new URLSearchParams(window.location.search);
     const category = urlParams.get("category");
 
+     // Update the navigation title based on the category
+     const navTitle = document.querySelector('.brand-logo');
+     navTitle.textContent = `Wanyama wa  ${category.charAt(0).toUpperCase() + category.slice(1)}`;
+ 
+ 
+
     const images = {
         nyumbani: [
             "img/wanyama/cat.jpg",
@@ -51,7 +57,7 @@ document.addEventListener('DOMContentLoaded', function () {
             ["Ng'ombe", "Farasi", "Bata Mzinga"],
             ["Paka", "Farasi", "Sungura"],
             ["Kuku", "Nguruwe", "Mbu"],
-            ["Simba", "Ndovu", "KONDOO"],
+            ["Simba", "Ndovu", "Kondo"],
             ["Bata", "Nungu", "Tembo"],
         ],
         porini: [
@@ -65,7 +71,6 @@ document.addEventListener('DOMContentLoaded', function () {
             ["Ndovu", "Mbuzi", "Ngiri"],
             ["Chaza", "Kiboko", "Nzi"],
             ["Farasi", "Kulungu", "Sungura"]
-            // Add choices for each question in wanyama
         ],
         majini: [
             ["Mbu", "Kifaru", "Nyangumi"],
@@ -78,13 +83,12 @@ document.addEventListener('DOMContentLoaded', function () {
             ["Sili", "Pomboo", "Mwanamizi"],
             ["Mbuzi", "Paka", "Mwanamizi"],
             ["Chura", "Sili", "Twiga"],
-            // Add choices for each question in rangi
         ],
     };
 
     const correctAnswers = {
         nyumbani: ["Paka", "Ng'ombe", "Mbwa", "Sungura", "Mbuzi", "Bata Mzinga", "Farasi", "Nguruwe", "Kondo", "Bata"],
-        wanyama: ["Simba", "Ndovu", "Nungunungu", "Kifaru", "Chui", "Komba", "Nyani", "Ngiri", "Kiboko", "Kulungu"],
+        porini: ["Simba", "Ndovu", "Nungunungu", "Kifaru", "Chui", "Komba", "Nyani", "Ngiri", "Kiboko", "Kulungu"],
         majini: ["Nyangumi", "Mkunga", "Papa", "Pweza", "Chuchunge", "Kambare", "Chaza", "Pomboo", "Mwanamizi", "Sili"],
     };
 
@@ -92,20 +96,20 @@ document.addEventListener('DOMContentLoaded', function () {
     let currentQuestionIndex = 0;
 
     function displayNextQuestion() {
-        const currentQuestionCard = document.querySelector('.question-card.show');
-        const nextQuestionCard = document.querySelector('.question-card.hidden');
+        const questionCard = document.querySelector('.question-card');
 
         if (currentQuestionIndex < images[category].length) {
-            const questionContainer = currentQuestionCard.querySelector('.card-content');
+            const questionContainer = questionCard.querySelector('.card-content');
             questionContainer.innerHTML = "";
 
+            // Display image for the question
             const imgElement = document.createElement("img");
             imgElement.src = images[category][currentQuestionIndex];
             imgElement.alt = "Picha ya " + category;
             imgElement.classList.add("responsive-img", "question-image");
             questionContainer.appendChild(imgElement);
 
-            // Create radio buttons for choices
+            // Create choices for the current question
             const choiceList = document.createElement("ul");
             choiceList.classList.add("collection");
 
@@ -127,7 +131,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             questionContainer.appendChild(choiceList);
 
-            // Add event listener to move to the next question on option selection
+            // Event listener to check answer selection
             choiceList.addEventListener("change", () => {
                 const selectedAnswer = document.querySelector('input[name="answer"]:checked');
                 const resultElement = document.createElement("p");
@@ -135,51 +139,40 @@ document.addEventListener('DOMContentLoaded', function () {
                     const userAnswer = selectedAnswer.value;
                     const correctAnswer = correctAnswers[category][currentQuestionIndex];
 
-                    // Display whether the answer is correct or wrong at the bottom
+                    // Feedback for correct/incorrect answer
                     if (userAnswer === correctAnswer) {
                         resultElement.textContent = "Sahihi!";
                         score++;
                     } else {
                         resultElement.textContent = `Sio Sahihi.`;
-                        selectedAnswer.classList.add('wrong'); // Add class to make the selected answer red
+                        selectedAnswer.classList.add('wrong'); // Adds a style to wrong answer
                     }
 
-                    // Append result element to the bottom
+                    // Show feedback
                     questionContainer.appendChild(resultElement);
 
-                    // Disable the radio buttons after checking the answer
-                    const radioButtons = document.querySelectorAll('input[name="answer"]');
-                    radioButtons.forEach(button => {
+                    // Disable further selections
+                    document.querySelectorAll('input[name="answer"]').forEach(button => {
                         button.disabled = true;
                     });
 
-                    // Move to the next question after a delay
+                    // Move to next question after delay
                     setTimeout(() => {
-                        currentQuestionCard.classList.remove('show');
-                        currentQuestionCard.classList.add('hidden');
-                        nextQuestionCard.classList.remove('hidden');
-                        nextQuestionCard.classList.add('show');
                         currentQuestionIndex++;
                         displayNextQuestion();
-                    }, 1000); // Adjust the delay as needed (in milliseconds)
+                    }, 1000);
                 }
             });
         } else {
-            // Hide question cards
-            document.querySelectorAll('.question-card').forEach(card => {
-                card.style.display = 'none';
-            });
+            // Hide question cards and show score card
+            questionCard.style.display = 'none';
 
-            // Show score card
             const scoreCard = document.querySelector('.score-card');
             scoreCard.style.display = 'block';
 
             // Display final score
-            const categorySpan = document.getElementById("category");
-            categorySpan.textContent = category;
-
-            const scoreSpan = document.getElementById("score");
-            scoreSpan.textContent = score;
+            document.getElementById("category").textContent = category;
+            document.getElementById("score").textContent = score;
         }
     }
 

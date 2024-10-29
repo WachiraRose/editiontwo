@@ -1,241 +1,205 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="sw">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guess the Food</title>
-    <!-- Include Tailwind CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <title>Wanyama/Animals</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <style>
-        /* Pop-in animation for page content */
-        @keyframes popIn {
-            0% { opacity: 0; transform: scale(0.8); }
-            100% { opacity: 1; transform: scale(1); }
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #e0f7fa; /* Light cyan */
         }
 
-        /* Style enhancements */
-        .home-button {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background-color: #4A5568;
-            color: white;
-            padding: 12px 20px;
-            border: none;
-            border-radius: 5px;
+        .container {
+            margin-top: 50px;
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            color: #00796b; /* Teal */
+            margin-bottom: 20px; /* Add spacing below the heading */
+            text-align: center;
+        }
+
+        h1, h4, h5 {
+            color: #00796b; /* Teal */
+            margin-bottom: 20px; /* Add spacing below the heading */
+        }
+
+        p {
+            color: red; /* Darker teal not */
+            margin-bottom: 40px; /* Add spacing below the paragraph */
+            font-size: 24px;
+        }
+
+        .brand-logo {
+            height: 50px; /* Set the height of the logo */
+            width: auto; /* Keep aspect ratio */
+            padding-left: 10px; /* Add some padding to the left */
+            font-size: 1.5em; /* Default font size */
+            text-align: center;
+        }
+
+        .card-panel {
+            animation: scaleIn 0.5s ease-in-out;
             cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s, transform 0.2s;
-            z-index: 50;
+            position: relative;
+            width: 100%;
+            max-width: 250px;
+            height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+            margin: 10px auto; /* Center cards */
+            transition: transform 0.3s ease;
         }
 
-        .home-button:hover {
-            background-color: #3182CE;
+        .card-panel:hover {
             transform: scale(1.05);
         }
 
-        #popupMessage {
-            backdrop-filter: blur(4px);
+        @keyframes scaleIn {
+            0% {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
         }
 
-        .bg-green { background-color: #28a745; color: white; }
-
-        /* Animations */
-        .container, #imageContainer img {
-            animation: popIn 0.4s ease-in-out;
+        nav {
+            background-color: #00796b !important; /* Teal */
         }
 
-        #imageContainer img {
-            width: 300px;
-            height: 200px;
-            object-fit: cover;
-            border-radius: 12px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        .card-panel.orange {
+            background-color: #ffab91 !important; /* Light orange */
         }
 
-        .bg-proteins { background-color: #D9EAD3; }
-        .bg-carbohydrates { background-color: #EDD6C0; }
-        .bg-vitamins { background-color: #F9D5E5; }
+        .card-panel.green {
+            background-color: #a5d6a7 !important; /* Light green */
+        }
+
+        .card-panel.purple {
+            background-color: #ce93d8 !important; /* Light purple */
+        }
+
+        .card-panel.blue {
+            background-color: #90caf9 !important; /* Light blue */
+        }
+
+        .card-panel.red {
+            background-color: #ef9a9a !important; /* Light red */
+        }
+
+        /* Small screen adjustments */
+        @media only screen and (max-width: 600px) {
+            h1 {
+                text-align: left; /* Align to the left on small screens */
+                padding-left: 10px; /* Add padding to the left for spacing */
+            }
+
+            .brand-logo {
+                font-size: 1.2em; /* Reduce the font size for small screens */
+                padding-left: 10px; /* Maintain padding */
+            }
+
+            .container {
+                margin-top: 20px;
+            }
+
+            p {
+                font-size: 1.5em;
+                padding: 0 10px;
+                text-align: left; /* Align paragraph to the left as well */
+            }
+
+            .card-panel {
+                max-width: 90%;
+                height: auto;
+                padding: 15px;
+                font-size: 1em;
+            }
+
+            .card-panel span {
+                font-size: 1.2em;
+                text-align: center;
+            }
+        }
     </style>
 </head>
-<body class="min-h-screen flex flex-col items-center justify-center">
-    <div class="container mx-auto p-6 max-w-lg shadow-xl rounded-lg bg-white border border-gray-200">
-        <h1 class="text-gray-800 text-4xl font-semibold mb-8 text-center" id="heading">Choose a Category</h1>
-        <div id="categoryContainer" class="w-full mb-6">
-            <select id="categorySelect" class="block w-full bg-gray-50 border border-gray-300 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-300 transition duration-200">
-                <option value="" disabled selected>Choose Category</option>
-                <option value="proteins">Proteins</option>
-                <option value="carbohydrates">Carbohydrates</option>
-                <option value="vitamins">Vitamins</option>
-            </select>
-        </div>
-        <div id="imageContainer" class="center-align mt-4 mb-6"></div>
-        <div id="choicesContainer" class="mb-4 space-y-2"></div>
+<body>
+
+<nav>
+    <div class="nav-wrapper">
+        <a href="#" class="brand-logo">LESSON:</a>
+        <ul id="nav-mobile" class="right">
+            <li><a href="#" onclick="goToHome()" class="white-text">Home</a></li>
+        </ul>
     </div>
+</nav>
 
-    <!-- Pop-up message -->
-    <div id="popupMessage" class="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 hidden">
-        <div class="bg-white p-6 rounded-lg shadow-lg text-center max-w-md mx-4 transition duration-300" id="popupContent">
-            <p class="text-lg font-semibold mb-4" id="popupText"></p>
+<div class="container">
+    <h4 class="center-align">AINA YA WANYAMA/TYPES OF ANIMALS</h4>
+    <h5 class="center-align">Welcome to our swahili lesson on animals</h5>
+    <p class="center-align">Pick a category below and identify the animal in swahili.</p>
+
+    <div class="row">
+        <div class="col s12 m4">
+            <div class="card-panel orange" onclick="selectCategory('nyumbani', this)">
+                <span class="white-text card-title">Wanyama wa Nyumbani(Domestic Animals)</span>
+            </div>
+        </div>
+        <div class="col s12 m4">
+            <div class="card-panel green" onclick="selectCategory('porini', this)">
+                <span class="white-text card-title">Wanyama wa Porini(Wild Animals)</span>
+            </div>
+        </div>
+        <div class="col s12 m4">
+            <div class="card-panel purple" onclick="selectCategory('majini', this)">
+                <span class="white-text card-title">Wanyama wa Majini(sea Animals)</span>
+            </div>
         </div>
     </div>
+</div>
 
-    <!-- Home Button -->
-    <button class="home-button" onclick="goToHome()">Home</button>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script>
+    function selectCategory(category, element) {
+        let templateName;
+        switch (category) {
+            case 'nyumbani':
+            case 'porini':
+            case 'majini':
+                templateName = 'wanyama.html';
+                break;
+            default:
+                templateName = 'common-template.html';
+        }
 
-    <!-- JavaScript -->
-    <script>
-        var foods = {
-            "proteins": ["maziwa", "yai", "maharagwe"],
-            "carbohydrates": ["mchele", "mkate", "viazi"],
-            "vitamins": ["sukuma wiki", "nyanya", "karoti"]
-        };
-    
-        var currentCategory;
-        var currentIndex;
-        var attemptCount = 0;
-        var completedCategories = new Set();
-    
-        document.addEventListener('DOMContentLoaded', function() {
-            var categorySelect = document.getElementById("categorySelect");
-            categorySelect.addEventListener("change", chooseCategory);
-        });
-    
-        function chooseCategory() {
-            var categorySelect = document.getElementById("categorySelect");
-            currentCategory = categorySelect.value;
-            currentIndex = 0;
-            attemptCount = 0;
-            completedCategories.add(currentCategory);
-    
-            // Hide category selection and update background
-            document.getElementById("categoryContainer").style.display = "none";
-            document.getElementById("heading").innerText = currentCategory.charAt(0).toUpperCase() + currentCategory.slice(1);
-            document.body.className = currentCategory === "proteins" ? "bg-proteins" : currentCategory === "carbohydrates" ? "bg-carbohydrates" : "bg-vitamins";
-    
-            if (currentCategory) {
-                showFoodImage();
-            }
-        }
-    
-        function showFoodImage() {
-            var imageContainer = document.getElementById("imageContainer");
-            if (currentIndex < foods[currentCategory].length) {
-                var food = foods[currentCategory][currentIndex];
-                var imagePath = "images/" + currentCategory + "/" + food + ".jpg";
-                imageContainer.innerHTML = "<img src='" + imagePath + "' alt='" + food + "'>";
-                displayChoices(food);
-            } else {
-                showCategoryCompletionPopup();
-            }
-        }
-    
-        function displayChoices(correctAnswer) {
-            var choicesContainer = document.getElementById("choicesContainer");
-            choicesContainer.innerHTML = "";
-    
-            var choices = [...foods[currentCategory]];
-            choices = shuffleArray(choices);
-            if (!choices.includes(correctAnswer)) choices.push(correctAnswer);
-            choices = choices.slice(0, 3);
-            choices = shuffleArray(choices);
-    
-            choices.forEach(choice => {
-                var button = document.createElement("button");
-                button.className = "w-full py-2 px-4 border rounded-lg bg-gray-100 hover:bg-blue-200 transition duration-200";
-                button.innerText = choice;
-                button.onclick = function() {
-                    checkGuess(choice);
-                };
-                choicesContainer.appendChild(button);
-            });
-        }
-    
-        function checkGuess(selectedChoice) {
-            var correctAnswer = foods[currentCategory][currentIndex];
-    
-            if (selectedChoice === correctAnswer) {
-                showPopup("Hongera! Correct!", "correct");
-                setTimeout(() => {
-                    closePopup();
-                    currentIndex++;
-                    attemptCount = 0;
-                    showFoodImage();
-                }, 2000);
-            } else {
-                attemptCount++;
-                if (attemptCount >= 2) {
-                    showPopup("The correct answer is: " + correctAnswer, "wrong");
-                    attemptCount = 0;
-                    currentIndex++;
-                    setTimeout(() => {
-                        closePopup();
-                        showFoodImage();
-                    }, 2000);
-                } else {
-                    showPopup("Incorrect! Try again.", "wrong");
-                }
-            }
-        }
-    
-        function showPopup(message, status) {
-            var popupText = document.getElementById("popupText");
-            popupText.innerText = message;
-    
-            document.getElementById("popupMessage").classList.remove("hidden");
-            if (status === "wrong") {
-                setTimeout(() => {
-                    closePopup();
-                }, 2000);
-            }
-        }
-    
-        function closePopup() {
-            document.getElementById("popupMessage").classList.add("hidden");
-        }
-    
-        function showCategoryCompletionPopup() {
-            closePopup();
-            var nextCategory = getNextCategory();
-            if (nextCategory) {
-                showPopup("Great job! You've completed this category. Do you want to try the " + nextCategory + " category?", "correct");
-                document.getElementById("popupText").innerHTML += `
-                    <div class="mt-4 space-x-4">
-                        <button onclick="loadNextCategory()" class="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg">Yes</button>
-                        <button onclick="redirectToFood()" class="bg-red-500 hover:bg-red-700 text-white font-semibold py-2 px-6 rounded-lg">No</button>
-                    </div>`;
-            } else {
-                showPopup("Hongera, well done! You've completed all categories.", "completion");
-                document.getElementById("popupText").innerHTML = `
-                    <p class="text-lg font-semibold">Hongera, well done! You've completed all categories.</p>
-                    <button onclick="goToHome()" class="mt-4 bg-green-500 hover:bg-green-700 text-white font-semibold py-2 px-6 rounded-lg">Exit</button>`;
-            }
-        }
-    
-        function loadNextCategory() {
-            var nextCategory = getNextCategory();
-            if (nextCategory) {
-                document.getElementById("categorySelect").value = nextCategory;
-                chooseCategory();
-            }
-        }
-    
-        function redirectToFood() {
-            window.location.href = "food.html";
-        }
-    
-        function getNextCategory() {
-            const categories = ["proteins", "carbohydrates", "vitamins"];
-            return categories.find(category => !completedCategories.has(category));
-        }
-    
-        function shuffleArray(array) {
-            return array.sort(() => Math.random() - 0.5);
-        }
-    
-        function goToHome() {
-            window.location.href = "choose_category.html";
-        }
-    </script>
-    </body>
+        const url = new URL(templateName, window.location.href);
+        url.searchParams.set("category", category);
+        window.location.href = url;
+
+        // Add animation to the selected card
+        element.style.animation = 'pop 0.3s ease';
+        setTimeout(() => {
+            element.style.animation = 'none';
+        }, 300);
+    }
+
+    function goToHome() {
+        // Redirect to the home page
+        window.location.href = "index.html";
+    }
+</script>
+
+</body>
 </html>

@@ -1,81 +1,204 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="sw">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Swahili Compass Quiz</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <style>
-    /* Basic reset */
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    
-    /* Main container styling */
-    .quiz-container { text-align: center; position: relative; }
-    .compass { width: 100%; margin-bottom: 20px; }
+    <meta charset="UTF-8">
+    <title>Wanyama/Animals</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #e0f7fa; /* Light cyan */
+        }
 
-    /* Position compass points */
-    .point { position: absolute; width: 80px; font-size: 18px; font-weight: bold; }
-    .north { top: 8%; left: 50%; transform: translateX(-50%); color: #333; }
-    .south { bottom: 8%; left: 50%; transform: translateX(-50%); color: #333; }
-    .east { top: 50%; right: 8%; transform: translateY(-50%); color: #333; }
-    .west { top: 50%; left: 8%; transform: translateY(-50%); color: #333; }
-  </style>
+        .container {
+            margin-top: 50px;
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            color: #00796b; /* Teal */
+            margin-bottom: 20px; /* Add spacing below the heading */
+            text-align: center; /* Center on large screens */
+        }
+
+        p {
+            color: #004d40; /* Darker teal */
+            margin-bottom: 40px; /* Add spacing below the paragraph */
+        }
+
+        a.brand-logo {
+            height: 150px; /* Set the height of the logo */
+            width: auto; /* Keep aspect ratio */
+            padding-left: 500px; /* Add some padding to the left */
+            font-size: 2.8em; /* Default font size */
+            text-align: center;
+        }
+
+        a.white-text{
+                font-size: 16px;
+            }
+
+        .card-panel {
+            animation: scaleIn 0.5s ease-in-out;
+            cursor: pointer;
+            position: relative;
+            width: 100%;
+            max-width: 250px;
+            height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+            margin: 10px auto; /* Center cards */
+            transition: transform 0.3s ease;
+        }
+
+        .card-panel:hover {
+            transform: scale(1.05);
+        }
+
+        @keyframes scaleIn {
+            0% {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        nav {
+            background-color: #00796b !important; /* Teal */
+        }
+
+        .card-panel.orange {
+            background-color: #ffab91 !important; /* Light orange */
+        }
+
+        .card-panel.green {
+            background-color: #a5d6a7 !important; /* Light green */
+        }
+
+        .card-panel.purple {
+            background-color: #ce93d8 !important; /* Light purple */
+        }
+
+        .card-panel.blue {
+            background-color: #90caf9 !important; /* Light blue */
+        }
+
+        .card-panel.red {
+            background-color: #ef9a9a !important; /* Light red */
+        }
+
+        /* Small screen adjustments */
+        @media only screen and (max-width: 600px) {
+            h1 {
+                text-align: left; /* Align to the left on small screens */
+                padding-left: 10px; /* Add padding to the left for spacing */
+            }
+
+            a.brand-logo {
+                font-size: 1.5em; /* Reduce the font size for small screens */
+                padding-left: 5px; /* Maintain padding */
+            }
+
+            
+
+            .container {
+                margin-top: 20px;
+            }
+
+            p {
+                font-size: 1.5em;
+                padding: 0 10px;
+                text-align: left; /* Align paragraph to the left as well */
+            }
+
+            .card-panel {
+                max-width: 90%;
+                height: auto;
+                padding: 15px;
+                font-size: 1em;
+            }
+
+            .card-panel span {
+                font-size: 1.2em;
+                text-align: center;
+            }
+        }
+    </style>
 </head>
-<body class="flex items-center justify-center h-screen bg-gray-100">
+<body>
 
-<div class="quiz-container w-96">
-  <!-- Compass image -->
-  <img src="img/dira/dira.jpg" alt="Compass Quiz" class="compass">
-  
-  <!-- Placeholder text areas for the compass points -->
-  <div id="north" class="point north"></div>
-  <div id="south" class="point south"></div>
-  <div id="east" class="point east"></div>
-  <div id="west" class="point west"></div>
+<nav>
+    <div class="nav-wrapper">
+        <a href="#" class="brand-logo">LESSON: WANYAMA</a>
+        <ul id="nav-mobile" class="right">
+            <li><a href="#" onclick="goToHome()" class="white-text">Home</a></li>
+        </ul>
+    </div>
+</nav>
 
-  <!-- Quiz form -->
-  <div class="input-container mt-4">
-    <input type="text" id="answer" placeholder="Enter Swahili direction" class="p-2 border border-gray-400 rounded mr-2">
-    <button onclick="checkAnswer()" class="p-2 bg-blue-500 text-white rounded hover:bg-blue-600">Submit</button>
-  </div>
+<div class="container">
+    <h1 class="center-align">Welcome to our Swahili lesson!</h1>
+    <p class="center-align">Choose a category to start naming the pictures:</p>
 
-  <!-- Feedback message -->
-  <div id="feedback" class="feedback mt-4 text-lg"></div>
+
+    <div class="row">
+        <div class="col s12 m4">
+            <div class="card-panel orange" onclick="selectCategory('nyumbani', this)">
+                <span class="white-text card-title">Wanyama wa Nyumbani(Domestic Animals)</span>
+            </div>
+        </div>
+        <div class="col s12 m4">
+            <div class="card-panel green" onclick="selectCategory('porini', this)">
+                <span class="white-text card-title">Wanyama wa Porini(Wild Animals)</span>
+            </div>
+        </div>
+        <div class="col s12 m4">
+            <div class="card-panel purple" onclick="selectCategory('majini', this)">
+                <span class="white-text card-title">Wanyama wa Majini(sea Animals)</span>
+            </div>
+        </div>
+    </div>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 <script>
-  // Correct answers dictionary
-  const correctAnswers = {
-    kaskazini: "north",
-    kusini: "south",
-    mashariki: "east",
-    magharibi: "west"
-  };
+    function selectCategory(category, element) {
+        let templateName;
+        switch (category) {
+            case 'nyumbani':
+            case 'porini':
+            case 'majini':
+                templateName = 'wanyama.html';
+                break;
+            default:
+                templateName = 'common-template.html';
+        }
 
-  // Populates the correct answer in the compass and gives feedback
-  function checkAnswer() {
-    const answer = document.getElementById('answer').value.trim().toLowerCase();
-    const feedbackElement = document.getElementById('feedback');
-    
-    // Check if answer matches any correct answer
-    if (correctAnswers[answer]) {
-      const direction = correctAnswers[answer];
-      document.getElementById(direction).textContent = capitalize(answer);
-      feedbackElement.textContent = "Correct!";
-      feedbackElement.className = "feedback text-green-500 font-bold mt-2";
-      
-      // Clear the input
-      document.getElementById('answer').value = "";
-    } else {
-      feedbackElement.textContent = "Try again!";
-      feedbackElement.className = "feedback text-red-500 font-bold mt-2";
+        const url = new URL(templateName, window.location.href);
+        url.searchParams.set("category", category);
+        window.location.href = url;
+
+        // Add animation to the selected card
+        element.style.animation = 'pop 0.3s ease';
+        setTimeout(() => {
+            element.style.animation = 'none';
+        }, 300);
     }
-  }
 
-  // Capitalizes the first letter of a string
-  function capitalize(word) {
-    return word.charAt(0).toUpperCase() + word.slice(1);
-  }
+    function goToHome() {
+        // Redirect to the home page
+        window.location.href = "index.html";
+    }
 </script>
 
 </body>
