@@ -334,7 +334,7 @@ h1::before {
 }
 
 .over-text-cont h2::after {
-    content: counter(points) "0/50";
+    content: counter(points) "0/100";
     margin-left: 15px;
 }
 
