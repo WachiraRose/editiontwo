@@ -50,6 +50,29 @@
         .bg-proteins { background-color: #D9EAD3; }
         .bg-carbohydrates { background-color: #EDD6C0; }
         .bg-vitamins { background-color: #F9D5E5; }
+
+         /* Small Screen Adjustments */
+    @media (max-width: 600px) {
+        #heading {
+            font-size: 1.5rem;
+            margin-top: 10px;
+        }
+
+        #categorySelect, #popupText, #choicesContainer button {
+            font-size: 1rem;
+            padding: 8px;
+        }
+
+        #popupMessage {
+            width: 90%;
+            padding: 15px;
+        }
+
+        #popupText button {
+            font-size: 0.9rem;
+            padding: 8px 16px;
+        }
+    }
     </style>
 </head>
 <body class="min-h-screen flex flex-col items-center justify-center">
