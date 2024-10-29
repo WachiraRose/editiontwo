@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Swahili Compass Quiz</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    /* Basic reset */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    /* Main container styling */
+    .quiz-container { text-align: center; position: relative; }
+    .compass { width: 100%; margin-bottom: 20px; }
+
+    /* Position compass points */
+    .point { position: absolute; width: 80px; font-size: 18px; font-weight: bold; }
+    .north { top: 8%; left: 50%; transform: translateX(-50%); color: #333; }
+    .south { bottom: 8%; left: 50%; transform: translateX(-50%); color: #333; }
+    .east { top: 50%; right: 8%; transform: translateY(-50%); color: #333; }
+    .west { top: 50%; left: 8%; transform: translateY(-50%); color: #333; }
+  </style>
+</head>
+<body class="flex items-center justify-center h-screen bg-gray-100">
+
+<div class="quiz-container w-96">
+  <!-- Compass image -->
+  <img src="img/dira/dira.jpg" alt="Compass Quiz" class="compass">
+  
+  <!-- Placeholder text areas for the compass points -->
+  <div id="north" class="point north"></div>
+  <div id="south" class="point south"></div>
+  <div id="east" class="point east"></div>
+  <div id="west" class="point west"></div>
+
+  <!-- Quiz form -->
+  <div class="input-container mt-4">
+    <input type="text" id="answer" placeholder="Enter Swahili direction" class="p-2 border border-gray-400 rounded mr-2">
+    <button onclick="checkAnswer()" class="p-2 bg-blue-500 text-white rounded hover:bg-blue-600">Submit</button>
+  </div>
+
+  <!-- Feedback message -->
+  <div id="feedback" class="feedback mt-4 text-lg"></div>
+</div>
+
+<script>
+  // Correct answers dictionary
+  const correctAnswers = {
+    kaskazini: "north",
+    kusini: "south",
+    mashariki: "east",
+    magharibi: "west"
+  };
+
+  // Populates the correct answer in the compass and gives feedback
+  function checkAnswer() {
+    const answer = document.getElementById('answer').value.trim().toLowerCase();
+    const feedbackElement = document.getElementById('feedback');
+    
+    // Check if answer matches any correct answer
+    if (correctAnswers[answer]) {
+      const direction = correctAnswers[answer];
+      document.getElementById(direction).textContent = capitalize(answer);
+      feedbackElement.textContent = "Correct!";
+      feedbackElement.className = "feedback text-green-500 font-bold mt-2";
+      
+      // Clear the input
+      document.getElementById('answer').value = "";
+    } else {
+      feedbackElement.textContent = "Try again!";
+      feedbackElement.className = "feedback text-red-500 font-bold mt-2";
+    }
+  }
+
+  // Capitalizes the first letter of a string
+  function capitalize(word) {
+    return word.charAt(0).toUpperCase() + word.slice(1);
+  }
+</script>
+
+</body>
+</html>

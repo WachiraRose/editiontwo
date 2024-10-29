@@ -1,0 +1,161 @@
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
+    background: #818180;
+    font-family: Arial, sans-serif;
+}
+
+/* Header container for heading and instructions */
+.header-container {
+    text-align: center;
+    margin: 20px 0;
+    padding: 10px;
+    max-width: 600px;
+}
+
+h1 {
+    color: whitesmoke;
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.instructions {
+    font-size: 16px;
+    color: #f5f7f7;
+}
+
+.instructions strong {
+    color: #eef107; /* Change to your preferred color */
+}
+
+/* Quiz container for compass and inputs */
+.quiz-container {
+    max-width: 400px;
+    padding: 20px;
+    background: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    text-align: center;
+}
+
+.compass-container {
+    position: relative;
+    width: 300px;
+    margin: auto;
+    background: #e0f4f5;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.compass {
+    width: 100%;
+    height: 300px;
+    border-radius: 50%;
+    background: url('../img/dira/dira.jpg') no-repeat center center;
+    background-size: cover;
+    position: relative;
+}
+
+.needle {
+    width: 4px;
+    height: 140px;
+    background: rgb(12, 11, 11);
+    position: absolute;
+    top: 25%;
+    left: 50%;
+    transform-origin: bottom;
+    transform: rotate(0deg);
+}
+
+.point {
+    position: absolute;
+    font-size: 18px;
+    font-weight: bold;
+    color: #004d40;
+    font-family: 'Arial Black', sans-serif;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 2px 6px;
+    border-radius: 4px;
+    text-shadow: 1px 1px 3px rba(0,0,0.3);
+}
+
+.point[data-direction="north"] { top: 5px; left: 50%; transform: translateX(-50%); }
+.point[data-direction="south"] { bottom: 5px; left: 50%; transform: translateX(-50%); }
+.point[data-direction="east"] { top: 50%; right: 5px; transform: translateY(-50%); }
+.point[data-direction="west"] { top: 50%; left: 5px; transform: translateY(-50%); }
+
+.input-container {
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    width: 100%;
+}
+.input-container label {
+    font-size: 18px; /* Increase font size */
+    font-weight: bold;
+    color: #00796b; /* Accent color for visibility */
+    font-family: 'Arial Black', sans-serif; /* Bold font for impact */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+    margin-right: 8px;
+}
+
+
+input {
+    padding: 5px;
+}
+
+button {
+    padding: 10px 20px;
+    margin-top: 15px;
+    background-color: #00838f;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #006064;
+}
+
+#result {
+    margin-top: 15px;
+    font-size: 18px;
+}
+
+/* Media query for smaller screens */
+@media (max-width: 480px) {
+    .header-container {
+        width: 90%;
+    }
+
+    .quiz-container {
+        width: 90%;
+    }
+
+    .input-container {
+        grid-template-columns: 1fr;
+    }
+
+    .input-container label {
+        font-size: 16px;
+    }
+
+    .compass-container {
+        width: 90%;
+    }
+
+    .compass {
+        height: 180px;
+        width: 160px;
+       
+    }
+
+    .point {
+        font-size: 16px;
+    }
+}

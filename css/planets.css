@@ -61,7 +61,7 @@ h1, h2, p {
     border-bottom: none;
 }
 
-.draggable-list .number {
+.draggable-list .planets {
     background-color: rgba(34, 139, 34, 0.8); /* Forest green for numbers */
     display: flex;
     align-items: center;
@@ -83,16 +83,16 @@ h1, h2, p {
     background-color: var(--dragging-color);
 }
 
-.draggable-list .person-name {
+.draggable-list .swahili-name {
     margin: 0;
     font-size: 18px;
 }
 
-.draggable-list li.right .person-name {
+.draggable-list li.right .swahili-name {
     color: var(--correct-color);
 }
 
-.draggable-list li.wrong .person-name {
+.draggable-list li.wrong .swahili-name {
     color: var(--wrong-color);
 }
 
@@ -140,10 +140,10 @@ h1, h2, p {
         padding: 6px;
     }
 
-    .draggable-list .number {
+    .draggable-list .planets {
         font-size: 12px;
         height: 30px;
-        width: 30px;
+        width: 50px;
         margin-right: 5px;
     }
 

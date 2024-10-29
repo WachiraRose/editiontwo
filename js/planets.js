@@ -2,14 +2,14 @@ const draggable_list = document.getElementById('draggable-list');
 const check = document.getElementById('check');
 
 const planets = [
-    'Mercury',
-    'Venus',
-    'Earth',
-    'Mars',
-    'Jupiter',
-    'Saturn',
-    'Uranus',
-    'Neptune'
+    'Zaibaki',
+    'Zuhura',
+    'Dunia',
+    'Mirihi',
+    'Mshtarii',
+    'Sarateni',
+    'Zohali',
+    'Kausi'
 ];
 
 // Words to replace numbers 1-8
@@ -34,9 +34,9 @@ function createList() {
             const listItem = document.createElement('li');
             listItem.setAttribute('data-index', index);
             listItem.innerHTML = `
-                <span class="number">${indexWords[index]}</span>
+                <span class="planets">${indexWords[index]}</span>
                 <div class="draggable" draggable="true">
-                    <p class="person-name">${planet}</p>
+                    <p class="swahili-name">${planet}</p>
                     <i class="fas fa-grip-lines"></i>
                 </div>
             `;
