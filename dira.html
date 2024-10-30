@@ -5,10 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Swahili Compass Quiz</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@900&display=swap" rel="stylesheet">
-
     <link rel="stylesheet" href="css/dira.css">
 </head>
 <body>
+    <!-- Home Button -->
+    <div class="top-bar">
+        <button onclick="goToHome()" class="home-button">Home</button>
+    </div>
+
     <header class="header-container">
         <h1>LESSON 12: SEHEMU ZA DIRA/COMPASS POINTS</h1>
         <p class="instructions">
@@ -41,6 +45,11 @@
             <button onclick="checkAnswers()">Submit Answers</button>
             <p id="result"></p>
         </div>
+    </div>
+
+    <!-- Restart Button -->
+    <div class="bottom-bar">
+        <button onclick="restartQuiz()" class="restart-button">Restart</button>
     </div>
 
     <script src="js/dira.js"></script>

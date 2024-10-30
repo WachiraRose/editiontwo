@@ -45,3 +45,19 @@ document.querySelectorAll('.input-container input').forEach(input => {
         }
     });
 });
+
+function goToHome() {
+    window.location.href = "index.html"; // Replace with your actual home page URL
+}
+
+function restartQuiz() {
+    // Clear all input fields
+    document.getElementById("north").value = "";
+    document.getElementById("south").value = "";
+    document.getElementById("east").value = "";
+    document.getElementById("west").value = "";
+    
+    // Clear result message
+    document.getElementById("result").innerText = "";
+}
+
