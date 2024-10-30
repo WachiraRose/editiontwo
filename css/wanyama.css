@@ -1,5 +1,5 @@
 body {
-    background-color: #f5deb3; /* Light brown background */
+    background-color: #e0f7fa; /* Light brown background */
     padding-top: 20px;
     font-family: Arial, sans-serif;
     color: #333;
@@ -7,16 +7,23 @@ body {
 
 /* Navbar Styling */
 .navbar {
-    background-color: #795548; /* Brown navbar color */
+    background-color: #00796b; /* Brown navbar color */
     color: #fff;
     padding: 0 20px;
     position: relative;
 }
 
 /* Navbar Brand Logo */
-.navbar .brand-logo {
+.navbar {
     font-size: 1.5em;
     font-weight: bold;
+}
+
+/* Move brand logo to the left */
+.nav-wrapper .brand-logo {
+    font-size: 1.5rem; /* Set default font size for larger screens */
+    padding-left: 15px; /* Add left padding for spacing */
+    text-align: left;
 }
 
 /* Navbar Buttons */
@@ -107,6 +114,26 @@ body {
     font-weight: bold;
 }
 
+.correct-answer {
+    font-size: 22px;          /* Larger font */
+    font-weight: bold;        /* Bold text */
+    font-family: Arial, sans-serif; /* Distinct font */
+    color: #4CAF50;           /* Green color for correct feedback */
+}
+
+.wrong-answer {
+    font-size: 22px;          /* Larger font */
+    font-weight: bold;
+    font-family: Arial, sans-serif;
+    color: #f44336;           /* Red color for incorrect feedback */
+}
+
+.correct-text {
+    color: #4CAF50;           /* Green color for the correct answer text */
+    font-weight: bold;        /* Bold for emphasis */
+}
+
+
 /* Score Card Styling */
 .score-card {
     display: none;
@@ -118,11 +145,40 @@ body {
     text-align: center;
 }
 
-/* Try Again Button */
-.try-again-btn {
-    background-color: #a1887f !important;
-    color: #fff !important;
+/* Increase font size */
+.score-card p {
+    font-size: 1.5rem; /* Larger font size for category and score */
+    font-weight: bold;
+    animation: pop 0.6s ease-in-out;
 }
+
+/* Different colors for category and score */
+#category {
+    color: #ff9800; /* Orange color for category */
+}
+
+#score {
+    color: #4caf50; /* Green color for score */
+}
+
+.try-again-btn {
+    font-size: 1.3rem; /* Larger font size for the button */
+    font-weight: bold;
+}
+
+/* Pop animation */
+@keyframes pop {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
 .try-again-btn:hover {
     background-color: #8d6e63 !important;
 }
@@ -156,9 +212,9 @@ body {
     }
 
     /* Responsive font size for brand logo */
-    .brand-logo {
-        font-size: 0.8em;
-        padding: 0 5px;
+    .nav-wrapper .brand-logo {
+        font-size: 0.9em;
+        padding-left: 1px;
     }
 
     .question-image {

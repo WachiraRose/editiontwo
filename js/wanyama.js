@@ -2,11 +2,11 @@ document.addEventListener('DOMContentLoaded', function () {
     const urlParams = new URLSearchParams(window.location.search);
     const category = urlParams.get("category");
 
-     // Update the navigation title based on the category
-     const navTitle = document.querySelector('.brand-logo');
-     navTitle.textContent = `Wanyama wa  ${category.charAt(0).toUpperCase() + category.slice(1)}`;
- 
- 
+    // Update the navigation title based on the category
+    const navTitle = document.querySelector('.brand-logo');
+    navTitle.textContent = `Wanyama wa  ${category.charAt(0).toUpperCase() + category.slice(1)}`;
+
+
 
     const images = {
         nyumbani: [
@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', function () {
             ["Ng'ombe", "Farasi", "Bata Mzinga"],
             ["Paka", "Farasi", "Sungura"],
             ["Kuku", "Nguruwe", "Mbu"],
-            ["Simba", "Ndovu", "Kondo"],
+            ["Simba", "Ndovu", "Kondoo"],
             ["Bata", "Nungu", "Tembo"],
         ],
         porini: [
@@ -87,7 +87,7 @@ document.addEventListener('DOMContentLoaded', function () {
     };
 
     const correctAnswers = {
-        nyumbani: ["Paka", "Ng'ombe", "Mbwa", "Sungura", "Mbuzi", "Bata Mzinga", "Farasi", "Nguruwe", "Kondo", "Bata"],
+        nyumbani: ["Paka", "Ng'ombe", "Mbwa", "Sungura", "Mbuzi", "Bata Mzinga", "Farasi", "Nguruwe", "Kondoo", "Bata"],
         porini: ["Simba", "Ndovu", "Nungunungu", "Kifaru", "Chui", "Komba", "Nyani", "Ngiri", "Kiboko", "Kulungu"],
         majini: ["Nyangumi", "Mkunga", "Papa", "Pweza", "Chuchunge", "Kambare", "Chaza", "Pomboo", "Mwanamizi", "Sili"],
     };
@@ -141,10 +141,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
                     // Feedback for correct/incorrect answer
                     if (userAnswer === correctAnswer) {
-                        resultElement.textContent = "Sahihi!";
+                        resultElement.innerHTML = '<span class="correct-answer">Sahihi!</span>';
                         score++;
                     } else {
-                        resultElement.textContent = `Sio Sahihi.`;
+                        resultElement.innerHTML = `Sio Sahihi. Jibu Sahihi ni: <span class="correct-text">${correctAnswer}</span>`;
+                        resultElement.classList.add('wrong-answer'); // Applies a style to "Sio Sahihi"
                         selectedAnswer.classList.add('wrong'); // Adds a style to wrong answer
                     }
 
@@ -160,7 +161,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     setTimeout(() => {
                         currentQuestionIndex++;
                         displayNextQuestion();
-                    }, 1000);
+                    }, 2000);
                 }
             });
         } else {
