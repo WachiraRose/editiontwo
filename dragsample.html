@@ -1,173 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Drag and Drop Example</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <style>
-    @import url('https://fonts.googleapis.com/css?family=Montserrat');
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: 'Montserrat', sans-serif;
-      background-color: #eee;
-      color: #111;
-    }
-
-    .draggable-elements {
-      display: flex;
-      justify-content: center;
-      margin: 2rem;
-    }
-
-    .draggable {
-      height: 5rem;
-      width: 5rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 4rem;
-      margin: 0rem 0.5rem;
-      cursor: move;
-      transition: opacity 0.2s;
-    }
-
-    .draggable:hover {
-      opacity: 0.5;
-    }
-
-    .droppable {
-      height: 6.5rem;
-      width: 6.5rem;
-      margin: 1rem auto;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      text-align: center;
-      font-size: 4rem;
-      font-weight: bold;
-      background-color: #fff;
-      border: 3px dashed #111;
-      transition: border-width 0.2s, transform 0.2s, background-color 0.4s;
-    }
-
-    .droppable span {
-      font-size: 1.25rem;
-      pointer-events: none;
-    }
-
-    .droppable.droppable-hover {
-      border-width: 5px;
-      transform: scale(1.1);
-    }
-
-    .droppable.dropped {
-      border-style: solid;
-      color: #fff;
-    }
-
-    .droppable.dropped span {
-      font-size: 0.75rem;
-      margin-top: 0.5rem;
-    }
-
-    .droppable.dropped i {
-      pointer-events: none;
-    }
-
-    .draggable.dragged {
-      user-select: none;
-      opacity: 0.1;
-      cursor: default;
-    }
-
-    .draggable.dragged:hover {
-      opacity: 0.1;
-    }
-
-    @media (max-width: 600px) {
-      html { font-size: 14px; }
-      .draggable-elements { margin: 1.5rem; }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kazi/Occupation Quiz</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="css/kazi.css" rel="stylesheet">
 </head>
-<body>
+<body class="bg-purple-400 p-8">
+    <div class="container mx-auto max-w-lg">
+        <h1 class="text-4xl font-bold mb-4">Lesson 11: Kazi/Occupation</h1>
+        
+        <!-- Explanation paragraph -->
+        <p class="mb-6 text-lg">In this quiz, match each occupation description to the correct Swahili word from the list. Type your answer and press Enter to proceed to the next question. Good luck!</p>
 
-<section class="draggable-elements">
-  <i class="fas fa-cat draggable" draggable="true" style="color: #ff6384;" id="cat"></i>
-  <i class="fas fa-dog draggable" draggable="true" style="color: #36a2eb;" id="dog"></i>
-  <i class="fas fa-dove draggable" draggable="true" style="color: #ffce56;" id="dove"></i>
-  <i class="fas fa-fish draggable" draggable="true" style="color: #9966ff;" id="fish"></i>
-  <i class="fas fa-frog draggable" draggable="true" style="color: #4bc0c0;" id="frog"></i>
-</section>
-<section class="droppable-elements">
-  <div class="droppable" data-draggable-id="frog"><span>Frog</span></div>
-  <div class="droppable" data-draggable-id="dove"><span>Bird</span></div>
-  <div class="droppable" data-draggable-id="cat"><span>Cat</span></div>
-  <div class="droppable" data-draggable-id="fish"><span>Fish</span></div>
-  <div class="droppable" data-draggable-id="dog"><span>Dog</span></div>
-</section>
+        <!-- Score Section -->
+        <div id="score" class="mb-4 text-xl font-bold text-right text-indigo-900">Score: 0</div>
 
-<script>
-  const draggableElements = document.querySelectorAll(".draggable");
-  const droppableElements = document.querySelectorAll(".droppable");
+        <div id="quiz-container" class="p-6 bg-white shadow-lg rounded-lg mb-6">
+            <div id="question-container">
+                <ul id="questions-list">
+                    <li id="question-1" class="active">
+                        <label for="q1" class="text-2xl font-semibold text-gray-800">Is involved in meal food preparation :</label>
+                        <input type="text" id="q1" onkeypress="handleKeyPress(event, 1)" class="border p-2 w-full mt-2">
+                        <button onclick="nextQuestion(1)" class="bg-blue-500 text-white py-2 px-4 mt-2 rounded-lg hover:bg-blue-600">Next</button>
+                    </li>
+                    <!-- Add other questions in similar format -->
+                </ul>
+            </div>
 
-  draggableElements.forEach(elem => {
-    elem.addEventListener("dragstart", dragStart);
-  });
+            <!-- List of Possible Answers -->
+            <div id="possible-answers" class="flex flex-wrap mt-6 mb-4">
+                <!-- Answers will be generated dynamically here -->
+            </div>
+        </div>
 
-  droppableElements.forEach(elem => {
-    elem.addEventListener("dragenter", dragEnter);
-    elem.addEventListener("dragover", dragOver);
-    elem.addEventListener("dragleave", dragLeave);
-    elem.addEventListener("drop", drop);
-  });
+        <!-- Final Screen -->
+        <div id="final-screen" class="hidden">
+            <p class="mb-4 text-xl font-semibold">Your Score: <span id="final-score"></span></p>
+            <div id="failed-questions" class="mb-4"></div>
+            <button onclick="restartQuiz()" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600">Restart Quiz</button>
+        </div>
 
-  function dragStart(event) {
-    event.dataTransfer.setData("text", event.target.id);
-  }
+        <!-- Congratulations Message -->
+        <div id="congratulations" class="congratulations hidden">Congratulations! You got all answers correct!</div>
 
-  function dragEnter(event) {
-    if(!event.target.classList.contains("dropped")) {
-      event.target.classList.add("droppable-hover");
-    }
-  }
+        <!-- Incorrect Answer Modal -->
+        <div id="wrong-answer-modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+            <div class="bg-white p-6 rounded-lg shadow-lg text-center">
+                <p class="text-red-500 text-lg font-bold">Incorrect answer, try again!</p>
+            </div>
+        </div>
+    </div>
 
-  function dragOver(event) {
-    if(!event.target.classList.contains("dropped")) {
-      event.preventDefault();
-    }
-  }
-
-  function dragLeave(event) {
-    if(!event.target.classList.contains("dropped")) {
-      event.target.classList.remove("droppable-hover");
-    }
-  }
-
-  function drop(event) {
-    event.preventDefault();
-    event.target.classList.remove("droppable-hover");
-    const draggableElementData = event.dataTransfer.getData("text");
-    const droppableElementData = event.target.getAttribute("data-draggable-id");
-    const isCorrectMatching = draggableElementData === droppableElementData;
-    if(isCorrectMatching) {
-      const draggableElement = document.getElementById(draggableElementData);
-      event.target.classList.add("dropped");
-      event.target.style.backgroundColor = window.getComputedStyle(draggableElement).color;
-      draggableElement.classList.add("dragged");
-      draggableElement.setAttribute("draggable", "false");
-      event.target.insertAdjacentHTML("afterbegin", `<i class="fas fa-${draggableElementData}"></i>`);
-    }
-  }
-</script>
-
+    <script src="js/kazi.js"></script>
 </body>
 </html>

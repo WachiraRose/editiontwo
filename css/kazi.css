@@ -13,6 +13,53 @@
     color: green;
     margin-bottom: 20px;
 }
+/* General styles */
 body {
-    font-family: 'Arial', sans-serif; /* Change to your desired font */
+    font-family: Arial, sans-serif;
 }
+
+/* Question label styling */
+label {
+    font-size: 1.5rem;
+    color: #fcc708;
+    font-weight: bold;
+}
+
+.shadow-input {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+/* Score styling */
+#score {
+    font-size: 1.8rem;
+    color: #4c51bf;
+}
+
+.shadow-input {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+.popup {
+    position: fixed;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    display: none; /* Hidden by default */
+}
+.popup.success {
+    border-left: 5px solid green;
+}
+.popup.error {
+    border-left: 5px solid red;
+}
+/* Incorrect answer modal */
+#wrong-answer-modal p {
+    color: #e53e3e;
+    font-size: 1.25rem;
+}
+
+
