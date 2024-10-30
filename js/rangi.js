@@ -1,51 +1,54 @@
 const questions = [
-    { fruit: "pesheni", image: "img/matunda/passion.jpg" },
-    { fruit: "ndizi", image: "img/matunda/banana.jpg" },
-    { fruit: "zabibu", image: "img/matunda/grapes.jpg" },
-    { fruit: "tikiti maji", image: "img/matunda/watermelon.jpg" },
-    { fruit: "ndimu", image: "img/matunda/lemon.jpg" },
-    { fruit: "embe", image: "img/matunda/mango.jpg" },
-    { fruit: "chungwa", image: "img/matunda/orange.jpg" }
+    { color: "nyekundu", image: "img/rangi/red.jpg"},
+    { color: "nyeusi", image: "img/rangi/black.jpg" },
+    { color: "kijivu", image: "img/rangi/grey.jpg" },
+    { color: "manjano", image: "img/rangi/yellow.jpg" },
+    { color: "buluu", image: "img/rangi/blue.jpg" },
+    { color: "kijani", image: "img/rangi/green.jpg" },
+    { color: "nyeupe", image: "img/rangi/white.jpg" },
+    { color: "kahawia", image: "img/rangi/brown.jpg" },
+    { color: "rangi ya chungwa", image: "img/rangi/orange.jpg" },
+    { color: "zambarau", image: "img/rangi/purple.jpg" }
 ];
 
 let currentQuestionIndex = 0;
 
 function loadQuestion() {
     const currentQuestion = questions[currentQuestionIndex];
-    document.getElementById("fruitImage").src = currentQuestion.image;
+    document.getElementById("colorImage").src = currentQuestion.image;
     document.getElementById("feedback").innerHTML = ""; // Reset feedback
-    generateOptions(currentQuestion.fruit);
+    generateOptions(currentQuestion.color);
 }
 
-function generateOptions(correctFruit) {
+function generateOptions(correctColor) {
     const optionsContainer = document.getElementById("optionsContainer");
     optionsContainer.innerHTML = ""; // Clear previous options
 
-    const fruits = ["pesheni", "ndizi", "zabibu", "tikiti maji", "ndimu", "embe", "chungwa"];
-    const options = [correctFruit, ...fruits.filter(c => c !== correctFruit)];
+    const colors = ["nyekundu", "nyeusi", "kijivu", "manjano", "buluu", "kijani", "nyeupe", "kahawia", "rangi ya chungwa", "zambarau",];
+    const options = [correctColor, ...colors.filter(c => c !== correctColor)];
     const shuffledOptions = options.sort(() => Math.random() - 0.5).slice(0, 4);
 
-    if (!shuffledOptions.includes(correctFruit)) {
+    if (!shuffledOptions.includes(correctColor)) {
         shuffledOptions.pop();
-        shuffledOptions.push(correctFruit);
+        shuffledOptions.push(correctColor);
     }
 
-    shuffledOptions.forEach(fruit => {
+    shuffledOptions.forEach(color => {
         const button = document.createElement("button");
-        button.textContent = fruit;
+        button.textContent = color;
         button.className = "btn btn-secondary btn-block my-2";
-        button.onclick = () => checkAnswer(fruit, correctFruit);
+        button.onclick = () => checkAnswer(color, correctColor);
         optionsContainer.appendChild(button);
     });
 }
 
-function checkAnswer(selectedFruit, correctFruit) {
+function checkAnswer(selectedColor, correctColor) {
     const feedbackElement = document.getElementById("feedback");
-    if (selectedFruit === correctFruit) {
+    if (selectedColor === correctColor) {
         feedbackElement.innerHTML = "Sahihi!";
         feedbackElement.classList.replace("text-muted", "text-success");
     } else {
-        feedbackElement.innerHTML = `Sio Sahihi. <br>Jibu sahihi ni: <span class="correct-answer">${correctFruit}</span>`;
+        feedbackElement.innerHTML = `Sio Sahihi. <br>Jibu sahihi ni: <span class="correct-answer">${correctColor}</span>`;
         feedbackElement.classList.replace("text-muted", "text-danger");
     }
     setTimeout(() => {

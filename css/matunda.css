@@ -1,0 +1,54 @@
+body {
+    background-color: #d4d4f0;
+    min-height: 100vh;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.navbar {
+    width: 100%;
+    background-color: #f44b4e;
+}
+.quiz-container {
+    background-color: rgb(192, 205, 252);
+    padding: 20px;
+    max-width: 600px;
+    width: 100%;
+    border-radius: 10px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    margin-top: 20px;
+    
+}
+.quiz-image-container {
+    width: 100%;
+    max-width: 300px;
+    height: 200px;
+    overflow: hidden;
+    margin: 0 auto 20px; /* Centers the container in the quiz container */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.quiz-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+
+.feedback {
+    margin-top: 15px;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+.restart-btn {
+    display: none;
+    margin-top: 20px;
+}
+.correct-answer {
+    color: #28a745; /* Green color for the correct answer */
+}
