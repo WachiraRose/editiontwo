@@ -1,60 +1,52 @@
 body {
     margin: 0;
     padding: 0;
-    overflow-x: hidden; /* Prevent horizontal scroll */
-    background-color: #e0f7fa; /* Light cyan */
+    overflow-x: hidden;
+    background-color: #e0f7fa;
 }
 
 .container {
     margin: 0 auto;
-    width: 100vw; /* Full screen width */
-    padding: 0 10px; /* Small padding for small screens */
+    width: 100vw;
+    padding: 0 10px;
 }
 
 h1 {
-    color: #00796b; /* Teal */
+    color: #00796b;
     margin-bottom: 20px;
     text-align: center;
 }
 
 p {
-    color: #004d40; /* Darker teal */
+    color: #004d40;
     margin-bottom: 40px;
 }
 
 a.brand-logo {
     height: 150px;
     width: auto;
-    padding-left: 0; /* Remove extra left padding on small screens */
+    padding-left: 0;
     font-size: 1.5em;
     text-align: center;
 }
 
+/* Card Styling */
 .card-panel {
     animation: scaleIn 0.5s ease-in-out;
     cursor: pointer;
-    width: 90%; /* Full width with margin */
-    max-width: 250px;
-    height: auto; /* Flexible height for small screens */
+    width: 100%; /* Full width on small screens */
+    height: auto;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 15px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
-    margin: 10px auto; /* Center cards */
+    margin: 10px 0; /* Adjust margin for consistent stacking */
     transition: transform 0.3s ease;
 }
 
 @media only screen and (max-width: 600px) {
-    a.brand-logo {
-        height: 150px;
-        width: auto;
-        padding-left: 0; /* Remove extra left padding on small screens */
-        font-size: 1.0em;
-        text-align: center;
-    }
     .container {
-        margin: 0;
         padding: 0;
     }
 
@@ -69,6 +61,7 @@ a.brand-logo {
     }
 
     .card-panel {
+        width: 100%;
         max-width: 100%;
         height: auto;
         padding: 15px;
