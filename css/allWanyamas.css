@@ -20,7 +20,7 @@ body {
 
 .nav-wrapper .right li a {
     font-size: 1.1em;
-    color: #ffffff !important;
+    color: #f3ac5cf6 !important;
     padding: 0 15px;
     transition: color 0.3s ease;
 }

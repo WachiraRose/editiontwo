@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function () {
         porini: [
             "img/wanyama/lion.jpg",
             "img/wanyama/elephant.jpg",
-            "img/wanyama/porcupine.jpg",
+            "img/wanyama/giraffe.jpg",
             "img/wanyama/buffalo.jpg",
             "img/wanyama/cheetah.jpg",
             "img/wanyama/racoon.jpg",
@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', function () {
         porini: [
             ["Paka", "Simba", "Kiboko"],
             ["Sungura", "Nungu", "Ndovu"],
-            ["Nungunungu", "Punda", "Tembo"],
+            ["Twiga", "Punda", "Tembo"],
             ["Kifaru", "Panya", "Kuku"],
             ["Mbu", "Nyati", "Chui"],
             ["Paka", "Komba", "Ng'ombe"],
@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const correctAnswers = {
         nyumbani: ["Paka", "Ng'ombe", "Mbwa", "Sungura", "Mbuzi", "Bata Mzinga", "Farasi", "Nguruwe", "Kondoo", "Bata"],
-        porini: ["Simba", "Ndovu", "Nungunungu", "Kifaru", "Chui", "Komba", "Nyani", "Ngiri", "Kiboko", "Kulungu"],
+        porini: ["Simba", "Ndovu", "Twiga", "Kifaru", "Chui", "Komba", "Nyani", "Ngiri", "Kiboko", "Kulungu"],
         majini: ["Nyangumi", "Mkunga", "Papa", "Pweza", "Chuchunge", "Kambare", "Chaza", "Pomboo", "Mwanamizi", "Sili"],
     };
 
