@@ -1,5 +1,5 @@
 body {
-    background-color: #e0f7fa; /* Light brown background */
+    background-color: #e0f7fa;
     padding-top: 20px;
     font-family: Arial, sans-serif;
     color: #333;
@@ -7,22 +7,20 @@ body {
 
 /* Navbar Styling */
 .navbar {
-    background-color: #00796b; /* Brown navbar color */
+    background-color: #00796b;
     color: #fff;
-    padding: 0 20px;
+    padding: 10px 20px;
     position: relative;
 }
 
-/* Navbar Brand Logo */
 .navbar {
-    font-size: 1.5em;
+    font-size: 0.9em;
     font-weight: bold;
 }
 
-/* Move brand logo to the left */
 .nav-wrapper .brand-logo {
-    font-size: 1.5rem; /* Set default font size for larger screens */
-    padding-left: 15px; /* Add left padding for spacing */
+    font-size: 1.8em;
+    padding-left: 15px;
     text-align: left;
 }
 
@@ -35,16 +33,16 @@ body {
     align-items: center;
 }
 
-/* Button Style */
 .nav-btn {
     background-color: #a1887f;
     color: #fff;
-    padding: 8px 15px;
-    border-radius: 3px;
-    margin-left: 10px;
+    padding: 10px 18px;
+    border-radius: 5px;
+    margin-left: 15px;
+    font-weight: bold;
     transition: background-color 0.3s;
     text-decoration: none;
-    font-weight: bold;
+    font-size: 1.0em;
 }
 .nav-btn:hover {
     background-color: #8d6e63;
@@ -53,7 +51,7 @@ body {
 /* Hamburger Icon for Small Screens */
 .navbar .hamburger {
     display: none;
-    font-size: 24px;
+    font-size: 1.8em;
     cursor: pointer;
 }
 
@@ -64,12 +62,12 @@ body {
 }
 
 .question-card {
-    padding: 10px;
-    border-radius: 5px;
-    box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
     background-color: #fff;
     transition: background-color 0.3s, transform 0.3s;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
 }
 
 .question-card:hover {
@@ -91,78 +89,79 @@ body {
 /* Answer Option Styling */
 .collection-item label {
     cursor: pointer;
+    font-size: 1.2em;
 }
 
-.collection-item input[type="radio"]:checked+label {
-    background-color: #00e676; /* Change background to green when selected */
+.collection-item input[type="radio"]:checked + label {
+    background-color: #00e676;
 }
 
-.collection-item input[type="radio"]:checked.wrong+label {
-    background-color: #ff1744; /* Change background to red when answer is wrong */
+.collection-item input[type="radio"]:checked.wrong + label {
+    background-color: #ff1744;
 }
 
 /* Result Message Styling */
 .result-message {
-    margin-top: 10px;
+    margin-top: 15px;
     font-weight: bold;
+    font-size: 1.2em;
 }
 
 /* Button Styling */
 .btn {
-    margin-top: 10px;
-    padding: 8px 15px;
+    margin-top: 15px;
+    padding: 10px 20px;
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+/* Correct and Wrong Answer Styling */
+.correct-answer,
+.wrong-answer {
+    font-size: 1.5em;
     font-weight: bold;
 }
 
 .correct-answer {
-    font-size: 22px;          /* Larger font */
-    font-weight: bold;        /* Bold text */
-    font-family: Arial, sans-serif; /* Distinct font */
-    color: #4CAF50;           /* Green color for correct feedback */
+    color: #4CAF50;
 }
 
 .wrong-answer {
-    font-size: 22px;          /* Larger font */
-    font-weight: bold;
-    font-family: Arial, sans-serif;
-    color: #f44336;           /* Red color for incorrect feedback */
+    color: #f44336;
 }
 
 .correct-text {
-    color: #4CAF50;           /* Green color for the correct answer text */
-    font-weight: bold;        /* Bold for emphasis */
+    color: #4CAF50;
+    font-weight: bold;
 }
-
 
 /* Score Card Styling */
 .score-card {
     display: none;
     background-color: #fff;
-    padding: 10px;
-    border-radius: 5px;
-    box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
     margin-top: 20px;
     text-align: center;
 }
 
-/* Increase font size */
 .score-card p {
-    font-size: 1.5rem; /* Larger font size for category and score */
+    font-size: 1.5em;
     font-weight: bold;
     animation: pop 0.6s ease-in-out;
 }
 
-/* Different colors for category and score */
 #category {
-    color: #ff9800; /* Orange color for category */
+    color: #ff9800;
 }
 
 #score {
-    color: #4caf50; /* Green color for score */
+    color: #4caf50;
 }
 
 .try-again-btn {
-    font-size: 1.3rem; /* Larger font size for the button */
+    font-size: 1.3em;
     font-weight: bold;
 }
 
@@ -186,21 +185,19 @@ body {
 /* Responsive Styles for Small Screens */
 @media only screen and (max-width: 600px) {
     body {
-        padding-top: 10px;
+        padding-top: 15px;
     }
 
-    /* Center Content for Small Screens */
     .question-container {
         width: 100%;
-        padding: 10px;
+        padding: 15px;
     }
 
     .question-card {
-        padding: 8px;
-        margin-bottom: 8px;
+        padding: 12px;
+        margin-bottom: 12px;
     }
 
-    /* Navbar: Hide Buttons, Show Hamburger */
     .navbar .nav-btns {
         display: none;
     }
@@ -208,13 +205,12 @@ body {
         display: block;
         position: absolute;
         right: 20px;
-        top: 12px;
+        top: 15px;
     }
 
-    /* Responsive font size for brand logo */
     .nav-wrapper .brand-logo {
-        font-size: 0.9em;
-        padding-left: 1px;
+        font-size: 1.0em;
+        padding-left: 8px;
     }
 
     .question-image {
@@ -222,25 +218,20 @@ body {
         height: auto;
     }
 
-    .result-message {
-        font-size: 0.9em;
+    .result-message,
+    .btn,
+    .try-again-btn {
+        font-size: 1.2em;
     }
 
     h1, p {
-        font-size: 1.1em;
-        padding: 0 5px;
+        font-size: 1.3em;
+        padding: 5px;
         text-align: center;
     }
 
-    /* Full-Width Button Styling for Small Screens */
-    .btn, .try-again-btn {
-        width: 100%;
-        font-size: 0.9em;
-        margin-top: 8px;
-    }
-
     .score-card {
-        padding: 8px;
-        font-size: 0.9em;
+        padding: 12px;
+        font-size: 1.1em;
     }
 }
