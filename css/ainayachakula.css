@@ -37,6 +37,11 @@ body {
     backdrop-filter: blur(4px);
 }
 
+.correct-answer {
+    color: green !important;
+    font-weight: bold;
+}
+
 .container, #imageContainer img {
     animation: popIn 0.4s ease-in-out;
 }
