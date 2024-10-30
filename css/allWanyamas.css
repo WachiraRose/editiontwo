@@ -5,6 +5,30 @@ body {
     background-color: #e0f7fa;
 }
 
+/* Navbar Styling */
+.nav-wrapper {
+    background-color: #00796b; /* Dark green color */
+    padding: 0 20px;
+}
+
+.nav-wrapper .brand-logo {
+    font-size: 1.8em;
+    font-weight: bold;
+    color: #ffffff;
+    padding-left: 10px;
+}
+
+.nav-wrapper .right li a {
+    font-size: 1.1em;
+    color: #ffffff !important;
+    padding: 0 15px;
+    transition: color 0.3s ease;
+}
+
+.nav-wrapper .right li a:hover {
+    color: #b2dfdb !important; /* Lighter green color on hover */
+}
+
 .container {
     margin: 0 auto;
     width: 100vw;
@@ -15,56 +39,49 @@ h1 {
     color: #00796b;
     margin-bottom: 20px;
     text-align: center;
+    font-size: 2em;
 }
 
 p {
     color: #004d40;
     margin-bottom: 40px;
-}
-
-a.brand-logo {
-    height: 150px;
-    width: auto;
-    padding-left: 0;
-    font-size: 1.5em;
-    text-align: center;
+    font-size: 1.2em;
 }
 
 /* Card Styling */
 .card-panel {
     animation: scaleIn 0.5s ease-in-out;
     cursor: pointer;
-    width: 100%; /* Full width on small screens */
+    width: 100%;
     height: auto;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 15px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
-    margin: 10px 0; /* Adjust margin for consistent stacking */
+    margin: 15px 0;
     transition: transform 0.3s ease;
+    font-size: 1.2em;
 }
 
+/* Mobile View Adjustments */
 @media only screen and (max-width: 600px) {
-    .container {
-        padding: 0;
+    .nav-wrapper .brand-logo {
+        font-size: 1.0em;
+        padding-left: 0;
     }
 
     h1 {
-        padding-left: 10px;
-        font-size: 1.5em;
+        font-size: 1.8em;
     }
 
     p {
-        font-size: 1em;
+        font-size: 1.1em;
         padding: 0 10px;
     }
 
     .card-panel {
-        width: 100%;
-        max-width: 100%;
-        height: auto;
-        padding: 15px;
-        font-size: 1em;
+        font-size: 1.1em;
+        padding: 20px;
     }
 }
