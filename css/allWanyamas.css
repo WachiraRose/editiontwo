@@ -67,7 +67,7 @@ p {
 /* Mobile View Adjustments */
 @media only screen and (max-width: 600px) {
     .nav-wrapper .brand-logo {
-        font-size: 1.0em;
+        font-size: 0.9em;
         padding-left: 0;
     }
 
