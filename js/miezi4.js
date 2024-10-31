@@ -1,8 +1,8 @@
 // English and Swahili months for the first page (first six months)
 const questions = [
-    { english: 'January', swahili: 'Januari', image: 'img/months/jan.jpg' },
-    { english: 'February', swahili: 'Februari', image: 'img/months/feb.jpg' },
-    { english: 'March', swahili: 'Machi', image: 'img/months/mar.jpg' },
+    { english: 'October', swahili: 'Oktoba', image: 'img/months/oct.jpg' },
+    { english: 'November', swahili: 'Novemba', image: 'img/months/nov.jpg' },
+    { english: 'December', swahili: 'Desemba', image: 'img/months/dec.jpg' },
 ];
 
 // Shuffle the Swahili words
@@ -121,5 +121,5 @@ function checkCompletion() {
 // Next page functionality
 document.getElementById('next-btn').addEventListener('click', function() {
     // Navigate to the next page
-    window.location.href = 'miezi2.html'; // Ensure to create this page
+    window.location.href = 'index.html'; // Ensure to create this page
 });

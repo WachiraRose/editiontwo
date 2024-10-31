@@ -1,0 +1,74 @@
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: #f0f8ff;
+    margin: 0;
+    height: 100vh;
+    overflow: hidden;
+    touch-action: manipulation; /* Prevents scrolling while dragging */
+}
+.container {
+    display: flex;
+    flex-direction: row; /* Always side by side */
+    width: 80%;
+    max-width: 900px;
+    overflow-x: auto; /* Allow horizontal scrolling for smaller screens */
+}
+.column {
+    width: 50%; /* Each column takes half the width */
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    margin-right: 10px; /* Space between columns */
+    position: relative;
+}
+.column:last-child {
+    margin-right: 0; /* No margin on the last column */
+}
+.english-item, .swahili-item {
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    cursor: pointer;
+    user-select: none;
+    text-align: center; /* Center align text */
+}
+.correct {
+    background-color: #c6f6d5;
+    border-color: #4caf50;
+}
+#congratulations-message {
+    display: none;
+    margin-top: 20px;
+    font-size: 20px;
+    color: #4caf50;
+}
+#next-btn {
+    margin-top: 20px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+}
+#next-btn:hover {
+    background-color: #0056b3;
+}
+.english-item img {
+    max-width: 60%; /* Adjusted for smaller images */
+    height: auto;
+    max-height: 40px; /* Limit the height of images */
+}
+.swahili-name {
+    margin-top: 5px;
+    font-weight: bold;
+}
+h1, h2, p {
+    text-align: center;
+}
