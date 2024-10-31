@@ -1,5 +1,5 @@
- // English and Swahili words
- const questions = [
+// English and Swahili words
+const questions = [
     { english: 'Shirt', swahili: 'shati' },
     { english: 'Apron', swahili: 'eproni' },
     { english: 'Hand Bag', swahili: 'mkopa' },
@@ -12,10 +12,16 @@
     { english: 'Cardigan', swahili: 'fulana' }
 ];
 
+// Function to shuffle an array
+function shuffleArray(array) {
+    return array
+        .map(value => ({ value, sort: Math.random() }))
+        .sort((a, b) => a.sort - b.sort)
+        .map(({ value }) => value);
+}
+
 // Shuffle the Swahili words
-const shuffledSwahili = questions
-    .map(question => question.swahili)
-    .sort(() => Math.random() - 0.5);
+const shuffledSwahili = shuffleArray(questions.map(question => question.swahili));
 
 // Create English items
 const englishItemsContainer = document.querySelector('.english-column');
@@ -47,20 +53,19 @@ const englishItems = document.querySelectorAll('.english-item');
 englishItems.forEach(item => {
     item.addEventListener('dragover', dragOver);
     item.addEventListener('drop', drop);
-    item.addEventListener('touchend', touchEnd);
 });
 
 // Drag Start
 function dragStart(event) {
     event.dataTransfer.setData('text/plain', event.target.dataset.name);
+    event.target.classList.add('dragging');
 }
 
 // Touch Start (for touch devices)
 function touchStart(event) {
     const swahiliName = event.target.dataset.name;
-    event.dataTransfer = event.dataTransfer || {};
-    event.dataTransfer.setData('text/plain', swahiliName);
-    drop(event); // Call drop function immediately for touch
+    event.target.classList.add('dragging');
+    event.target.dataset.dragging = swahiliName;
 }
 
 // Drag Over
@@ -70,20 +75,20 @@ function dragOver(event) {
 
 // Drop
 function drop(event) {
-    const swahiliName = event.dataTransfer.getData('text/plain');
+    event.preventDefault(); // Prevent default to allow drop
+    const draggingItem = document.querySelector('.dragging');
+    const swahiliName = draggingItem.dataset.dragging || event.dataTransfer.getData('text/plain');
     const englishItem = event.target;
 
     // Check if the dropped Swahili name matches the data-answer of the English item
     if (swahiliName === englishItem.dataset.answer) {
         englishItem.classList.add('correct');
-        
-        // Display matched item in the English column
-        englishItem.textContent += ` - ${swahiliName}`;
-        
+        englishItem.textContent += ` - ${swahiliName}`; // Display matched item in the English column
+
         // Hide matched Swahili item
-        const matchedSwahiliItem = document.querySelector(`.swahili-item[data-name="${swahiliName}"]`);
-        matchedSwahiliItem.style.display = 'none'; 
-        
+        draggingItem.style.display = 'none';
+        draggingItem.classList.remove('dragging');
+
         // Check for completion
         checkCompletion();
     }
@@ -100,7 +105,6 @@ function checkCompletion() {
 }
 
 // Refresh button functionality
-document.getElementById('refresh-btn').addEventListener('click', function() {
-    // Reset the quiz
+document.getElementById('refresh-btn').addEventListener('click', function () {
     location.reload(); // Reloads the page to refresh the quiz
 });
