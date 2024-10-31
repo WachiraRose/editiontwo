@@ -1,12 +1,12 @@
-// English and Swahili words
-const questions = [
+ // English and Swahili words
+ const questions = [
     { english: 'Shirt', swahili: 'shati' },
     { english: 'Apron', swahili: 'eproni' },
     { english: 'Hand Bag', swahili: 'mkopa' },
     { english: 'Tie', swahili: 'tai' },
     { english: 'Boots', swahili: 'buti' },
     { english: 'Cap', swahili: 'chepeo' },
-    { english: 'uniform', swahili: 'sare' },
+    { english: 'Uniform', swahili: 'sare' },
     { english: 'Belt', swahili: 'mshipi' },
     { english: 'Petticoat', swahili: 'kamisi' },
     { english: 'Cardigan', swahili: 'fulana' }
@@ -38,6 +38,7 @@ shuffledSwahili.forEach(swahili => {
 
     // Add drag events
     swahiliItem.addEventListener('dragstart', dragStart);
+    swahiliItem.addEventListener('touchstart', touchStart);
     swahiliContainer.appendChild(swahiliItem);
 });
 
@@ -46,11 +47,20 @@ const englishItems = document.querySelectorAll('.english-item');
 englishItems.forEach(item => {
     item.addEventListener('dragover', dragOver);
     item.addEventListener('drop', drop);
+    item.addEventListener('touchend', touchEnd);
 });
 
 // Drag Start
 function dragStart(event) {
     event.dataTransfer.setData('text/plain', event.target.dataset.name);
+}
+
+// Touch Start (for touch devices)
+function touchStart(event) {
+    const swahiliName = event.target.dataset.name;
+    event.dataTransfer = event.dataTransfer || {};
+    event.dataTransfer.setData('text/plain', swahiliName);
+    drop(event); // Call drop function immediately for touch
 }
 
 // Drag Over
