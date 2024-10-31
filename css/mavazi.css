@@ -1,0 +1,98 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar {
+    background-color: #4A90E2;
+    color: white;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar li {
+    display: inline;
+    margin-left: 20px;
+}
+
+.navbar a {
+    color: white;
+    text-decoration: none;
+}
+
+.quiz-container {
+    padding: 20px;
+}
+
+.quiz-content {
+    display: flex;
+    justify-content: space-between;
+}
+
+.english-column,
+.swahili-column {
+    width: 48%; /* Adjust width to fit side by side */
+    margin: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.english-item,
+.swahili-item {
+    margin: 5px;
+    padding: 10px;
+    border: 1px solid #4A90E2;
+    border-radius: 5px;
+    cursor: grab;
+}
+
+.english-item:hover,
+.swahili-item:hover {
+    background-color: #e7f3ff;
+}
+
+.english-item.correct {
+    background-color: #b2ffb2; /* Light green for matched items */
+}
+
+#congratulations-message {
+    margin-top: 20px;
+    font-size: 20px;
+    color: #4A90E2;
+    font-weight: bold;
+}
+
+.hidden {
+    display: none; /* Hide by default */
+}
+
+#refresh-btn {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #4A90E2; /* Button background */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#refresh-btn:hover {
+    background-color: #357ABD; /* Darker blue on hover */
+}
+
+/* Responsive Styles 
+@media (max-width: 768px) {
+    .english-column, .swahili-column {
+        width: 100%;  Stack columns on smaller screens 
+    }
+}*/

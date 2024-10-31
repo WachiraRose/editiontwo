@@ -1,168 +1,170 @@
 <!DOCTYPE html>
-<html lang="sw">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Matunda/Fruits</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet">
-
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
-    <style>
-        body {
-            background-color: #eeeeef;
-            min-height: 100vh;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .navbar {
-            width: 100%;
-            background-color: #f44b4e;
-        }
-        .quiz-container {
-            background-color: rgb(192, 205, 252);
-            padding: 20px;
-            max-width: 600px;
-            width: 100%;
-            border-radius: 10px;
-            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            margin-top: 20px;
-            
-        }
-        .quiz-image-container {
-            width: 100%;
-            max-width: 300px;
-            height: 200px;
-            overflow: hidden;
-            margin-bottom: 20px;
-            display: flex; /* Add this */
-            justify-content: center; /* Center horizontally */
-            align-items: center; /* Center vertically */
-            
-        }
-        
-        .quiz-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 8px;
-            padding-left: 50px;
-        }
-        
-        .feedback {
-            margin-top: 15px;
-            font-size: 1.2em;
-            font-weight: bold;
-        }
-        .restart-btn {
-            display: none;
-            margin-top: 20px;
-        }
-        .correct-answer {
-            color: #28a745; /* Green color for the correct answer */
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Miti Game</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: linear-gradient(to right, #5d4e73, #5d4e73);
+      color: #333;
+    }
+    .game-container {
+      padding: 1rem;
+      background: rgba(244, 239, 243, 0.9);
+      border-radius: 10px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+    .word-container {
+      width: 80%; /* Set a specific width for the word container */
+      max-width: 400px; /* Optional: Set a maximum width */
+      margin: 0 auto; /* Center the word container */
+    }
+    .submit-button {
+      background: linear-gradient(to right, #0525f456, #b11ba7);
+      color: #fff;
+      border-radius: 5px;
+      padding: 10px 15px;
+      border: none;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+    .submit-button:hover {
+      background: linear-gradient(to right, #ebd405, #b4ce57);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+    .submitted {
+      color: green; /* Color for correct answers */
+      font-weight: bold;
+    }
+  </style>
 </head>
-<body>
+<body class="flex items-center justify-center min-h-screen">
+  <div class="game-container w-full max-w-lg">
+    <h2 class="text-2xl font-bold text-center mb-4">LESSON 14:</h2>
+    <h2 class="text-2xl font-bold text-center mb-4">MITI/TREES</h2>
+    <h3 class="text-2xl font-bold text-center mb-4">Unscramble the Words!</h3>
 
-    <!-- Navbar with Home Button -->
-    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #0d73f8;">
-        <a class="navbar-brand text-white" href="#" style="font-family: 'Poppins', sans-serif; font-weight: 800;">Rangi Quiz</a>
-        <div class="ml-auto">
-            <a href="/" class="btn btn-light">Home</a>
+    <!-- Word containers -->
+    <div id="wordContainers"></div>
+
+    <button onclick="resetGame()" class="mt-4 submit-button">Play Again</button>
+  </div>
+
+  <script>
+    const words = [
+      { scrambled: 'ANMIZ(COCONUT TREE)', correct: 'MNAZI' },
+      { scrambled: 'SANRIBANOM(PINE TREE)', correct: 'MSONOBARI' },
+      { scrambled: 'PINGIM(THORN TREE)', correct: 'MPINGI' },
+      { scrambled: 'ELUVM(EBONY TREE)', correct: 'MVULE' },
+      { scrambled: 'PEMRA(GUAVA TREE)', correct: 'MPERA' },
+      { scrambled: 'CHUNWAGM(ORANGE TREE)', correct: 'MCHUNGWA' },
+      { scrambled: 'MEWBEM(MANGO TREE)', correct: 'MWEMBE' },
+      { scrambled: 'ZIJO(WALNUT TREE)', correct: 'JOZI' },
+      { scrambled: 'NIMBU(COFFEE TREE)', correct: 'MBUNI' },
+      { scrambled: 'ATMGON(CUCUMBER TREE)', correct: 'MTANGO' }
+    ];
+
+    let currentWords = [...words];
+
+    function createWordContainer(index) {
+      return `
+        <div class="word-container mb-2 flex items-center justify-between">
+          <div class="scrambled-word text-lg font-semibold" id="scrambledWord${index + 1}">${currentWords[index].scrambled}</div>
+          <input type="text" id="userInput${index + 1}" class="border rounded p-1 w-1/2 text-sm" placeholder="Answer" />
+          <span class="text-red-500 text-sm" id="message${index + 1}"></span>
+          <button onclick="checkAnswer('userInput${index + 1}', 'scrambledWord${index + 1}', '${currentWords[index].correct}', 'message${index + 1}')" class="submit-button">Submit</button>
         </div>
-    </nav>
+      `;
+    }
 
-    <div class="quiz-container">
-        <h4>Identify the Fruit!</h4>
-        <p>Select the correct Swahili name for the fruit shown in the images below.</p>
+    function displayWords() {
+      const wordContainers = document.getElementById("wordContainers");
+      wordContainers.innerHTML = '';
+      currentWords.forEach((_, index) => {
+        wordContainers.innerHTML += createWordContainer(index);
+      });
+    }
 
-        <!-- Image container with fixed size for consistency -->
-        <div class="quiz-image-container">
-            <img id="colorImage" src="" alt="Color" class="quiz-image" />
-        </div>
+    // Function to check answer and display message
+    function checkAnswer(inputId, scrambledId, correctAnswer, messageId) {
+      const userInput = document.getElementById(inputId).value.trim().toUpperCase();
+      const messageElement = document.getElementById(messageId);
+      const inputElement = document.getElementById(inputId);
 
-        <div id="optionsContainer" class="mt-3"></div>
+      if (userInput === correctAnswer) {
+        messageElement.textContent = "Correct!";
+        messageElement.style.color = "green"; // Change text color to green
+        document.getElementById(scrambledId).style.color = "green"; // Change the scrambled word color to green
+        inputElement.classList.add("submitted"); // Add submitted class for styling
+        inputElement.disabled = true; // Disable the input field after correct answer
+        document.querySelector(`button[onclick="checkAnswer('${inputId}', '${scrambledId}', '${correctAnswer}', '${messageId}')"]`).style.display = "none"; // Hide the submit button
+      } else {
+        messageElement.textContent = "Try again!";
+      }
+    }
 
-        <p class="feedback text-muted" id="feedback"></p>
-        <button id="restartButton" class="btn btn-primary restart-btn" onclick="restartQuiz()">Restart Quiz</button>
-    </div>
-
-    <script>
-        const questions = [
-            { fruit: "pesheni", image: "img/matunda/passion.jpg" },
-            { fru: "ndizi", image: "img/matunda/banana.jpg" },
-            { color: "zabibu", image: "img/matunda/grapes.jpg" },
-            { color: "tikiti maji", image: "img/matunda/watermelon.jpg" },
-            { color: "ndimu", image: "img/matunda/lemon.jpg" },
-            { color: "embe", image: "img/matunda/mango.jpg" },
-            { color: "chungwa", image: "img/matunda/orange.jpg" }
-        ];
-
-        let currentQuestionIndex = 0;
-
-        function loadQuestion() {
-            const currentQuestion = questions[currentQuestionIndex];
-            document.getElementById("colorImage").src = currentQuestion.image;
-            document.getElementById("feedback").innerHTML = ""; // Reset feedback
-            generateOptions(currentQuestion.color);
+    // Function to check for 'Enter' key press
+    document.addEventListener("keydown", function(event) {
+      if (event.key === "Enter") {
+        // Get the input field in focus
+        const activeElement = document.activeElement;
+        if (activeElement.tagName === "INPUT") {
+          const inputId = activeElement.id;
+          const scrambledId = inputId.replace('userInput', 'scrambledWord');
+          const correctAnswer = getCorrectAnswer(inputId);
+          const messageId = inputId.replace('userInput', 'message');
+          checkAnswer(inputId, scrambledId, correctAnswer, messageId);
         }
+      }
+    });
 
-        function generateOptions(correctColor) {
-            const optionsContainer = document.getElementById("optionsContainer");
-            optionsContainer.innerHTML = ""; // Clear previous options
+    // Function to get the correct answer based on input ID
+    function getCorrectAnswer(inputId) {
+      const index = parseInt(inputId.replace('userInput', '')) - 1;
+      return currentWords[index].correct;
+    }
 
-            const colors = ["pesheni", "ndizi", "zabibu", "tikiti maji", "ndimu", "embe", "chungwa"];
-            const options = [correctColor, ...colors.filter(c => c !== correctColor)];
-            const shuffledOptions = options.sort(() => Math.random() - 0.5).slice(0, 4);
+    // Function to shuffle array
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    }
 
-            if (!shuffledOptions.includes(correctColor)) {
-                shuffledOptions.pop();
-                shuffledOptions.push(correctColor);
-            }
+    // Function to reset the game
+    function resetGame() {
+      currentWords = [...words]; // Reset to the original words
+      shuffle(currentWords); // Shuffle the words
+      displayWords(); // Display shuffled words
+      const messages = document.querySelectorAll("[id^='message']");
+      messages.forEach(message => {
+        message.textContent = ""; // Clear messages
+        message.style.color = "red"; // Reset color to red
+      });
 
-            shuffledOptions.forEach(color => {
-                const button = document.createElement("button");
-                button.textContent = color;
-                button.className = "btn btn-secondary btn-block my-2";
-                button.onclick = () => checkAnswer(color, correctColor);
-                optionsContainer.appendChild(button);
-            });
-        }
+      const inputs = document.querySelectorAll("input");
+      inputs.forEach(input => {
+        input.value = ""; // Clear input fields
+        input.disabled = false; // Enable input fields
+        input.classList.remove("submitted"); // Remove submitted class
+      });
 
-        function checkAnswer(selectedColor, correctColor) {
-            const feedbackElement = document.getElementById("feedback");
-            if (selectedColor === correctColor) {
-                feedbackElement.innerHTML = "Sahihi!";
-                feedbackElement.classList.replace("text-muted", "text-success");
-            } else {
-                feedbackElement.innerHTML = `Sio Sahihi. <br>Jibu sahihi ni: <span class="correct-answer">${correctColor}</span>`;
-                feedbackElement.classList.replace("text-muted", "text-danger");
-            }
-            setTimeout(() => {
-                feedbackElement.classList.replace("text-danger", "text-muted");
-                feedbackElement.classList.replace("text-success", "text-muted");
-                currentQuestionIndex++;
-                if (currentQuestionIndex < questions.length) {
-                    loadQuestion();
-                } else {
-                    feedbackElement.textContent = "Quiz umemalizika!";
-                    document.getElementById("restartButton").style.display = "inline-block";
-                }
-            }, 1500);
-        }
+      const buttons = document.querySelectorAll("button");
+      buttons.forEach(button => {
+        button.style.display = "inline-block"; // Show all submit buttons
+      });
+    }
 
-        function restartQuiz() {
-            currentQuestionIndex = 0;
-            document.getElementById("restartButton").style.display = "none";
-            loadQuestion();
-        }
-
-        loadQuestion();
-    </script>
+    // Initial call to display words
+    displayWords();
+  </script>
 </body>
 </html>
