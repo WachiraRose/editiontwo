@@ -1,11 +1,11 @@
 const boxes = document.querySelectorAll('.box');
 const container = document.getElementById('container');
 const levelRanges = [
-    { words: ['Moja', 'Mbili', 'Tatu', 'Nne', 'Tano', 'Sita', 'Saba', 'Nane', 'Tisa', 'Kumi'], backgroundColor: '#E9C46A' }, // Orange
-    { words: ['Kumi na Moja', 'Kumi na Mbili', 'Kumi na Tatu', 'Kumi na Nne', 'Kumi na Tano', 'Kumi na Sita', 'Kumi na Saba', 'Kumi na Nane', 'Kumi na Tisa', 'Ishirini'], backgroundColor: '#FFD700' }, // Muted mustard yellow
-    { words: ['Ishirini na Moja', 'Ishirini na Mbili', 'Ishirini na Tatu', 'Ishirini na Nne', 'Ishirini na Tano', 'Ishirini na Sita', 'Ishirini na Saba', 'Ishirini na Nane', 'Ishirini na Tisa', 'Thelathini'], backgroundColor: "#F4A261"}, // Soft terracotta 
-    { words: ['Thelathini na Moja', 'Thelathini na Mbili', 'Thelathini na Tatu', 'Thelathini na Nne', 'Thelathini na Tano', 'Thelathini na Sita', 'Thelathini na Saba', 'Thelathini na Nane', 'Thelathini na Tisa', 'Arobaini'], backgroundColor: '#BC6C25' }, // Earthy Brown
-    { words: ['Arobaini na Moja', 'Arobaini na Mbili', 'Arobaini na Tatu', 'Arobaini na Nne', 'Arobaini na Tano', 'Arobaini na Sita', 'Arobaini na Saba', 'Arobaini na Nane', 'Arobaini na Tisa', 'Hamsini'], backgroundColor: '#B5838D' } // Muted mauve
+    { words: ['Moja', 'Mbili', 'Tatu', 'Nne', 'Tano', 'Sita', 'Saba', 'Nane', 'Tisa', 'Kumi'], backgroundColor: '#E9C46A' },
+    { words: ['Kumi na Moja', 'Kumi na Mbili', 'Kumi na Tatu', 'Kumi na Nne', 'Kumi na Tano', 'Kumi na Sita', 'Kumi na Saba', 'Kumi na Nane', 'Kumi na Tisa', 'Ishirini'], backgroundColor: '#FFD700' },
+    { words: ['Ishirini na Moja', 'Ishirini na Mbili', 'Ishirini na Tatu', 'Ishirini na Nne', 'Ishirini na Tano', 'Ishirini na Sita', 'Ishirini na Saba', 'Ishirini na Nane', 'Ishirini na Tisa', 'Thelathini'], backgroundColor: "#F4A261" },
+    { words: ['Thelathini na Moja', 'Thelathini na Mbili', 'Thelathini na Tatu', 'Thelathini na Nne', 'Thelathini na Tano', 'Thelathini na Sita', 'Thelathini na Saba', 'Thelathini na Nane', 'Thelathini na Tisa', 'Arobaini'], backgroundColor: '#BC6C25' },
+    { words: ['Arobaini na Moja', 'Arobaini na Mbili', 'Arobaini na Tatu', 'Arobaini na Nne', 'Arobaini na Tano', 'Arobaini na Sita', 'Arobaini na Saba', 'Arobaini na Nane', 'Arobaini na Tisa', 'Hamsini'], backgroundColor: '#B5838D' }
 ];
 
 let currentLevel = 0;
@@ -121,13 +121,37 @@ document.getElementById('homeButton').addEventListener('click', function() {
 
 // Touch support for small screens
 boxes.forEach(box => {
-    box.addEventListener('touchstart', handleDragStart, false);
-    box.addEventListener('touchmove', (e) => {
-        e.preventDefault(); // Prevent scrolling while dragging
-        handleDragOver(e);
-    }, false);
-    box.addEventListener('touchend', handleDrop, false);
+    box.addEventListener('touchstart', handleTouchStart, false);
+    box.addEventListener('touchmove', handleTouchMove, false);
+    box.addEventListener('touchend', handleTouchEnd, false);
 });
+
+let touchSrcEl = null;
+
+function handleTouchStart(e) {
+    touchSrcEl = this;
+    this.classList.add('dragging');
+}
+
+function handleTouchMove(e) {
+    e.preventDefault();
+    const touch = e.touches[0];
+    const boxesArray = Array.from(boxes);
+
+    boxesArray.forEach(box => {
+        const boxRect = box.getBoundingClientRect();
+        if (touch.clientX >= boxRect.left && touch.clientX <= boxRect.right &&
+            touch.clientY >= boxRect.top && touch.clientY <= boxRect.bottom) {
+            handleDrop(e);
+            return;
+        }
+    });
+}
+
+function handleTouchEnd(e) {
+    this.classList.remove('dragging');
+    touchSrcEl = null;
+}
 
 // Initial level setup
 document.getElementById('levelText').innerText = `Drag and drop the boxes to organize them!`;

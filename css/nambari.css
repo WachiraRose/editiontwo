@@ -31,7 +31,7 @@ body {
 
 /* Style for Home button */
 #homeNavButton {
-    background-color: #ff9800; /* Orange background for visibility */
+    background-color: #00e626; /* Orange background for visibility */
     color: #fff;
     border: none;
     padding: 8px 16px;
@@ -39,12 +39,12 @@ body {
     cursor: pointer;
     font-size: 1rem;
     font-weight: bold;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease; 
     margin-right: 20px;
 }
 
 #homeNavButton:hover {
-    background-color: #e68900; /* Darker shade on hover */
+    background-color: #00e626; /* Darker shade on hover */
 }
 
 
