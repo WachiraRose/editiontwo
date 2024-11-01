@@ -147,8 +147,8 @@ ghostBox.style.border = '1px dashed gray';
 ghostBox.style.padding = '8px';
 ghostBox.style.backgroundColor = 'red';
 ghostBox.style.display = 'none';
-ghostBox.style.width = '80px';  // Increase the width
-ghostBox.style.height = '80px'; // Increase the height
+ghostBox.style.width = '30px';  // Increase the width
+ghostBox.style.height = '30px'; // Increase the height
 ghostBox.style.fontSize = '1.5em'; // Adjust font size if needed
 // Add event listeners
 boxes.forEach(box => {
