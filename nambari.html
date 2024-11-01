@@ -8,7 +8,8 @@
 </head>
 <body>
   <div class="navbar">
-    <h2>Nambari/Numbers</h2>
+    <h2>MAZOEZI:Nambari/Numbers</h2>
+    <button id="homeNavButton" onclick="goHome()">Home</button> <!-- Home button in navbar -->
   </div>
   <section>
     <h2 id="levelText">Drag and drop the numbers to arrange in the correct order! </h2>
@@ -30,11 +31,13 @@
 
   
 
-  <div id="popup" class="popup">
+  <div id="popup" style="display: none;">
     <p id="popupMessage"></p>
     <button id="nextLevelButton">Next Level</button>
-    <button id="restartButton">Restart</button>
+    <button id="restartButton" style="display: none;">Restart</button>
+    <button id="homeButton" style="display: none;">Home</button>
   </div>
+  
 
   <script src="js/nambari.js"></script>
 </body>

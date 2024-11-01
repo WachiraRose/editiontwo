@@ -5,7 +5,7 @@ const questions = [
     { fruit: "tikiti maji", image: "img/matunda/watermelon.jpg" },
     { fruit: "ndimu", image: "img/matunda/lemon.jpg" },
     { fruit: "embe", image: "img/matunda/mango.jpg" },
-    { fruit: "chungwa", image: "img/matunda/orange.jpg" }
+    { fruit: "chungwa", image: "img/matunda/orange.png" }
 ];
 
 let currentQuestionIndex = 0;
@@ -21,7 +21,7 @@ function generateOptions(correctFruit) {
     const optionsContainer = document.getElementById("optionsContainer");
     optionsContainer.innerHTML = ""; // Clear previous options
 
-    const fruits = ["pesheni", "ndizi", "zabibu", "tikiti maji", "ndimu", "embe", "chungwa"];
+    const fruits = ["pesheni", "ndizi", "zabibu", "tikiti maji", "ndimu", "maembe", "chungwa"];
     const options = [correctFruit, ...fruits.filter(c => c !== correctFruit)];
     const shuffledOptions = options.sort(() => Math.random() - 0.5).slice(0, 4);
 

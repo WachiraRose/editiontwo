@@ -1,10 +1,11 @@
 const boxes = document.querySelectorAll('.box');
 const container = document.getElementById('container');
 const levelRanges = [
-  { words: ['Moja', 'Mbili', 'Tatu', 'Nne', 'Tano', 'Sita', 'Saba', 'Nane', 'Tisa', 'Kumi'], backgroundColor: 'E2765F' }, // brownish
-  { words: ['Kumi na Moja', 'Kumi na Mbili', 'Kumi na Tatu', 'Kumi na Nne', 'Kumi na Tano', 'Kumi na Sita', 'Kumi na Saba', 'Kumi na Nane', 'Kumi na Tisa', 'Ishirini'], backgroundColor: '#67f967' }, // Light green
-  { words: ['Ishirini na Moja', 'Ishirini na Mbili', 'Ishirini na Tatu', 'Ishirini na Nne', 'Ishirini na Tano', 'Ishirini na Sita', 'Ishirini na Saba', 'Ishirini na Nane', 'Ishirini na Tisa', 'Thelathini'], backgroundColor: '#665956 ' } // brownish grey
-  // Add more levels as needed
+  { words: ['Moja', 'Mbili', 'Tatu', 'Nne', 'Tano', 'Sita', 'Saba', 'Nane', 'Tisa', 'Kumi'], backgroundColor: '#E9C46A' }, // Orange
+  { words: ['Kumi na Moja', 'Kumi na Mbili', 'Kumi na Tatu', 'Kumi na Nne', 'Kumi na Tano', 'Kumi na Sita', 'Kumi na Saba', 'Kumi na Nane', 'Kumi na Tisa', 'Ishirini'], backgroundColor: '#FFD700' }, // Muted mustard yellow
+  { words: ['Ishirini na Moja', 'Ishirini na Mbili', 'Ishirini na Tatu', 'Ishirini na Nne', 'Ishirini na Tano', 'Ishirini na Sita', 'Ishirini na Saba', 'Ishirini na Nane', 'Ishirini na Tisa', 'Thelathini'], backgroundColor: "#F4A261"}, // Soft terracotta 
+  { words: ['Thelathini na Moja', 'Thelathini na Mbili', 'Thelathini na Tatu', 'Thelathini na Nne', 'Thelathini na Tano', 'Thelathini na Sita', 'Thelathini na Saba', 'Thelathini na Nane', 'Thelathini na Tisa', 'Arobaini'], backgroundColor: '#BC6C25' }, // Earthy Brown
+  { words: ['Arobaini na Moja', 'Arobaini na Mbili', 'Arobaini na Tatu', 'Arobaini na Nne', 'Arobaini na Tano', 'Arobaini na Sita', 'Arobaini na Saba', 'Arobaini na Nane', 'Arobaini na Tisa', 'Hamsini'], backgroundColor: '#B5838D' } // Muted mauve
 ];
 
 let currentLevel = 0;
@@ -37,22 +38,30 @@ function handleDrop(e) {
 
 function checkOrder() {
   const currentRange = levelRanges[currentLevel];
-  const isCorrect = Array.from(container.children).every((box, index) => box.innerHTML === currentRange.words[index]);
+  let isLevelComplete = true;
 
-  if (isCorrect) {
-    container.classList.add('correct');
-    document.getElementById('container').style.backgroundColor = currentRange.backgroundColor;
+  Array.from(container.children).forEach((box, index) => {
+    if (box.innerHTML === currentRange.words[index]) {
+      box.style.backgroundColor = '#9EBC9F'; // Turns purple when in the correct position
+    } else {
+      box.style.backgroundColor = 'lightgray'; // Reset to default if not in correct position
+      isLevelComplete = false;
+    }
+  });
+
+  if (isLevelComplete) {
     document.getElementById('popup').style.display = 'block';
 
     if (currentLevel === levelRanges.length - 1) {
       document.getElementById('popupMessage').innerText = 'Congratulations! You have completed all levels.';
       document.getElementById('restartButton').style.display = 'block';
+      document.getElementById('homeButton').style.display = 'block';
+      document.getElementById('nextLevelButton').style.display = 'none'; // Hide next button at the final level
     } else {
       document.getElementById('popupMessage').innerText = `Level ${currentLevel + 1} completed!`;
       document.getElementById('nextLevelButton').style.display = 'block';
+      document.getElementById('homeButton').style.display = 'none'; // Hide Home button for intermediate levels
     }
-  } else {
-    container.classList.remove('correct');
   }
 }
 
@@ -61,44 +70,68 @@ function nextLevel() {
   if (currentLevel < levelRanges.length) {
     const currentRange = levelRanges[currentLevel];
     shuffleBoxes(currentRange.words);
-    container.classList.remove('correct');
-    document.getElementById('levelText').innerText = `Drag and drop the boxes to organize them!`;
     document.getElementById('container').style.backgroundColor = currentRange.backgroundColor;
+    container.classList.remove('correct');
+    document.getElementById('popup').style.display = 'none';
   }
 }
 
 function shuffleBoxes(words) {
   const shuffledWords = [...words].sort(() => Math.random() - 0.5);
-  boxes.forEach(function (box, index) {
+  boxes.forEach((box, index) => {
     box.innerHTML = shuffledWords[index];
+    box.style.backgroundColor = 'lightgray'; // Reset color for new level
   });
 }
 
-// Shuffle boxes for level one initially
+// Initial shuffle for level one
 shuffleBoxes(levelRanges[0].words);
+document.getElementById('container').style.backgroundColor = levelRanges[0].backgroundColor;
 
 // Attach event listeners to boxes
-boxes.forEach(function (box) {
-
+boxes.forEach(box => {
   box.addEventListener('dragstart', handleDragStart, false);
   box.addEventListener('dragover', handleDragOver, false);
   box.addEventListener('drop', handleDrop, false);
 });
 
-// Event listener for the "Next Level" button
-document.getElementById('nextLevelButton').addEventListener('click', function() {
+// "Next Level" and "Restart" button event listeners
+document.getElementById('nextLevelButton').addEventListener('click', () => {
   document.getElementById('popup').style.display = 'none';
   nextLevel();
 });
 
-// Event listener for the "Restart" button
-document.getElementById('restartButton').addEventListener('click', function() {
+// Restart button functionality
+document.getElementById('restartButton').addEventListener('click', () => {
   currentLevel = 0;
   const currentRange = levelRanges[currentLevel];
   shuffleBoxes(currentRange.words);
-  container.classList.remove('correct');
-  document.getElementById('levelText').innerText = `Drag and drop the boxes to organize them!`;
   document.getElementById('container').style.backgroundColor = currentRange.backgroundColor;
   document.getElementById('popup').style.display = 'none';
   document.getElementById('restartButton').style.display = 'none';
+  document.getElementById('homeButton').style.display = 'none'; // Hide Home button
 });
+
+// Event listener for the "Home" button
+document.getElementById('homeButton').addEventListener('click', function() {
+  // Redirect to the homepage or main menu
+  window.location.href = 'index.html'; // Update to your actual homepage URL
+});
+
+// Touch support for small screens
+boxes.forEach(box => {
+  box.addEventListener('touchstart', handleDragStart, false);
+  box.addEventListener('touchmove', (e) => {
+    e.preventDefault(); // Prevent scrolling while dragging
+    handleDragOver(e);
+  }, false);
+  box.addEventListener('touchend', handleDrop, false);
+});
+
+// Initial level setup
+document.getElementById('levelText').innerText = `Drag and drop the boxes to organize them!`;
+
+function goHome() {
+  // Redirect to the home page or a specified URL
+  window.location.href = 'index.html'; // Replace 'index.html' with your actual home page URL
+}
