@@ -134,24 +134,42 @@ function handleTouchStart(e) {
 }
 
 function handleTouchMove(e) {
-    e.preventDefault();
-    const touch = e.touches[0];
-    const boxesArray = Array.from(boxes);
-
-    boxesArray.forEach(box => {
-        const boxRect = box.getBoundingClientRect();
-        if (touch.clientX >= boxRect.left && touch.clientX <= boxRect.right &&
-            touch.clientY >= boxRect.top && touch.clientY <= boxRect.bottom) {
-            handleDrop(e);
-            return;
-        }
-    });
+  e.preventDefault();
+  const touch = e.touches[0];
+  const boxesArray = Array.from(boxes);
+  boxesArray.forEach(box => {
+      const boxRect = box.getBoundingClientRect();
+      if (touch.clientX >= boxRect.left && touch.clientX <= boxRect.right &&
+          touch.clientY >= boxRect.top && touch.clientY <= boxRect.bottom) {
+          box.classList.add('hover'); // Add a hover class for visual feedback
+      } else {
+          box.classList.remove('hover');
+      }
+  });
 }
+
 
 function handleTouchEnd(e) {
-    this.classList.remove('dragging');
-    touchSrcEl = null;
+  const touch = e.changedTouches[0];
+  const boxesArray = Array.from(boxes);
+  let droppedOn = false;
+
+  boxesArray.forEach(box => {
+      const boxRect = box.getBoundingClientRect();
+      if (touch.clientX >= boxRect.left && touch.clientX <= boxRect.right &&
+          touch.clientY >= boxRect.top && touch.clientY <= boxRect.bottom) {
+          handleDrop(e); // Call handleDrop if dropped on a valid target
+          droppedOn = true;
+      }
+  });
+
+  if (!droppedOn) {
+      touchSrcEl.classList.remove('dragging'); // Remove dragging class if not dropped on any box
+  }
+
+  touchSrcEl = null; // Reset the source element
 }
+
 
 // Initial level setup
 document.getElementById('levelText').innerText = `Drag and drop the boxes to organize them!`;

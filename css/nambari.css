@@ -31,7 +31,7 @@ body {
 
 /* Style for Home button */
 #homeNavButton {
-    background-color: #00e626; /* Orange background for visibility */
+    background-color: #69e47e; /* Orange background for visibility */
     color: #fff;
     border: none;
     padding: 8px 16px;
@@ -142,5 +142,11 @@ body {
         width: calc(30% - 20px); /* Adjusted box width for small screens */
         height: calc(15vh - 20px); /* Adjusted box height for small screens */
         font-size: 1rem;
+        transition: background-color 0.3s ease, transform 0.2s ease; /* Added transform */
+    }
+    
+    .box:active {
+        transform: scale(1.05); /* Slightly enlarge when active */
     }
 }
+
