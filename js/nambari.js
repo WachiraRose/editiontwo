@@ -143,13 +143,13 @@ document.getElementById('container').style.backgroundColor = levelRanges[0].back
 ghostBox.style.position = 'absolute';
 ghostBox.style.pointerEvents = 'none';
 ghostBox.style.opacity = '0.8';
-ghostBox.style.border = '1px dashed gray';
+ghostBox.style.border = '1px dashed black';
 ghostBox.style.padding = '8px';
-ghostBox.style.backgroundColor = 'red';
+ghostBox.style.backgroundColor = 'gray';
 ghostBox.style.display = 'none';
 ghostBox.style.width = '30px';  // Increase the width
 ghostBox.style.height = '30px'; // Increase the height
-ghostBox.style.fontSize = '1.5em'; // Adjust font size if needed
+ghostBox.style.fontSize = '0.5em'; // Adjust font size if needed
 // Add event listeners
 boxes.forEach(box => {
     box.addEventListener('dragstart', handleDragStart, false);
