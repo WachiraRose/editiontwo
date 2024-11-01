@@ -19,7 +19,7 @@ body {
     align-items: center;
     justify-content: space-between;
     padding: 0 20px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+    box-shadow: 0px 4px 8px rgba(73, 71, 71, 0.3);
     z-index: 1000; /* Ensure navbar stays on top */
 }
 
@@ -32,7 +32,7 @@ body {
 
 /* Style for Home button */
 #homeNavButton {
-    background-color: #06f72e; /* Green background for visibility */
+    background-color: #07ff30; /* Green background for visibility */
     color: #fff;
     border: none;
     padding: 8px 16px;

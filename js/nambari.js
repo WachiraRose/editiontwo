@@ -11,14 +11,14 @@ const levelRanges = [
 let currentLevel = 0;
 let dragSrcEl = null;
 
-// Handle both touch and mouse start events
+// Handle drag start (for desktop)
 function handleDragStart(e) {
     dragSrcEl = this;
     this.classList.add('dragging');
     e.dataTransfer?.setData('text/html', this.innerHTML); // For desktop compatibility
 }
 
-// General function to handle moving items
+// Handle drop (for desktop)
 function handleDrop(e) {
     e.preventDefault();
     if (dragSrcEl !== this) {
@@ -31,6 +31,33 @@ function handleDrop(e) {
     dragSrcEl = null;
 }
 
+// Touch functions for small screens
+function handleTouchStart(e) {
+    dragSrcEl = this;
+    this.classList.add('dragging');
+    e.preventDefault(); // Prevent default touch action
+}
+
+function handleTouchMove(e) {
+    e.preventDefault();
+    const touch = e.targetTouches[0];
+    const element = document.elementFromPoint(touch.clientX, touch.clientY);
+    if (element && element.classList.contains('box') && element !== dragSrcEl) {
+        const temp = element.innerHTML;
+        element.innerHTML = dragSrcEl.innerHTML;
+        dragSrcEl.innerHTML = temp;
+        checkOrder();
+    }
+}
+
+function handleTouchEnd() {
+    if (dragSrcEl) {
+        dragSrcEl.classList.remove('dragging');
+        dragSrcEl = null;
+    }
+}
+
+// Check if boxes are in correct order
 function checkOrder() {
     const currentRange = levelRanges[currentLevel];
     let isLevelComplete = true;
@@ -49,6 +76,7 @@ function checkOrder() {
     }
 }
 
+// Display completion popup
 function showCompletionPopup() {
     document.getElementById('popup').style.display = 'block';
     if (currentLevel === levelRanges.length - 1) {
@@ -63,6 +91,7 @@ function showCompletionPopup() {
     }
 }
 
+// Move to the next level
 function nextLevel() {
     currentLevel++;
     if (currentLevel < levelRanges.length) {
@@ -73,6 +102,7 @@ function nextLevel() {
     }
 }
 
+// Shuffle boxes for the level
 function shuffleBoxes(words) {
     const shuffledWords = [...words].sort(() => Math.random() - 0.5);
     boxes.forEach((box, index) => {
@@ -87,11 +117,14 @@ document.getElementById('container').style.backgroundColor = levelRanges[0].back
 
 // Event listeners for drag-and-drop
 boxes.forEach(box => {
-    box.addEventListener('dragstart', handleDragStart, false);
-    box.addEventListener('drop', handleDrop, false);
+    box.addEventListener('dragstart', handleDragStart, false); // Desktop drag start
+    box.addEventListener('drop', handleDrop, false); // Desktop drop
     box.addEventListener('dragover', e => e.preventDefault(), false); // Allow drop action
-    box.addEventListener('touchstart', handleDragStart, false); // Start drag on touch
-    box.addEventListener('touchend', handleDrop, false); // End drag on touch
+
+    // Touch events for drag-and-drop on small screens
+    box.addEventListener('touchstart', handleTouchStart, false);
+    box.addEventListener('touchmove', handleTouchMove, false);
+    box.addEventListener('touchend', handleTouchEnd, false);
 });
 
 // "Next Level" and "Restart" buttons
@@ -101,8 +134,6 @@ document.getElementById('homeButton').addEventListener('click', () => {
     window.location.href = 'index.html'; // Replace with your homepage URL
 });
 
-
 function goHome() {
-    // Redirect to the home page or a specified URL
-    window.location.href = 'index.html'; // Replace 'index.html' with your actual home page URL
+    window.location.href = 'index.html'; // Replace with your actual home page URL
 }
