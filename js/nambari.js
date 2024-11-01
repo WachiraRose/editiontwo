@@ -1,5 +1,8 @@
 const boxes = document.querySelectorAll('.box');
 const container = document.getElementById('container');
+let ghostBox = document.createElement('div');
+ghostBox.classList.add('ghost-box');
+document.body.appendChild(ghostBox);
 const levelRanges = [
     { words: ['Moja', 'Mbili', 'Tatu', 'Nne', 'Tano', 'Sita', 'Saba', 'Nane', 'Tisa', 'Kumi'], backgroundColor: '#E9C46A' },
     { words: ['Kumi na Moja', 'Kumi na Mbili', 'Kumi na Tatu', 'Kumi na Nne', 'Kumi na Tano', 'Kumi na Sita', 'Kumi na Saba', 'Kumi na Nane', 'Kumi na Tisa', 'Ishirini'], backgroundColor: '#FFD700' },
@@ -11,52 +14,73 @@ const levelRanges = [
 let currentLevel = 0;
 let dragSrcEl = null;
 
-// Handle drag start (for desktop)
+// Handle drag start
 function handleDragStart(e) {
-    dragSrcEl = this;
-    this.classList.add('dragging');
-    e.dataTransfer?.setData('text/html', this.innerHTML); // For desktop compatibility
+  dragSrcEl = this; // Store the original box being dragged
+  ghostBox.innerHTML = this.innerHTML; // Set ghost box content to match dragged box
+  ghostBox.style.display = 'block'; // Show the ghost box
+  this.classList.add('dragging'); // Add a class to indicate the element is being dragged
+  e.dataTransfer?.setData('text/html', this.innerHTML); // Allow traditional drag for non-touch events
 }
 
-// Handle drop (for desktop)
+// Update ghost box position during drag
+function handleDrag(e) {
+  ghostBox.style.left = `${e.pageX}px`;
+  ghostBox.style.top = `${e.pageY}px`;
+}
+
+// Handle drop and check if boxes need to swap content
 function handleDrop(e) {
-    e.preventDefault();
-    if (dragSrcEl !== this) {
-        const temp = this.innerHTML;
-        this.innerHTML = dragSrcEl.innerHTML;
-        dragSrcEl.innerHTML = temp;
-        checkOrder();
-    }
-    dragSrcEl.classList.remove('dragging');
-    dragSrcEl = null;
+  e.preventDefault();
+  if (dragSrcEl !== this) {
+      const temp = this.innerHTML;
+      this.innerHTML = dragSrcEl.innerHTML;
+      dragSrcEl.innerHTML = temp;
+      checkOrder(); // Verify if boxes are in correct order after drop
+  }
+  cleanupDrag(); // Reset styles and hide ghost box
 }
 
-// Touch functions for small screens
+// Handle touch start for mobile devices
 function handleTouchStart(e) {
-    dragSrcEl = this;
-    this.classList.add('dragging');
-    e.preventDefault(); // Prevent default touch action
+  dragSrcEl = this;
+  ghostBox.innerHTML = this.innerHTML;
+  ghostBox.style.display = 'block';
+  this.classList.add('dragging');
+  updateGhostPosition(e.touches[0].pageX, e.touches[0].pageY);
+  e.preventDefault();
 }
 
+// Update ghost box position during touch drag
 function handleTouchMove(e) {
-    e.preventDefault();
-    const touch = e.targetTouches[0];
-    const element = document.elementFromPoint(touch.clientX, touch.clientY);
-    if (element && element.classList.contains('box') && element !== dragSrcEl) {
-        const temp = element.innerHTML;
-        element.innerHTML = dragSrcEl.innerHTML;
-        dragSrcEl.innerHTML = temp;
-        checkOrder();
-    }
+  e.preventDefault();
+  updateGhostPosition(e.touches[0].pageX, e.touches[0].pageY);
+  const element = document.elementFromPoint(e.touches[0].clientX, e.touches[0].clientY);
+  if (element && element.classList.contains('box') && element !== dragSrcEl) {
+      const temp = element.innerHTML;
+      element.innerHTML = dragSrcEl.innerHTML;
+      dragSrcEl.innerHTML = temp;
+      checkOrder();
+  }
 }
 
+// Handle touch end and cleanup
 function handleTouchEnd() {
-    if (dragSrcEl) {
-        dragSrcEl.classList.remove('dragging');
-        dragSrcEl = null;
-    }
+  cleanupDrag();
 }
 
+// Update ghost box position based on coordinates
+function updateGhostPosition(x, y) {
+  ghostBox.style.left = `${x}px`;
+  ghostBox.style.top = `${y}px`;
+}
+
+// Reset drag state and hide ghost box
+function cleanupDrag() {
+  dragSrcEl.classList.remove('dragging');
+  dragSrcEl = null;
+  ghostBox.style.display = 'none';
+}
 // Check if boxes are in correct order
 function checkOrder() {
     const currentRange = levelRanges[currentLevel];
@@ -115,13 +139,21 @@ function shuffleBoxes(words) {
 shuffleBoxes(levelRanges[0].words);
 document.getElementById('container').style.backgroundColor = levelRanges[0].backgroundColor;
 
-// Event listeners for drag-and-drop
-boxes.forEach(box => {
-    box.addEventListener('dragstart', handleDragStart, false); // Desktop drag start
-    box.addEventListener('drop', handleDrop, false); // Desktop drop
-    box.addEventListener('dragover', e => e.preventDefault(), false); // Allow drop action
+// Set up ghost box styling
+ghostBox.style.position = 'absolute';
+ghostBox.style.pointerEvents = 'none';
+ghostBox.style.opacity = '0.8';
+ghostBox.style.border = '1px dashed gray';
+ghostBox.style.padding = '8px';
+ghostBox.style.backgroundColor = 'lightgray';
+ghostBox.style.display = 'none';
 
-    // Touch events for drag-and-drop on small screens
+// Add event listeners
+boxes.forEach(box => {
+    box.addEventListener('dragstart', handleDragStart, false);
+    box.addEventListener('drag', handleDrag, false);
+    box.addEventListener('dragover', e => e.preventDefault(), false);
+    box.addEventListener('drop', handleDrop, false);
     box.addEventListener('touchstart', handleTouchStart, false);
     box.addEventListener('touchmove', handleTouchMove, false);
     box.addEventListener('touchend', handleTouchEnd, false);
