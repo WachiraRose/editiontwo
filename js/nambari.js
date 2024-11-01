@@ -11,30 +11,24 @@ const levelRanges = [
 let currentLevel = 0;
 let dragSrcEl = null;
 
+// Handle both touch and mouse start events
 function handleDragStart(e) {
-    this.classList.add('dragging');
     dragSrcEl = this;
-    e.dataTransfer.effectAllowed = 'move';
-    e.dataTransfer.setData('text/html', this.innerHTML);
+    this.classList.add('dragging');
+    e.dataTransfer?.setData('text/html', this.innerHTML); // For desktop compatibility
 }
 
-function handleDragOver(e) {
-    e.preventDefault();
-    e.dataTransfer.dropEffect = 'move';
-}
-
+// General function to handle moving items
 function handleDrop(e) {
     e.preventDefault();
     if (dragSrcEl !== this) {
-        const srcIndex = Array.from(container.children).indexOf(dragSrcEl);
-        const targetIndex = Array.from(container.children).indexOf(this);
-        const temp = boxes[srcIndex].innerHTML;
-        boxes[srcIndex].innerHTML = boxes[targetIndex].innerHTML;
-        boxes[targetIndex].innerHTML = temp;
+        const temp = this.innerHTML;
+        this.innerHTML = dragSrcEl.innerHTML;
+        dragSrcEl.innerHTML = temp;
+        checkOrder();
     }
     dragSrcEl.classList.remove('dragging');
     dragSrcEl = null;
-    checkOrder();
 }
 
 function checkOrder() {
@@ -43,26 +37,29 @@ function checkOrder() {
 
     Array.from(container.children).forEach((box, index) => {
         if (box.innerHTML === currentRange.words[index]) {
-            box.style.backgroundColor = '#9EBC9F'; // Turns green when in the correct position
+            box.style.backgroundColor = '#9EBC9F'; // Correct position
         } else {
-            box.style.backgroundColor = 'lightgray'; // Reset to default if not in correct position
+            box.style.backgroundColor = 'lightgray'; // Incorrect position
             isLevelComplete = false;
         }
     });
 
     if (isLevelComplete) {
-        document.getElementById('popup').style.display = 'block';
+        showCompletionPopup();
+    }
+}
 
-        if (currentLevel === levelRanges.length - 1) {
-            document.getElementById('popupMessage').innerText = 'Congratulations! You have completed all levels.';
-            document.getElementById('restartButton').style.display = 'block';
-            document.getElementById('homeButton').style.display = 'block';
-            document.getElementById('nextLevelButton').style.display = 'none'; // Hide next button at the final level
-        } else {
-            document.getElementById('popupMessage').innerText = `Level ${currentLevel + 1} completed!`;
-            document.getElementById('nextLevelButton').style.display = 'block';
-            document.getElementById('homeButton').style.display = 'none'; // Hide Home button for intermediate levels
-        }
+function showCompletionPopup() {
+    document.getElementById('popup').style.display = 'block';
+    if (currentLevel === levelRanges.length - 1) {
+        document.getElementById('popupMessage').innerText = 'Congratulations! You have completed all levels.';
+        document.getElementById('restartButton').style.display = 'block';
+        document.getElementById('homeButton').style.display = 'block';
+        document.getElementById('nextLevelButton').style.display = 'none';
+    } else {
+        document.getElementById('popupMessage').innerText = `Level ${currentLevel + 1} completed!`;
+        document.getElementById('nextLevelButton').style.display = 'block';
+        document.getElementById('homeButton').style.display = 'none';
     }
 }
 
@@ -72,7 +69,6 @@ function nextLevel() {
         const currentRange = levelRanges[currentLevel];
         shuffleBoxes(currentRange.words);
         document.getElementById('container').style.backgroundColor = currentRange.backgroundColor;
-        container.classList.remove('correct');
         document.getElementById('popup').style.display = 'none';
     }
 }
@@ -81,7 +77,7 @@ function shuffleBoxes(words) {
     const shuffledWords = [...words].sort(() => Math.random() - 0.5);
     boxes.forEach((box, index) => {
         box.innerHTML = shuffledWords[index];
-        box.style.backgroundColor = 'lightgray'; // Reset color for new level
+        box.style.backgroundColor = 'lightgray';
     });
 }
 
@@ -89,94 +85,22 @@ function shuffleBoxes(words) {
 shuffleBoxes(levelRanges[0].words);
 document.getElementById('container').style.backgroundColor = levelRanges[0].backgroundColor;
 
-// Attach event listeners to boxes
+// Event listeners for drag-and-drop
 boxes.forEach(box => {
     box.addEventListener('dragstart', handleDragStart, false);
-    box.addEventListener('dragover', handleDragOver, false);
     box.addEventListener('drop', handleDrop, false);
+    box.addEventListener('dragover', e => e.preventDefault(), false); // Allow drop action
+    box.addEventListener('touchstart', handleDragStart, false); // Start drag on touch
+    box.addEventListener('touchend', handleDrop, false); // End drag on touch
 });
 
-// "Next Level" and "Restart" button event listeners
-document.getElementById('nextLevelButton').addEventListener('click', () => {
-    document.getElementById('popup').style.display = 'none';
-    nextLevel();
+// "Next Level" and "Restart" buttons
+document.getElementById('nextLevelButton').addEventListener('click', nextLevel);
+document.getElementById('restartButton').addEventListener('click', () => location.reload());
+document.getElementById('homeButton').addEventListener('click', () => {
+    window.location.href = 'index.html'; // Replace with your homepage URL
 });
 
-// Restart button functionality
-document.getElementById('restartButton').addEventListener('click', () => {
-    currentLevel = 0;
-    const currentRange = levelRanges[currentLevel];
-    shuffleBoxes(currentRange.words);
-    document.getElementById('container').style.backgroundColor = currentRange.backgroundColor;
-    document.getElementById('popup').style.display = 'none';
-    document.getElementById('restartButton').style.display = 'none';
-    document.getElementById('homeButton').style.display = 'none'; // Hide Home button
-});
-
-// Event listener for the "Home" button
-document.getElementById('homeButton').addEventListener('click', function() {
-    // Redirect to the homepage or main menu
-    window.location.href = 'index.html'; // Update to your actual homepage URL
-});
-
-// Touch support for small screens
-boxes.forEach(box => {
-  box.addEventListener('touchstart', handleTouchStart, false);
-  box.addEventListener('touchmove', handleTouchMove, false);
-  box.addEventListener('touchend', handleTouchEnd, false);
-});
-
-let touchSrcEl = null;
-
-function handleTouchStart(e) {
-  touchSrcEl = this;
-  this.classList.add('dragging');
-  e.preventDefault(); // Prevent scrolling while dragging
-}
-
-function handleTouchMove(e) {
-  e.preventDefault();
-  const touch = e.touches[0];
-  const boxesArray = Array.from(boxes);
-  
-  boxesArray.forEach(box => {
-      const boxRect = box.getBoundingClientRect();
-      if (touch.clientX >= boxRect.left && touch.clientX <= boxRect.right &&
-          touch.clientY >= boxRect.top && touch.clientY <= boxRect.bottom) {
-          box.classList.add('hover'); // Add a hover class for visual feedback
-      } else {
-          box.classList.remove('hover');
-      }
-  });
-}
-
-function handleTouchEnd(e) {
-  const touch = e.changedTouches[0];
-  const boxesArray = Array.from(boxes);
-  let droppedOn = false;
-
-  boxesArray.forEach(box => {
-      const boxRect = box.getBoundingClientRect();
-      if (touch.clientX >= boxRect.left && touch.clientX <= boxRect.right &&
-          touch.clientY >= boxRect.top && touch.clientY <= boxRect.bottom) {
-          // Simulate the drop
-          box.classList.remove('hover'); // Remove hover class
-          handleDrop(e); // Call handleDrop if dropped on a valid target
-          droppedOn = true;
-      }
-  });
-
-  if (!droppedOn) {
-      touchSrcEl.classList.remove('dragging'); // Remove dragging class if not dropped on any box
-  } else {
-      touchSrcEl.innerHTML = ""; // Clear the text or do any final adjustments
-  }
-
-  touchSrcEl = null; // Reset the source element
-}
-
-// Initial level setup
-document.getElementById('levelText').innerText = `Drag and drop the boxes to organize them!`;
 
 function goHome() {
     // Redirect to the home page or a specified URL
