@@ -121,22 +121,24 @@ document.getElementById('homeButton').addEventListener('click', function() {
 
 // Touch support for small screens
 boxes.forEach(box => {
-    box.addEventListener('touchstart', handleTouchStart, false);
-    box.addEventListener('touchmove', handleTouchMove, false);
-    box.addEventListener('touchend', handleTouchEnd, false);
+  box.addEventListener('touchstart', handleTouchStart, false);
+  box.addEventListener('touchmove', handleTouchMove, false);
+  box.addEventListener('touchend', handleTouchEnd, false);
 });
 
 let touchSrcEl = null;
 
 function handleTouchStart(e) {
-    touchSrcEl = this;
-    this.classList.add('dragging');
+  touchSrcEl = this;
+  this.classList.add('dragging');
+  e.preventDefault(); // Prevent scrolling while dragging
 }
 
 function handleTouchMove(e) {
   e.preventDefault();
   const touch = e.touches[0];
   const boxesArray = Array.from(boxes);
+  
   boxesArray.forEach(box => {
       const boxRect = box.getBoundingClientRect();
       if (touch.clientX >= boxRect.left && touch.clientX <= boxRect.right &&
@@ -148,7 +150,6 @@ function handleTouchMove(e) {
   });
 }
 
-
 function handleTouchEnd(e) {
   const touch = e.changedTouches[0];
   const boxesArray = Array.from(boxes);
@@ -158,6 +159,8 @@ function handleTouchEnd(e) {
       const boxRect = box.getBoundingClientRect();
       if (touch.clientX >= boxRect.left && touch.clientX <= boxRect.right &&
           touch.clientY >= boxRect.top && touch.clientY <= boxRect.bottom) {
+          // Simulate the drop
+          box.classList.remove('hover'); // Remove hover class
           handleDrop(e); // Call handleDrop if dropped on a valid target
           droppedOn = true;
       }
@@ -165,11 +168,12 @@ function handleTouchEnd(e) {
 
   if (!droppedOn) {
       touchSrcEl.classList.remove('dragging'); // Remove dragging class if not dropped on any box
+  } else {
+      touchSrcEl.innerHTML = ""; // Clear the text or do any final adjustments
   }
 
   touchSrcEl = null; // Reset the source element
 }
-
 
 // Initial level setup
 document.getElementById('levelText').innerText = `Drag and drop the boxes to organize them!`;
