@@ -89,9 +89,11 @@ function checkOrder() {
     Array.from(container.children).forEach((box, index) => {
         if (box.innerHTML === currentRange.words[index]) {
             box.style.backgroundColor = '#9EBC9F'; // Correct position
+            disableDrag(box); // Disable dragging for correctly placed boxes
         } else {
             box.style.backgroundColor = 'lightgray'; // Incorrect position
             isLevelComplete = false;
+            enableDrag(box); // Enable dragging for incorrectly placed boxesg
         }
     });
 
