@@ -5,6 +5,7 @@ body {
     margin: 0;
     padding: 0;
 }
+
 /* Navbar styling */
 .navbar {
     position: fixed;
@@ -31,7 +32,7 @@ body {
 
 /* Style for Home button */
 #homeNavButton {
-    background-color: #06f72e; /* Orange background for visibility */
+    background-color: #06f72e; /* Green background for visibility */
     color: #fff;
     border: none;
     padding: 8px 16px;
@@ -46,8 +47,6 @@ body {
 #homeNavButton:hover {
     background-color: #00e626; /* Darker shade on hover */
 }
-
-
 
 .container {
     display: flex;
@@ -70,15 +69,20 @@ body {
     text-align: center;
     font-size: 1.3rem;
     font-weight: bold;
-    cursor: move;
+    cursor: move; /* Indicates draggable */
     background-color: #E9C46A; /* Muted mustard yellow */
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Added transform */
     overflow: hidden;
     word-wrap: break-word;
 }
 
 .box:hover {
     background-color: #F4A261; /* Soft terracotta */
+}
+
+.box.dragging {
+    transform: scale(1.05); /* Slightly enlarge when dragging */
+    background-color: #f0f0f0; /* Optional: Change background color for visual feedback */
 }
 
 .correct {
@@ -134,6 +138,7 @@ body {
     color: #4A4A4A; /* Dark warm gray */
 }
 
+/* Media query for smaller screens */
 @media (max-width: 600px) {
     .container {
         padding: 10px;
@@ -141,8 +146,7 @@ body {
     .box {
         width: calc(30% - 20px); /* Adjusted box width for small screens */
         height: calc(15vh - 20px); /* Adjusted box height for small screens */
-        font-size: 1rem;
-        transition: background-color 0.3s ease, transform 0.2s ease; /* Added transform */
+        font-size: 1rem; /* Smaller font size */
     }
     
     .box:active {
@@ -150,3 +154,7 @@ body {
     }
 }
 
+/* Prevent default touch actions */
+.container {
+    touch-action: none; /* Prevent default touch actions */
+}
