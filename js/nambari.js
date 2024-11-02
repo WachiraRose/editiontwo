@@ -16,72 +16,70 @@ let dragSrcEl = null;
 
 // Handle drag start
 function handleDragStart(e) {
-  dragSrcEl = this; // Store the original box being dragged
-  ghostBox.innerHTML = this.innerHTML; // Set ghost box content to match dragged box
-  ghostBox.style.display = 'block'; // Show the ghost box
-  this.classList.add('dragging'); // Add a class to indicate the element is being dragged
-  e.dataTransfer?.setData('text/html', this.innerHTML); // Allow traditional drag for non-touch events
+    dragSrcEl = this;
+    ghostBox.innerHTML = this.innerHTML;
+    ghostBox.style.display = 'block';
+    this.classList.add('dragging');
+    e.dataTransfer?.setData('text/html', this.innerHTML);
 }
 
 // Update ghost box position during drag
 function handleDrag(e) {
-  ghostBox.style.left = `${e.pageX}px`;
-  ghostBox.style.top = `${e.pageY}px`;
+    ghostBox.style.left = `${e.pageX}px`;
+    ghostBox.style.top = `${e.pageY}px`;
 }
 
 // Handle drop and check if boxes need to swap content
 function handleDrop(e) {
-  e.preventDefault();
-  if (dragSrcEl !== this) {
-      const temp = this.innerHTML;
-      this.innerHTML = dragSrcEl.innerHTML;
-      dragSrcEl.innerHTML = temp;
-      checkOrder(); // Verify if boxes are in correct order after drop
-  }
-  cleanupDrag(); // Reset styles and hide ghost box
+    e.preventDefault();
+    if (dragSrcEl !== this) {
+        const temp = this.innerHTML;
+        this.innerHTML = dragSrcEl.innerHTML;
+        dragSrcEl.innerHTML = temp;
+        checkOrder();
+    }
+    cleanupDrag();
 }
 
-// Handle touch start for mobile devices
+// Handle touch events
 function handleTouchStart(e) {
-  dragSrcEl = this;
-  ghostBox.innerHTML = this.innerHTML;
-  ghostBox.style.display = 'block';
-  this.classList.add('dragging');
-  updateGhostPosition(e.touches[0].pageX, e.touches[0].pageY);
-  e.preventDefault();
+    dragSrcEl = this;
+    ghostBox.innerHTML = this.innerHTML;
+    ghostBox.style.display = 'block';
+    this.classList.add('dragging');
+    updateGhostPosition(e.touches[0].pageX, e.touches[0].pageY);
+    e.preventDefault();
 }
 
-// Update ghost box position during touch drag
 function handleTouchMove(e) {
-  e.preventDefault();
-  updateGhostPosition(e.touches[0].pageX, e.touches[0].pageY);
-  const element = document.elementFromPoint(e.touches[0].clientX, e.touches[0].clientY);
-  if (element && element.classList.contains('box') && element !== dragSrcEl) {
-      const temp = element.innerHTML;
-      element.innerHTML = dragSrcEl.innerHTML;
-      dragSrcEl.innerHTML = temp;
-      checkOrder();
-  }
+    e.preventDefault();
+    updateGhostPosition(e.touches[0].pageX, e.touches[0].pageY);
+    const element = document.elementFromPoint(e.touches[0].clientX, e.touches[0].clientY);
+    if (element && element.classList.contains('box') && element !== dragSrcEl) {
+        const temp = element.innerHTML;
+        element.innerHTML = dragSrcEl.innerHTML;
+        dragSrcEl.innerHTML = temp;
+        checkOrder();
+    }
 }
 
-// Handle touch end and cleanup
 function handleTouchEnd() {
-  cleanupDrag();
+    cleanupDrag();
 }
 
-// Update ghost box position based on coordinates
 function updateGhostPosition(x, y) {
-  ghostBox.style.left = `${x}px`;
-  ghostBox.style.top = `${y}px`;
+    ghostBox.style.left = `${x}px`;
+    ghostBox.style.top = `${y}px`;
 }
 
-// Reset drag state and hide ghost box
 function cleanupDrag() {
-  dragSrcEl.classList.remove('dragging');
-  dragSrcEl = null;
-  ghostBox.style.display = 'none';
+    if (dragSrcEl) {
+        dragSrcEl.classList.remove('dragging');
+    }
+    dragSrcEl = null;
+    ghostBox.style.display = 'none';
 }
-// Check if boxes are in correct order
+
 function checkOrder() {
     const currentRange = levelRanges[currentLevel];
     let isLevelComplete = true;
@@ -96,11 +94,22 @@ function checkOrder() {
     });
 
     if (isLevelComplete) {
+        disableDragging();
         showCompletionPopup();
     }
 }
 
-// Display completion popup
+function disableDragging() {
+    boxes.forEach(box => {
+        box.removeEventListener('dragstart', handleDragStart);
+        box.removeEventListener('drag', handleDrag);
+        box.removeEventListener('drop', handleDrop);
+        box.removeEventListener('touchstart', handleTouchStart);
+        box.removeEventListener('touchmove', handleTouchMove);
+        box.removeEventListener('touchend', handleTouchEnd);
+    });
+}
+
 function showCompletionPopup() {
     document.getElementById('popup').style.display = 'block';
     if (currentLevel === levelRanges.length - 1) {
@@ -115,7 +124,6 @@ function showCompletionPopup() {
     }
 }
 
-// Move to the next level
 function nextLevel() {
     currentLevel++;
     if (currentLevel < levelRanges.length) {
@@ -123,10 +131,10 @@ function nextLevel() {
         shuffleBoxes(currentRange.words);
         document.getElementById('container').style.backgroundColor = currentRange.backgroundColor;
         document.getElementById('popup').style.display = 'none';
+        addEventListeners(); // Re-add event listeners for new level
     }
 }
 
-// Shuffle boxes for the level
 function shuffleBoxes(words) {
     const shuffledWords = [...words].sort(() => Math.random() - 0.5);
     boxes.forEach((box, index) => {
@@ -147,19 +155,24 @@ ghostBox.style.border = '2px dashed black';
 ghostBox.style.padding = '8px';
 ghostBox.style.backgroundColor = 'gray';
 ghostBox.style.display = 'none';
-ghostBox.style.width = '20px';  // Increase the width
-ghostBox.style.height = '20px'; // Increase the height
-ghostBox.style.fontSize = '0.8em'; // Adjust font size if needed
+ghostBox.style.width = '20px';
+ghostBox.style.height = '20px';
+ghostBox.style.fontSize = '0.8em';
+
 // Add event listeners
-boxes.forEach(box => {
-    box.addEventListener('dragstart', handleDragStart, false);
-    box.addEventListener('drag', handleDrag, false);
-    box.addEventListener('dragover', e => e.preventDefault(), false);
-    box.addEventListener('drop', handleDrop, false);
-    box.addEventListener('touchstart', handleTouchStart, false);
-    box.addEventListener('touchmove', handleTouchMove, false);
-    box.addEventListener('touchend', handleTouchEnd, false);
-});
+function addEventListeners() {
+    boxes.forEach(box => {
+        box.addEventListener('dragstart', handleDragStart, false);
+        box.addEventListener('drag', handleDrag, false);
+        box.addEventListener('dragover', e => e.preventDefault(), false);
+        box.addEventListener('drop', handleDrop, false);
+        box.addEventListener('touchstart', handleTouchStart, false);
+        box.addEventListener('touchmove', handleTouchMove, false);
+        box.addEventListener('touchend', handleTouchEnd, false);
+    });
+}
+
+addEventListeners(); // Set up event listeners for the first level
 
 // "Next Level" and "Restart" buttons
 document.getElementById('nextLevelButton').addEventListener('click', nextLevel);
@@ -167,7 +180,3 @@ document.getElementById('restartButton').addEventListener('click', () => locatio
 document.getElementById('homeButton').addEventListener('click', () => {
     window.location.href = 'index.html'; // Replace with your homepage URL
 });
-
-function goHome() {
-    window.location.href = 'index.html'; // Replace with your actual home page URL
-}
