@@ -16,71 +16,72 @@ let dragSrcEl = null;
 
 // Handle drag start
 function handleDragStart(e) {
-  dragSrcEl = this; // Store the original box being dragged
-  ghostBox.innerHTML = this.innerHTML; // Set ghost box content to match dragged box
-  ghostBox.style.display = 'block'; // Show the ghost box
-  this.classList.add('dragging'); // Add a class to indicate the element is being dragged
-  e.dataTransfer?.setData('text/html', this.innerHTML); // Allow traditional drag for non-touch events
+    dragSrcEl = this; // Store the original box being dragged
+    ghostBox.innerHTML = this.innerHTML; // Set ghost box content to match dragged box
+    ghostBox.style.display = 'block'; // Show the ghost box
+    this.classList.add('dragging'); // Add a class to indicate the element is being dragged
+    e.dataTransfer?.setData('text/html', this.innerHTML); // Allow traditional drag for non-touch events
 }
 
 // Update ghost box position during drag
 function handleDrag(e) {
-  ghostBox.style.left = `${e.pageX}px`;
-  ghostBox.style.top = `${e.pageY}px`;
+    ghostBox.style.left = `${e.pageX}px`;
+    ghostBox.style.top = `${e.pageY}px`;
 }
 
 // Handle drop and check if boxes need to swap content
 function handleDrop(e) {
-  e.preventDefault();
-  if (dragSrcEl !== this) {
-      const temp = this.innerHTML;
-      this.innerHTML = dragSrcEl.innerHTML;
-      dragSrcEl.innerHTML = temp;
-      checkOrder(); // Verify if boxes are in correct order after drop
-  }
-  cleanupDrag(); // Reset styles and hide ghost box
+    e.preventDefault();
+    if (dragSrcEl !== this) {
+        const temp = this.innerHTML;
+        this.innerHTML = dragSrcEl.innerHTML;
+        dragSrcEl.innerHTML = temp;
+        checkOrder(); // Verify if boxes are in correct order after drop
+    }
+    cleanupDrag(); // Reset styles and hide ghost box
 }
 
 // Handle touch start for mobile devices
 function handleTouchStart(e) {
-  dragSrcEl = this;
-  ghostBox.innerHTML = this.innerHTML;
-  ghostBox.style.display = 'block';
-  this.classList.add('dragging');
-  updateGhostPosition(e.touches[0].pageX, e.touches[0].pageY);
-  e.preventDefault();
+    dragSrcEl = this;
+    ghostBox.innerHTML = this.innerHTML;
+    ghostBox.style.display = 'block';
+    this.classList.add('dragging');
+    updateGhostPosition(e.touches[0].pageX, e.touches[0].pageY);
+    e.preventDefault();
 }
 
 // Update ghost box position during touch drag
 function handleTouchMove(e) {
-  e.preventDefault();
-  updateGhostPosition(e.touches[0].pageX, e.touches[0].pageY);
-  const element = document.elementFromPoint(e.touches[0].clientX, e.touches[0].clientY);
-  if (element && element.classList.contains('box') && element !== dragSrcEl) {
-      const temp = element.innerHTML;
-      element.innerHTML = dragSrcEl.innerHTML;
-      dragSrcEl.innerHTML = temp;
-      checkOrder();
-  }
+    e.preventDefault();
+    updateGhostPosition(e.touches[0].pageX, e.touches[0].pageY);
+    const element = document.elementFromPoint(e.touches[0].clientX, e.touches[0].clientY);
+    if (element && element.classList.contains('box') && element !== dragSrcEl) {
+        const temp = element.innerHTML;
+        element.innerHTML = dragSrcEl.innerHTML;
+        dragSrcEl.innerHTML = temp;
+        checkOrder();
+    }
 }
 
 // Handle touch end and cleanup
 function handleTouchEnd() {
-  cleanupDrag();
+    cleanupDrag();
 }
 
 // Update ghost box position based on coordinates
 function updateGhostPosition(x, y) {
-  ghostBox.style.left = `${x}px`;
-  ghostBox.style.top = `${y}px`;
+    ghostBox.style.left = `${x}px`;
+    ghostBox.style.top = `${y}px`;
 }
 
 // Reset drag state and hide ghost box
 function cleanupDrag() {
-  dragSrcEl.classList.remove('dragging');
-  dragSrcEl = null;
-  ghostBox.style.display = 'none';
+    dragSrcEl.classList.remove('dragging');
+    dragSrcEl = null;
+    ghostBox.style.display = 'none';
 }
+
 // Check if boxes are in correct order
 function checkOrder() {
     const currentRange = levelRanges[currentLevel];
@@ -93,13 +94,33 @@ function checkOrder() {
         } else {
             box.style.backgroundColor = 'lightgray'; // Incorrect position
             isLevelComplete = false;
-            enableDrag(box); // Enable dragging for incorrectly placed boxesg
+            enableDrag(box); // Enable dragging for incorrectly placed boxes
         }
     });
 
     if (isLevelComplete) {
         showCompletionPopup();
     }
+}
+
+// Disable dragging for the given box
+function disableDrag(box) {
+    box.removeEventListener('dragstart', handleDragStart);
+    box.removeEventListener('drag', handleDrag);
+    box.removeEventListener('drop', handleDrop);
+    box.removeEventListener('touchstart', handleTouchStart);
+    box.removeEventListener('touchmove', handleTouchMove);
+    box.removeEventListener('touchend', handleTouchEnd);
+}
+
+// Enable dragging for the given box
+function enableDrag(box) {
+    box.addEventListener('dragstart', handleDragStart, false);
+    box.addEventListener('drag', handleDrag, false);
+    box.addEventListener('drop', handleDrop, false);
+    box.addEventListener('touchstart', handleTouchStart, false);
+    box.addEventListener('touchmove', handleTouchMove, false);
+    box.addEventListener('touchend', handleTouchEnd, false);
 }
 
 // Display completion popup
@@ -134,6 +155,7 @@ function shuffleBoxes(words) {
     boxes.forEach((box, index) => {
         box.innerHTML = shuffledWords[index];
         box.style.backgroundColor = 'lightgray';
+        enableDrag(box); // Enable dragging for all boxes after shuffling
     });
 }
 
@@ -145,13 +167,11 @@ document.getElementById('container').style.backgroundColor = levelRanges[0].back
 ghostBox.style.position = 'absolute';
 ghostBox.style.pointerEvents = 'none';
 ghostBox.style.opacity = '0.8';
-ghostBox.style.border = '1px dashed black';
+ghostBox.style.border = '1px dashed gray';
 ghostBox.style.padding = '8px';
-ghostBox.style.backgroundColor = 'gray';
+ghostBox.style.backgroundColor = 'red';
 ghostBox.style.display = 'none';
-ghostBox.style.width = '30px';  // Increase the width
-ghostBox.style.height = '30px'; // Increase the height
-ghostBox.style.fontSize = '0.5em'; // Adjust font size if needed
+
 // Add event listeners
 boxes.forEach(box => {
     box.addEventListener('dragstart', handleDragStart, false);
